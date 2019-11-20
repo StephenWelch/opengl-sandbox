@@ -10,6 +10,7 @@ int main() {
       window->update();
     }
     window->close();
+    delete window;
 
     return 0;
 }
