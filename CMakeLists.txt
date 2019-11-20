@@ -18,14 +18,13 @@ add_subdirectory(include/glfw)
 
 add_definitions(-DGLFW_INCLUDE_NONE
         -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
-add_executable(learn_opengl src/main.cpp)
+add_executable(learn_opengl src/main.cpp src/Window.cpp src/Window.h)
 
 include_directories(
         include/glad/include
         include/glfw/include
         )
 
-add_subdirectory(src)
 
 add_library(glad include/glad/src/glad.c)
 #find_package(OpenGL REQUIRED)
