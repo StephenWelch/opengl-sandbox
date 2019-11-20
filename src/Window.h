@@ -18,7 +18,7 @@ class Window {
     int width;
     int height;
  public:
-    Window(char* title, const int &width, const int &height) : title(title), width(width), height(height) {};
+    Window(const char *title, const int &width, const int &height) : title(const_cast<char *>(title)), width(width), height(height) {};
     bool init();
     void update();
     bool isKeyPressed(const int &key);

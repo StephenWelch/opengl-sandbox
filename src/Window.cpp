@@ -18,10 +18,10 @@ bool Window::init() {
   glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   // Create a window object
-  window = glfwCreateWindow(800, 600, "Game", NULL, NULL);
+  window = glfwCreateWindow(800, 600, "Game", nullptr, nullptr);
 
   // If initialization fails, print an error message and terminate GLFW
-  if (window == NULL) {
+  if (window == nullptr) {
     std::cerr << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
     return false;
@@ -85,5 +85,5 @@ void Window::close() {
 }
 
 bool Window::closeRequested() {
-  return glfwWindowShouldClose(window);
+  return static_cast<bool>(glfwWindowShouldClose(window));
 }
