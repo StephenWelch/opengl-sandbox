@@ -23,8 +23,8 @@ add_executable(learn_opengl src/main.cpp src/Window.cpp src/Window.h src/Rendere
 include_directories(
         include/glad/include
         include/glfw/include
-	include/spdlog/include
-        )
+        include/spdlog/include
+)
 
 
 add_library(glad include/glad/src/glad.c)
