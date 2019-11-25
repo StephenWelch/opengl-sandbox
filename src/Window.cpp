@@ -22,6 +22,10 @@ bool Window::init() {
   // Set OpenGL profile to Core
   glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+  if(debugOutput) {
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+  }
+
   // Create a window object
   window = glfwCreateWindow(800, 600, "Game", nullptr, nullptr);
 

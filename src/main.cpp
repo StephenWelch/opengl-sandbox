@@ -6,7 +6,7 @@
 int main() {
 
   auto renderer = std::make_unique<Renderer>();
-  auto window = std::make_unique<Window>("Game", 800, 600);
+  auto window = std::make_unique<Window>("Game", 800, 600, true);
 
   Log::init();
   window->init();
