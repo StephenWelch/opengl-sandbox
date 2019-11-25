@@ -28,6 +28,13 @@ class Window {
     bool closeRequested();
     void setSize(const int &newWidth, const int &newHeight);
     void resizeCallback(GLFWwindow *window, int newWidth, int newHeight);
+    static void glDebugOutput(GLenum source,
+                     GLenum type,
+                     GLuint id,
+                     GLenum severity,
+                     GLsizei length,
+                     const GLchar *message,
+                     const void *userParam);
 };
 
 

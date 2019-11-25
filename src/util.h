@@ -10,10 +10,30 @@
 #include <fstream>
 #include <sstream>
 #include "Log.h"
+#include <stdio.h>  /* defines FILENAME_MAX */
+#define WINDOWS
+#ifdef WINDOWS
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
 
 namespace util {
 
-  const std::string FILE_PATH_PREFIX = "../";
+  const std::string FILE_PATH_PREFIX = "../../../";
+
+  std::string getWorkingDirectory() {
+    char cCurrentPath[FILENAME_MAX];
+
+    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath))) {
+      return "";
+    }
+
+    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+    return std::string(cCurrentPath);
+  }
 
   /**
    * Reads a file into a string.
