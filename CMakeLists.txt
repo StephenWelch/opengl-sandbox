@@ -18,11 +18,12 @@ add_subdirectory(include/glfw)
 
 add_definitions(-DGLFW_INCLUDE_NONE
         -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
-add_executable(learn_opengl src/main.cpp src/Window.cpp src/Window.h src/Renderer.cpp src/Renderer.h)
+add_executable(learn_opengl src/main.cpp src/Window.cpp src/Window.h src/Renderer.cpp src/Renderer.h src/util.h src/Log.cpp src/Log.h)
 
 include_directories(
         include/glad/include
         include/glfw/include
+	include/spdlog/include
         )
 
 

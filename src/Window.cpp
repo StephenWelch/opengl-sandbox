@@ -2,11 +2,16 @@
 // Created by Stephen Welch on 11/20/2019.
 //
 
-#include <iostream>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <iostream>
 #include "Window.h"
+#include "Log.h"
 
 bool Window::init() {
+
+  Log::getLogger()->info("Starting Window initialization");
+
   // Initialize GLFW
   glfwInit();
 
@@ -22,7 +27,7 @@ bool Window::init() {
 
   // If initialization fails, print an error message and terminate GLFW
   if (window == nullptr) {
-    std::cerr << "Failed to create GLFW window" << std::endl;
+    Log::getLogger()->error("Failed to create GLFW window, terminating");
     glfwTerminate();
     return false;
   }
@@ -33,7 +38,7 @@ bool Window::init() {
   // Initialize GLAD before calling OpenGL
   if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
-    return -1;
+    return false;
   }
 
   // Set OpenGL viewport dimensions to same size as window
@@ -43,6 +48,10 @@ bool Window::init() {
 //  glfwSetFramebufferSizeCallback(window, [this](GLFWwindow* window, int width, int height){
 //    setSize(width, height);
 //  });
+
+  Log::getLogger()->info("Window initialization finished");
+
+  return true;
 }
 
 void Window::update() {

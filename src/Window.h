@@ -5,9 +5,7 @@
 #ifndef LEARN_OPENGL_WINDOW_H
 #define LEARN_OPENGL_WINDOW_H
 
-
-#include <string>
-#include <utility>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 class Window {
