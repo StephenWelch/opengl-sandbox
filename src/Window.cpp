@@ -92,9 +92,9 @@ bool Window::isKeyReleased(const int &key) {
   return glfwGetKey(window, key) == GLFW_RELEASE;
 }
 
-void Window::setTitle(char *&title) {
-  this->title = title;
-  glfwSetWindowTitle(window, title);
+void Window::setTitle(char *&p_title) {
+  this->title = p_title;
+  glfwSetWindowTitle(window, p_title);
 }
 
 void Window::clear(const float &r, const float &g, const float &b, const float &a) {

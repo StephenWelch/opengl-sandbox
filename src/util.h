@@ -1,9 +1,4 @@
-//
-// Created by Stephen Welch on 11/20/2019.
-//
-
-#ifndef LEARN_OPENGL_SRC_UTIL_H_
-#define LEARN_OPENGL_SRC_UTIL_H_
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -11,6 +6,7 @@
 #include <sstream>
 #include "Log.h"
 #include <stdio.h>  /* defines FILENAME_MAX */
+
 #define WINDOWS
 #ifdef WINDOWS
 #include <direct.h>
@@ -22,7 +18,7 @@
 
 namespace util {
 
-  const std::string FILE_PATH_PREFIX = "../../../";
+  const std::string FILE_PATH_PREFIX = "";
 
   std::string getWorkingDirectory() {
     char cCurrentPath[FILENAME_MAX];
@@ -43,7 +39,7 @@ namespace util {
    */
   std::string getFileAsString(const std::string &path) {
     Log::getLogger()->debug("Loading resource: {}", path);
-
+    Log::getLogger()->debug(util::getWorkingDirectory());
     std::ifstream file(FILE_PATH_PREFIX + path);
     if(!file) {
       Log::getLogger()->error("Error opening: {}", path);
@@ -62,5 +58,3 @@ namespace util {
 //  }
 
 }
-
-#endif //LEARN_OPENGL_SRC_UTIL_H_

@@ -1,12 +1,7 @@
-//
-// Created by Stephen Welch on 11/20/2019.
-//
-
-
+#include "Renderer.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "util.h"
-#include "Renderer.h"
 #include "Log.h"
 
 float vertices[] = {

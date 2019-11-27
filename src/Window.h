@@ -1,9 +1,4 @@
-//
-// Created by Stephen Welch on 11/20/2019.
-//
-
-#ifndef LEARN_OPENGL_WINDOW_H
-#define LEARN_OPENGL_WINDOW_H
+#pragma once
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -17,7 +12,7 @@ class Window {
     int height;
     bool debugOutput;
  public:
-    Window(const char *title, const int &width, const int &height, const bool &debugOutput = false) : title(const_cast<char *>(title)), width(width), height(height), debugOutput(debugOutput) {};
+    Window(const char *title, const int &width, const int &height, const bool &debugOutput = false) : title(const_cast<char *>(title)), width(width), height(height), debugOutput(debugOutput), window(nullptr) {};
     bool init();
     void update();
     bool isKeyPressed(const int &key);
@@ -28,14 +23,7 @@ class Window {
     bool closeRequested();
     void setSize(const int &newWidth, const int &newHeight);
     void resizeCallback(GLFWwindow *window, int newWidth, int newHeight);
-    static void glDebugOutput(GLenum source,
-                     GLenum type,
-                     GLuint id,
-                     GLenum severity,
-                     GLsizei length,
-                     const GLchar *message,
-                     const void *userParam);
+    static void glDebugOutput(GLenum source, GLenum type, GLuint id,
+                              GLenum severity, GLsizei length,
+                              const GLchar *message, const void *userParam);
 };
-
-
-#endif //LEARN_OPENGL_WINDOW_H
