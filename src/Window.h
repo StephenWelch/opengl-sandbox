@@ -22,7 +22,7 @@ class Window {
     void close();
     bool closeRequested();
     void setSize(const int &newWidth, const int &newHeight);
-    void resizeCallback(GLFWwindow *window, int newWidth, int newHeight);
+    //void framebuffer_size_callback(GLFWwindow *window, int width, int height);
     static void glDebugOutput(GLenum source, GLenum type, GLuint id,
                               GLenum severity, GLsizei length,
                               const GLchar *message, const void *userParam);
