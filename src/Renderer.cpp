@@ -1,10 +1,10 @@
 #include "Renderer.h"
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 #include "Log.h"
 #include "NewShader.h"
 #include "util.h"
-#include <glm/glm.hpp>
 
 float modelData[] = {
     // first triangle
@@ -87,7 +87,7 @@ void Renderer::render() {
 
   shader.use();
 
-  shader.setFloat4("ourColor", glm::vec4(0.0f, g, 0.0f, 1.0f));
+  shader.setFloat("divider", g);
 
   glBindVertexArray(vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

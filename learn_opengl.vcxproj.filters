@@ -7,16 +7,7 @@
     <ClCompile Include="C:\code\learn-opengl\src\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\code\learn-opengl\src\NewShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="C:\code\learn-opengl\src\Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\code\learn-opengl\src\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\code\learn-opengl\src\ShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\code\learn-opengl\src\Window.cpp">
@@ -28,6 +19,9 @@
     <ClCompile Include="C:\code\learn-opengl\src\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\code\learn-opengl\src\Game.h">
@@ -36,22 +30,16 @@
     <ClInclude Include="C:\code\learn-opengl\src\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\code\learn-opengl\src\NewShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="C:\code\learn-opengl\src\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\code\learn-opengl\src\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\code\learn-opengl\src\ShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\code\learn-opengl\src\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\code\learn-opengl\src\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

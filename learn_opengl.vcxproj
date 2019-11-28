@@ -324,14 +324,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="C:\code\learn-opengl\src\Game.h" />
     <ClCompile Include="C:\code\learn-opengl\src\Log.cpp" />
     <ClInclude Include="C:\code\learn-opengl\src\Log.h" />
-    <ClCompile Include="C:\code\learn-opengl\src\NewShader.cpp" />
-    <ClInclude Include="C:\code\learn-opengl\src\NewShader.h" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClInclude Include="src\Shader.h" />
     <ClCompile Include="C:\code\learn-opengl\src\Renderer.cpp" />
     <ClInclude Include="C:\code\learn-opengl\src\Renderer.h" />
-    <ClCompile Include="C:\code\learn-opengl\src\Shader.cpp" />
-    <ClInclude Include="C:\code\learn-opengl\src\Shader.h" />
-    <ClCompile Include="C:\code\learn-opengl\src\ShaderProgram.cpp" />
-    <ClInclude Include="C:\code\learn-opengl\src\ShaderProgram.h" />
     <ClCompile Include="C:\code\learn-opengl\src\Window.cpp" />
     <ClInclude Include="C:\code\learn-opengl\src\Window.h" />
     <ClCompile Include="C:\code\learn-opengl\src\main.cpp" />

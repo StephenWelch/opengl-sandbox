@@ -2,6 +2,8 @@
 out vec4 fragColor;
 in vec3 ourColor;
 
+uniform float divider;
+
 void main() {
-    fragColor = vec4(ourColor, 1.0);
+    fragColor = vec4(ourColor / divider, 1.0);
 }
