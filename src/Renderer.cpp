@@ -65,9 +65,9 @@ void Renderer::init() {
 
   Log::getLogger()->debug("Loading shaders");
   Shader vertexShader(GL_VERTEX_SHADER,
-                      "src/shaders/direct_transform.vertexshader");
+                      "src/shaders/direct_transform.vert");
   Shader fragmentShader(GL_FRAGMENT_SHADER,
-                        "src/shaders/single_color.fragmentshader");
+                        "src/shaders/single_color.frag");
 
   vertexShader.init();
   fragmentShader.init();
@@ -84,7 +84,14 @@ void Renderer::init() {
 }
 
 void Renderer::render() {
+  float t = glfwGetTime();
+  float g = (sin(t) / 2.0f) + 0.5f;
+  int vtxColorLoc = glGetUniformLocation(shaderProgram.getId(), "ourColor");
+
   shaderProgram.useProgram();
+
+  glUniform4f(vtxColorLoc, 0.0f, g, 0.0f, 1.0f);
+
   glBindVertexArray(vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

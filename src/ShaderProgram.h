@@ -4,7 +4,7 @@
 class ShaderProgram {
  private:
   bool initialized;
-  unsigned int id;
+  GLuint id;
   std::vector<Shader> shadersToAttach;
 
  public:
@@ -12,6 +12,6 @@ class ShaderProgram {
   void attachShader(const Shader &shader);
   void useProgram();
   bool linkedSuccessfully() const;
-  unsigned int getId() const;
+  GLuint getId() const;
   std::string getLinkErrors() const;
 };

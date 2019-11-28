@@ -5,6 +5,7 @@ Shader::~Shader() { glDeleteShader(id); }
 
 void Shader::init() {
   id = glCreateShader(type);
+  Log::getLogger()->debug("Created shader of type {} with id {}", type, id);
 
   std::string source = util::getFileAsString(filePath);
   const char* source_cstr = source.c_str();
@@ -19,7 +20,7 @@ void Shader::init() {
   }
 }
 
-unsigned int Shader::getId() const { return id; }
+GLuint Shader::getId() const { return id; }
 
 bool Shader::compiledSuccessfully() const {
   int success;

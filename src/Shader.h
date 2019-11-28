@@ -12,7 +12,7 @@ class Shader {
   Shader(const GLenum &type, const std::string &filePath) : type(type), filePath(filePath){};
   ~Shader();
   void init();
-  unsigned int getId() const;
+  GLuint getId() const;
   bool compiledSuccessfully() const;
   std::string getCompilationErrors() const;
 };
