@@ -6,16 +6,15 @@
 #include "ShaderProgram.h"
 #include "util.h"
 
-float vertices[] = {
+float modelData[] = {
     // first triangle
-    0.5f,  0.5f,  0.0f,  // top right
-    0.5f,  -0.5f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f, 0.5f,  0.0f   // top left
+    0.0f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f,
+    -0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+    0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
 };
+
 int indices[]{
-    0, 1, 3,  // first triangle
-    1, 2, 3   // second triangle
+    0, 1, 2
 };
 
 unsigned int vao;
@@ -41,19 +40,24 @@ void Renderer::init() {
       // Static draw denotes that the buffer data will rarely change
       // Dynamic draw would denote that the buffer data changes frequently
       // Stream draw would denote that the buffer data changes every draw
-      glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(modelData), modelData, GL_STATIC_DRAW);
 
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                    GL_STATIC_DRAW);
 
       // Sets data at location 0 in the VBO to 3 elements, each of which will be
-      // an unnormalized float Stride defines the total size of the attribute,
-      // in this case 3*32 bits Offset of 0
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+      // an unnormalized float 
+      // Stride defines the total size of the attribute,
+      // in this case 6*32 bits Offset of 0
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
                             (void*)0);
+      // Specify an offset of 3 *32 bits for color data
+      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+                            (void*)(3 * sizeof(float)));
       // Enable location 0 in the VBO
       glEnableVertexAttribArray(0);
+      glEnableVertexAttribArray(1);
     }
     // glVertexAttribPointer registered this VBO as the VAO's bound VBO, so we
     // can unbind now
@@ -78,6 +82,9 @@ void Renderer::init() {
   Log::getLogger()->debug("Linking shader program");
   shaderProgram.init();
 
+  vertexShader.cleanup();
+  fragmentShader.cleanup();
+
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
   Log::getLogger()->info("Finished Renderer initialization");
@@ -97,6 +104,7 @@ void Renderer::render() {
 }
 
 void Renderer::close() {
+  shaderProgram.cleanup();
   glDeleteVertexArrays(1, &vao);
   glDeleteBuffers(1, &vbo);
   glDeleteBuffers(1, &ebo);

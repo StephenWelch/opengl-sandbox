@@ -10,9 +10,10 @@ class Shader {
   GLenum type;
  public:
   Shader(const GLenum &type, const std::string &filePath) : type(type), filePath(filePath){};
-  ~Shader();
   void init();
+  void cleanup();
   GLuint getId() const;
+  GLenum getType() const;
   bool compiledSuccessfully() const;
   std::string getCompilationErrors() const;
 };

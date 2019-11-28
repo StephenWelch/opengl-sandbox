@@ -3,26 +3,32 @@
 #include "util.h"
 
 void ShaderProgram::init() {
-  id = glCreateProgram();
-  util::glCheckError();
-  for (auto shader : shadersToAttach) {
-    glAttachShader(id, shader.getId());
-    Log::getLogger()->debug("Attaching shader with id {} to program with id {}",
-                            shader.getId(), id);
+  if (!initialized) {
+    id = glCreateProgram();
     util::glCheckError();
+    for (auto shader : shadersToAttach) {
+      glAttachShader(id, shader.getId());
+      Log::getLogger()->debug(
+          "Attaching shader of type {} with id {} to program with id {}",
+          shader.getType(), shader.getId(), id);
+      util::glCheckError();
+    }
+    glLinkProgram(id);
+    util::glCheckError();
+    if (!linkedSuccessfully()) {
+      Log::getLogger()->error("Error linking shader program:\n{}",
+                              getLinkErrors());
+    }
+    initialized = true;
   }
-  glLinkProgram(id);
-  util::glCheckError();
-  if (!linkedSuccessfully()) {
-    Log::getLogger()->error(getLinkErrors());
-  }
-  initialized = true;
 }
+
+void ShaderProgram::cleanup() { glDeleteProgram(id); }
 
 void ShaderProgram::attachShader(const Shader &shader) {
   // We can't attach a new shader after linking...
   if (!initialized) {
-    shadersToAttach.emplace_back(shader);
+    shadersToAttach.push_back(shader);
     Log::getLogger()->debug("Added shader to attach with id {}", shader.getId());
   } else {
     Log::getLogger()->error(
