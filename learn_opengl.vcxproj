@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -105,10 +105,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;GLFW_INCLUDE_NONE;PROJECT_SOURCE_DIR=\"C:/code/learn-opengl\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -131,7 +131,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -150,10 +150,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;PROJECT_SOURCE_DIR=\"C:/code/learn-opengl\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -176,7 +176,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -195,10 +195,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;PROJECT_SOURCE_DIR=\"C:/code/learn-opengl\";CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -221,7 +221,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -239,10 +239,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;PROJECT_SOURCE_DIR=\"C:/code/learn-opengl\";CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -324,13 +324,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="C:\code\learn-opengl\src\Game.h" />
     <ClCompile Include="C:\code\learn-opengl\src\Log.cpp" />
     <ClInclude Include="C:\code\learn-opengl\src\Log.h" />
-    <ClCompile Include="src\Shader.cpp" />
-    <ClInclude Include="src\Shader.h" />
     <ClCompile Include="C:\code\learn-opengl\src\Renderer.cpp" />
     <ClInclude Include="C:\code\learn-opengl\src\Renderer.h" />
+    <ClCompile Include="C:\code\learn-opengl\src\Shader.cpp" />
+    <ClInclude Include="C:\code\learn-opengl\src\Shader.h" />
     <ClCompile Include="C:\code\learn-opengl\src\Window.cpp" />
     <ClInclude Include="C:\code\learn-opengl\src\Window.h" />
     <ClCompile Include="C:\code\learn-opengl\src\main.cpp" />
+    <ClCompile Include="C:\code\learn-opengl\src\stb_image.cpp" />
     <ClCompile Include="C:\code\learn-opengl\src\util.cpp" />
     <ClInclude Include="C:\code\learn-opengl\src\util.h" />
   </ItemGroup>

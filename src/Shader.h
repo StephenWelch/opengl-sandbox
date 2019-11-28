@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <string>
 
-class NewShader {
+class Shader {
  private:
   std::string vertexPath, fragmentPath;
   GLuint programId;
@@ -15,7 +15,7 @@ class NewShader {
   std::string getProgramLinkErrors(const GLuint &programId) const;
 
  public:
-  NewShader(const std::string &vertexPath, const std::string &fragmentPath)
+  Shader(const std::string &vertexPath, const std::string &fragmentPath)
       : vertexPath(vertexPath), fragmentPath(fragmentPath){};
   void init();
   void use();

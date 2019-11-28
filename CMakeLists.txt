@@ -29,10 +29,12 @@ include_directories(
         include/glfw/include
         include/spdlog/include
 		include/glm
+		include/stb_image
 )
 
 
 add_library(glad include/glad/src/glad.c)
+#add_library(stb_image include/stb_image/stb_image.cpp)
 #find_package(OpenGL REQUIRED)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} glad glfw ${GLFW_LIBRARIES})
