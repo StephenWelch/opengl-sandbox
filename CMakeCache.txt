@@ -273,6 +273,12 @@ GLFW_VULKAN_STATIC:BOOL=OFF
 USE_MSVC_RUNTIME_LIBRARY_DLL:BOOL=ON
 
 //Value Computed by CMake
+glm_BINARY_DIR:STATIC=C:/code/learn-opengl/include/glm
+
+//Value Computed by CMake
+glm_SOURCE_DIR:STATIC=C:/code/learn-opengl/include/glm
+
+//Value Computed by CMake
 learn_opengl_BINARY_DIR:STATIC=C:/code/learn-opengl
 
 //Value Computed by CMake
@@ -395,7 +401,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=5
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_RC_COMPILER

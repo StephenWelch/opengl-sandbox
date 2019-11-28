@@ -1,43 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\code\learn-opengl\src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\code\learn-opengl\src\Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\code\learn-opengl\src\Renderer.cpp">
+    <ClCompile Include="C:\code\learn-opengl\src\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\code\learn-opengl\src\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game.cpp">
+    <ClCompile Include="C:\code\learn-opengl\src\NewShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\ShaderProgram.cpp" />
-    <ClCompile Include="src\util.cpp" />
+    <ClCompile Include="C:\code\learn-opengl\src\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\code\learn-opengl\src\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\code\learn-opengl\src\ShaderProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\code\learn-opengl\src\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\code\learn-opengl\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\code\learn-opengl\src\util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\code\learn-opengl\src\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\code\learn-opengl\src\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\code\learn-opengl\src\util.h">
+    <ClInclude Include="C:\code\learn-opengl\src\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\code\learn-opengl\src\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game.h">
+    <ClInclude Include="C:\code\learn-opengl\src\NewShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\ShaderProgram.h" />
+    <ClInclude Include="C:\code\learn-opengl\src\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\code\learn-opengl\src\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\code\learn-opengl\src\ShaderProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\code\learn-opengl\src\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\code\learn-opengl\src\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\code\learn-opengl\CMakeLists.txt" />

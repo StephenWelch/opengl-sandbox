@@ -8,3 +8,6 @@ C:/code/learn-opengl/include/glfw/CMakeFiles/INSTALL.dir
 C:/code/learn-opengl/include/glfw/CMakeFiles/ALL_BUILD.dir
 C:/code/learn-opengl/include/glfw/src/CMakeFiles/glfw.dir
 C:/code/learn-opengl/include/glfw/src/CMakeFiles/INSTALL.dir
+C:/code/learn-opengl/include/glm/CMakeFiles/INSTALL.dir
+C:/code/learn-opengl/include/glm/CMakeFiles/ALL_BUILD.dir
+C:/code/learn-opengl/include/glm/glm/CMakeFiles/INSTALL.dir

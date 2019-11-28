@@ -1,5 +1,5 @@
 #include "NewShader.h"
-#include "src/util.h"
+#include "util.h"
 
 bool NewShader::shaderCompiledSuccessfully(const GLuint& shaderId) const {
   int success;

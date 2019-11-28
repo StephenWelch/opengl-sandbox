@@ -15,15 +15,20 @@ option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
 add_subdirectory(include/glfw)
+add_subdirectory(include/glm)
 
 add_definitions(-DGLFW_INCLUDE_NONE
         -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
-add_executable(learn_opengl src/main.cpp src/Window.cpp src/Window.h src/Renderer.cpp src/Renderer.h src/util.h src/Log.cpp src/Log.h)
+
+file(GLOB PROJECT_SOURCES src/*.h src/*.cpp src/*.frag src/*.vert)
+
+add_executable(learn_opengl ${PROJECT_SOURCES})
 
 include_directories(
         include/glad/include
         include/glfw/include
         include/spdlog/include
+		include/glm
 )
 
 

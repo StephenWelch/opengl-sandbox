@@ -12,11 +12,11 @@ class NewShader {
   std::string getShaderCompilationErrors(const GLuint &shaderId) const;
   bool programLinkedSuccessfully(const GLuint &programId) const;
   std::string getProgramLinkErrors(const GLuint &programId) const;
+
  public:
   NewShader(const std::string &vertexPath, const std::string &fragmentPath)
       : vertexPath(vertexPath), fragmentPath(fragmentPath){};
   void init();
   void use();
   void cleanup();
-
 };
