@@ -10,7 +10,11 @@ namespace util {
     }
 
     cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
-    return std::string(cCurrentPath);
+    // We use forward slash for all our file paths in code, so make it consistent between Windows and Linux
+    std::string currentPath = std::string(cCurrentPath);
+    std::replace(currentPath.begin(),
+                 currentPath.end(), '\\', '\/');
+    return currentPath;
   }
 
   /**
@@ -20,8 +24,8 @@ namespace util {
    * @return The file's contents as a a string
    */
   std::string util::getFileAsString(const std::string &path) {
-    Log::getLogger()->debug("Loading resource: {}", path);
-    Log::getLogger()->debug(util::getWorkingDirectory());
+    Log::getLogger()->debug("Loading resource: {}/{}",
+                            util::getWorkingDirectory(), path);
     std::ifstream file(FILE_PATH_PREFIX + path);
     if (!file) {
       Log::getLogger()->error("Error opening: {}", path);

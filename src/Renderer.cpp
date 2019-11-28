@@ -2,15 +2,21 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include "Log.h"
-#include "Shader.h"
-#include "ShaderProgram.h"
+#include "NewShader.h"
 #include "util.h"
+#include <glm/glm.hpp>
 
 float modelData[] = {
     // first triangle
     0.0f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f,
     -0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
     0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+};
+
+float texCoords[] = {
+  0.0f, 0.0f, 
+  1.0f, 0.0f, 
+  0.5f, 1.0f
 };
 
 int indices[]{
@@ -68,22 +74,7 @@ void Renderer::init() {
   glBindVertexArray(0);
 
   Log::getLogger()->debug("Loading shaders");
-  Shader vertexShader(GL_VERTEX_SHADER,
-                      "src/shaders/direct_transform.vert");
-  Shader fragmentShader(GL_FRAGMENT_SHADER,
-                        "src/shaders/single_color.frag");
-
-  vertexShader.init();
-  fragmentShader.init();
-
-  shaderProgram.attachShader(vertexShader);
-  shaderProgram.attachShader(fragmentShader);
-
-  Log::getLogger()->debug("Linking shader program");
-  shaderProgram.init();
-
-  vertexShader.cleanup();
-  fragmentShader.cleanup();
+  shader.init();
 
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
@@ -93,18 +84,17 @@ void Renderer::init() {
 void Renderer::render() {
   float t = glfwGetTime();
   float g = (sin(t) / 2.0f) + 0.5f;
-  int vtxColorLoc = glGetUniformLocation(shaderProgram.getId(), "ourColor");
 
-  shaderProgram.useProgram();
+  shader.use();
 
-  glUniform4f(vtxColorLoc, 0.0f, g, 0.0f, 1.0f);
+  shader.setFloat4("ourColor", glm::vec4(0.0f, g, 0.0f, 1.0f));
 
   glBindVertexArray(vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void Renderer::close() {
-  shaderProgram.cleanup();
+  shader.cleanup();
   glDeleteVertexArrays(1, &vao);
   glDeleteBuffers(1, &vbo);
   glDeleteBuffers(1, &ebo);

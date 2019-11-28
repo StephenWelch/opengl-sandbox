@@ -2,14 +2,13 @@
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include "Shader.h"
-#include "ShaderProgram.h"
+#include "NewShader.h"
 #include <string>
 
 class Renderer {
  private:
-  ShaderProgram shaderProgram;
-
+  NewShader shader = NewShader("src/shaders/direct_transform.vert",
+                               "src/shaders/single_color.frag");
  public:
   void init();
   void render();
