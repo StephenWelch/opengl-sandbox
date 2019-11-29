@@ -23,7 +23,7 @@ int indices[]{
 GLuint vao;
 GLuint vbo;
 GLuint ebo;
-GLuint texture;
+GLuint textureA, textureB;
 
 void Renderer::init() {
   Log::getLogger()->info("Initializing Renderer");
@@ -74,23 +74,63 @@ void Renderer::init() {
   glBindVertexArray(0);
 
   Log::getLogger()->info("Loading textures");
-  std::string texturePath = "res/container.jpg";
-  int width, height, nrChannels;
-  unsigned char *data =
-      stbi_load(texturePath.c_str(), &width, &height, &nrChannels, 0);
-  if (data) {
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-                 GL_UNSIGNED_BYTE, data);
+  //stbi_set_flip_vertically_on_load(true);
+
+  
+  glGenTextures(1, &textureA);
+  glBindTexture(GL_TEXTURE_2D, textureA);
+  // set the texture wrapping parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+                  GL_REPEAT);  // set texture wrapping to GL_REPEAT (default
+                               // wrapping method)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  // set texture filtering parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  std::string textureAPath = "res/container.jpg";
+  int widthA, heightA, nrChannelsA;
+  unsigned char *dataA =
+      stbi_load(textureAPath.c_str(), &widthA, &heightA, &nrChannelsA, 0);
+  if (dataA) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthA, heightA, 0, GL_RGB,
+                 GL_UNSIGNED_BYTE, dataA);
     glGenerateMipmap(GL_TEXTURE_2D);
   } else {
-    Log::getLogger()->error("Failed to load texture {}", texturePath);
+    Log::getLogger()->error("Failed to load texture {}", textureAPath);
   }
-  stbi_image_free(data);
+  stbi_image_free(dataA);
+
+  glGenTextures(1, &textureB);
+  glBindTexture(GL_TEXTURE_2D, textureB);
+  // set the texture wrapping parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+                  GL_REPEAT);  // set texture wrapping to GL_REPEAT (default
+                               // wrapping method)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  // set texture filtering parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  std::string textureBPath = "res/awesomeface.png";
+  int widthB, heightB, nrChannelsB;
+  unsigned char *dataB =
+      stbi_load(textureBPath.c_str(), &widthB, &heightB, &nrChannelsB, 0);
+  if (dataB) {
+    // RGBA because this texture is a PNG, which supports transparency
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthB, heightB, 0, GL_RGBA,
+                 GL_UNSIGNED_BYTE, dataB);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    Log::getLogger()->error("Failed to load texture {}", textureBPath);
+  }
+  stbi_image_free(dataB);
 
   Log::getLogger()->info("Loading shaders");
   shader.init();
+
+  // Configure which uniform belongs to each texture unit
+  shader.use();
+  shader.setInt("ourTextureA", 0);
+  shader.setInt("ourTextureB", 1);
 
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
@@ -98,14 +138,17 @@ void Renderer::init() {
 }
 
 void Renderer::render() {
-  float t = glfwGetTime();
-  float g = (sin(t) / 2.0f) + 0.5f;
+
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, textureA);
+  glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D, textureB);
 
   shader.use();
 
-  shader.setFloat("divider", g);
+  float t = glfwGetTime();
+  shader.setFloat("divider", (sin(t) / 2.0f) + 0.5f);
 
-  glBindTexture(GL_TEXTURE_2D, texture);
   glBindVertexArray(vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
