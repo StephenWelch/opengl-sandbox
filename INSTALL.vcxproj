@@ -66,7 +66,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -88,7 +88,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -110,7 +110,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -132,7 +132,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>

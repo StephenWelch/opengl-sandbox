@@ -20,16 +20,18 @@ add_subdirectory(include/glm)
 add_definitions(-DGLFW_INCLUDE_NONE
         -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 
-file(GLOB PROJECT_SOURCES src/*.h src/*.cpp src/*.frag src/*.vert)
+file(GLOB_RECURSE PROJECT_SOURCES src/*.cpp src/*.frag src/*.vert)
+file(GLOB_RECURSE PROJECT_HEADERS src/*.h)
 
-add_executable(learn_opengl ${PROJECT_SOURCES})
+add_executable(learn_opengl ${PROJECT_HEADERS} ${PROJECT_SOURCES})
 
 include_directories(
+        ${PROJECT_HEADERS}
         include/glad/include
         include/glfw/include
         include/spdlog/include
-		include/glm
-		include/stb_image
+        include/glm
+        include/stb_image
 )
 
 
