@@ -1,8 +1,8 @@
 #include "Game.h"
 #include <memory>
-#include "Window.h"
-#include "Log.h"
-#include "Renderer.h"
+#include "../graphics/Window.h"
+#include "../util/Log.h"
+#include "../graphics/Renderer.h"
 
 int Game::run() {
   auto renderer = std::make_unique<Renderer>();

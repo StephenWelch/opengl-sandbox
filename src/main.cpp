@@ -1,5 +1,5 @@
 #include <memory>
-#include "Game.h"
+#include "engine/Game.h"
 #include <glm/glm.hpp>
 
 int main() {

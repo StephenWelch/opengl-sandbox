@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <iostream>
-#include "Log.h"
+#include "../util/Log.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   // make sure the viewport matches the new window dimensions; note that width

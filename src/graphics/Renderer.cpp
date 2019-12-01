@@ -2,9 +2,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include "Log.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include "../util/Log.h"
 #include "Shader.h"
-#include "util.h"
+#include "../util/util.h"
 #include <stb_image.h>
 
 float modelData[] = {
@@ -146,8 +148,11 @@ void Renderer::render() {
 
   shader.use();
 
-  float t = glfwGetTime();
+  float t = float(glfwGetTime());
   shader.setFloat("divider", (sin(t) / 2.0f) + 0.5f);
+  glm::mat4 trans = glm::mat4(1.0f);
+  trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
+  shader.setMat4("transform", trans);
 
   glBindVertexArray(vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
