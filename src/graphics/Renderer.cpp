@@ -9,15 +9,51 @@
 #include "../util/util.h"
 #include "Shader.h"
 
-std::array<float, 32> modelData {
-  // positions // colors // texture coords
-  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right
-  0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
-  -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-  -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
+std::array<float, 200> modelData {
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
-std::array<int, 6> indices { 3, 0, 1, 3, 2, 1 };
+//std::array<int, 6> indices { 3, 0, 1, 3, 2, 1 };
 
 GLuint vao;
 GLuint vbo;
@@ -30,7 +66,7 @@ void Renderer::init() {
   // Generate vertex array and buffers
   glGenVertexArrays(1, &vao);
   glGenBuffers(1, &vbo);
-  glGenBuffers(1, &ebo);
+  //glGenBuffers(1, &ebo);
 
   // Bind VAO
   glBindVertexArray(vao);
@@ -45,25 +81,22 @@ void Renderer::init() {
       glBufferData(GL_ARRAY_BUFFER, sizeof(modelData), modelData.data(),
         GL_STATIC_DRAW);
 
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(),
-        GL_STATIC_DRAW);
+      //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+      //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(),
+      //  GL_STATIC_DRAW);
 
       // Sets data at location 0 in the VBO to 3 elements, each of which will be
       // an unnormalized float
       // Stride defines the total size of the attribute,
       // in this case 9*32 bits Offset of 0
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+      int attributeSize = 5;
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, attributeSize * sizeof(float),
         (void*)0);
-      // Specify an offset of 3 *32 bits for color data
-      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+      glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, attributeSize * sizeof(float),
         (void*)(3 * sizeof(float)));
-      glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-        (void*)(6 * sizeof(float)));
-      // Enable location 0 in the VBO
+      // Enable locations in the VBO
       glEnableVertexAttribArray(0);
       glEnableVertexAttribArray(1);
-      glEnableVertexAttribArray(2);
     }
     // glVertexAttribPointer registered this VBO as the VAO's bound VBO, so we
     // can unbind now
@@ -115,7 +148,8 @@ void Renderer::render() {
   shader.setFloat("divider", (sin(t) / 2.0f) + 0.5f);
 
   glBindVertexArray(vao);
-  glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+  //glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0
+  glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 void Renderer::close() {

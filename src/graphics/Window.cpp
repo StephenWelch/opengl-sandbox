@@ -75,6 +75,8 @@ bool Window::init() {
       userWindow.setSize(width, height);
     });
 
+  glEnable(GL_DEPTH_TEST);
+
   Log::getLogger()->info("Window initialization finished");
 
   return true;
@@ -115,7 +117,7 @@ void Window::clear(const float& r, const float& g, const float& b,
   // Set a color to clear the screen to
   glClearColor(r, g, b, a);
   // Clears the color buffer with the color set by glClearColor
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Window::close() { glfwSetWindowShouldClose(window, true); }
