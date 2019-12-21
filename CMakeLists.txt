@@ -26,7 +26,7 @@ file(GLOB_RECURSE PROJECT_HEADERS src/*.h)
 add_executable(learn_opengl ${PROJECT_HEADERS} ${PROJECT_SOURCES})
 
 include_directories(
-        ${PROJECT_HEADERS}
+        src/
         include/glad/include
         include/glfw/include
         include/spdlog/include
