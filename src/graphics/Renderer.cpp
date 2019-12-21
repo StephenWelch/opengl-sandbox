@@ -1,13 +1,13 @@
 #include "Renderer.h"
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
+#include <stb_image.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../util/Log.h"
-#include "Shader.h"
 #include "../util/util.h"
-#include <stb_image.h>
+#include "Shader.h"
 
 float modelData[] = {
     // positions // colors // texture coords
@@ -17,18 +17,14 @@ float modelData[] = {
     -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
 };
 
-int indices[]{
-    3, 0, 1,
-    3, 2, 1
-};
+int indices[]{3, 0, 1, 3, 2, 1};
 
 GLuint vao;
 GLuint vbo;
 GLuint ebo;
-GLuint textureA, textureB;
 
 void Renderer::init() {
-  Log::getLogger()->info("Initializing Renderer");
+  Log::getLogger()->info("Initializing Renderer with {}x{} resolution", width, height);
 
   Log::getLogger()->info("Creating rendering data structures");
   // Generate vertex array and buffers
@@ -46,14 +42,15 @@ void Renderer::init() {
       // Static draw denotes that the buffer data will rarely change
       // Dynamic draw would denote that the buffer data changes frequently
       // Stream draw would denote that the buffer data changes every draw
-      glBufferData(GL_ARRAY_BUFFER, sizeof(modelData), modelData, GL_STATIC_DRAW);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(modelData), modelData,
+                   GL_STATIC_DRAW);
 
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                    GL_STATIC_DRAW);
 
       // Sets data at location 0 in the VBO to 3 elements, each of which will be
-      // an unnormalized float 
+      // an unnormalized float
       // Stride defines the total size of the attribute,
       // in this case 9*32 bits Offset of 0
       glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
@@ -61,7 +58,8 @@ void Renderer::init() {
       // Specify an offset of 3 *32 bits for color data
       glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                             (void*)(3 * sizeof(float)));
-      glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+      glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                            (void*)(6 * sizeof(float)));
       // Enable location 0 in the VBO
       glEnableVertexAttribArray(0);
       glEnableVertexAttribArray(1);
@@ -76,63 +74,17 @@ void Renderer::init() {
   glBindVertexArray(0);
 
   Log::getLogger()->info("Loading textures");
-  stbi_set_flip_vertically_on_load(true);
 
-  
-  glGenTextures(1, &textureA);
-  glBindTexture(GL_TEXTURE_2D, textureA);
-  // set the texture wrapping parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                  GL_REPEAT);  // set texture wrapping to GL_REPEAT (default
-                               // wrapping method)
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  // set texture filtering parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  std::string textureAPath = "res/container.jpg";
-  int widthA, heightA, nrChannelsA;
-  unsigned char *dataA =
-      stbi_load(textureAPath.c_str(), &widthA, &heightA, &nrChannelsA, 0);
-  if (dataA) {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthA, heightA, 0, GL_RGB,
-                 GL_UNSIGNED_BYTE, dataA);
-    glGenerateMipmap(GL_TEXTURE_2D);
-  } else {
-    Log::getLogger()->error("Failed to load texture {}", textureAPath);
-  }
-  stbi_image_free(dataA);
-
-  glGenTextures(1, &textureB);
-  glBindTexture(GL_TEXTURE_2D, textureB);
-  // set the texture wrapping parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                  GL_REPEAT);  // set texture wrapping to GL_REPEAT (default
-                               // wrapping method)
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  // set texture filtering parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  std::string textureBPath = "res/awesomeface.png";
-  int widthB, heightB, nrChannelsB;
-  unsigned char *dataB =
-      stbi_load(textureBPath.c_str(), &widthB, &heightB, &nrChannelsB, 0);
-  if (dataB) {
-    // RGBA because this texture is a PNG, which supports transparency
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthB, heightB, 0, GL_RGBA,
-                 GL_UNSIGNED_BYTE, dataB);
-    glGenerateMipmap(GL_TEXTURE_2D);
-  } else {
-    Log::getLogger()->error("Failed to load texture {}", textureBPath);
-  }
-  stbi_image_free(dataB);
+  textureA.init();
+  textureB.init();
 
   Log::getLogger()->info("Loading shaders");
   shader.init();
 
   // Configure which uniform belongs to each texture unit
   shader.use();
-  shader.setInt("ourTextureA", 0);
-  shader.setInt("ourTextureB", 1);
+  shader.setInt("textureA", 0);
+  shader.setInt("textureB", 1);
 
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
@@ -140,19 +92,27 @@ void Renderer::init() {
 }
 
 void Renderer::render() {
-
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, textureA);
-  glActiveTexture(GL_TEXTURE1);
-  glBindTexture(GL_TEXTURE_2D, textureB);
+  textureA.bind();
+  textureB.bind();
 
   shader.use();
 
+  glm::mat4 model = glm::mat4(1.0f);
+  glm::mat4 view = glm::mat4(1.0f);
+  glm::mat4 projection = glm::mat4(1.0f);
+  model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+  view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+  projection =
+      glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+  shader.setMat4("model", model);
+  shader.setMat4("view", view);
+  // note: currently we set the projection matrix each frame, but since the
+  // projection matrix rarely changes it's often best practice to set it outside
+  // the main loop only once.
+  shader.setMat4("projection", projection);
+
   float t = float(glfwGetTime());
   shader.setFloat("divider", (sin(t) / 2.0f) + 0.5f);
-  glm::mat4 trans = glm::mat4(1.0f);
-  trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-  shader.setMat4("transform", trans);
 
   glBindVertexArray(vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -164,3 +124,7 @@ void Renderer::close() {
   glDeleteBuffers(1, &vbo);
   glDeleteBuffers(1, &ebo);
 }
+
+void Renderer::setWidth(const int& width) { this->width = width; }
+
+void Renderer::setHeight(const int& height) { this->height = height; }

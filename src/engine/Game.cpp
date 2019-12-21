@@ -5,7 +5,7 @@
 #include "../graphics/Renderer.h"
 
 int Game::run() {
-  auto renderer = std::make_unique<Renderer>();
+  auto renderer = std::make_unique<Renderer>(800, 600);
   auto window = std::make_unique<Window>("Game", 800, 600);
 
   Log::init();
