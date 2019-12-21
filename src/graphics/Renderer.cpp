@@ -9,7 +9,7 @@
 #include "../util/util.h"
 #include "Shader.h"
 
-float modelData[] = {
+std::array<float, 32> modelData {
   // positions // colors // texture coords
   0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right
   0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
@@ -17,7 +17,7 @@ float modelData[] = {
   -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
 };
 
-int indices[]{ 3, 0, 1, 3, 2, 1 };
+std::array<int, 6> indices { 3, 0, 1, 3, 2, 1 };
 
 GLuint vao;
 GLuint vbo;
@@ -42,11 +42,11 @@ void Renderer::init() {
       // Static draw denotes that the buffer data will rarely change
       // Dynamic draw would denote that the buffer data changes frequently
       // Stream draw would denote that the buffer data changes every draw
-      glBufferData(GL_ARRAY_BUFFER, sizeof(modelData), modelData,
+      glBufferData(GL_ARRAY_BUFFER, sizeof(modelData), modelData.data(),
         GL_STATIC_DRAW);
 
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+      glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(),
         GL_STATIC_DRAW);
 
       // Sets data at location 0 in the VBO to 3 elements, each of which will be
@@ -115,7 +115,7 @@ void Renderer::render() {
   shader.setFloat("divider", (sin(t) / 2.0f) + 0.5f);
 
   glBindVertexArray(vao);
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 }
 
 void Renderer::close() {
