@@ -8,7 +8,7 @@
 #include <iostream>
 #include "../util/Log.h"
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   // make sure the viewport matches the new window dimensions; note that width
   // and height will be significantly larger than specified on retina displays.
   glViewport(0, 0, width, height);
@@ -70,10 +70,10 @@ bool Window::init() {
 
   // Set the callback for window resizing
   glfwSetFramebufferSizeCallback(window,
-                                 [](GLFWwindow *window, int width, int height) {
-                                    Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
-                                    userWindow.setSize(width, height);
-                                  });
+    [](GLFWwindow* window, int width, int height) {
+      Window& userWindow = *(Window*)glfwGetWindowUserPointer(window);
+      userWindow.setSize(width, height);
+    });
 
   Log::getLogger()->info("Window initialization finished");
 
@@ -84,33 +84,34 @@ void Window::update() {
   if (!glfwWindowShouldClose(window)) {
     glfwSwapBuffers(window);
     glfwPollEvents();
-  } else {
+  }
+  else {
     glfwTerminate();
   }
 }
 
-void Window::setSize(const int &newWidth, const int &newHeight) {
+void Window::setSize(const int& newWidth, const int& newHeight) {
   this->width = newWidth;
   this->height = newHeight;
   Log::getLogger()->debug("Set window size to {}x{}", width, height);
   glViewport(0, 0, width, height);
 }
 
-bool Window::isKeyPressed(const int &key) {
+bool Window::isKeyPressed(const int& key) {
   return glfwGetKey(window, key) == GLFW_PRESS;
 }
 
-bool Window::isKeyReleased(const int &key) {
+bool Window::isKeyReleased(const int& key) {
   return glfwGetKey(window, key) == GLFW_RELEASE;
 }
 
-void Window::setTitle(char *&p_title) {
+void Window::setTitle(char*& p_title) {
   this->title = p_title;
   glfwSetWindowTitle(window, p_title);
 }
 
-void Window::clear(const float &r, const float &g, const float &b,
-                   const float &a) {
+void Window::clear(const float& r, const float& g, const float& b,
+  const float& a) {
   // Set a color to clear the screen to
   glClearColor(r, g, b, a);
   // Clears the color buffer with the color set by glClearColor
@@ -124,8 +125,8 @@ bool Window::closeRequested() {
 }
 
 void Window::glDebugOutput(unsigned int source, unsigned int type,
-                           unsigned int id, unsigned int severity, int length,
-                           const char *message, const void *userParam) {
+  unsigned int id, unsigned int severity, int length,
+  const char* message, const void* userParam) {
   // ignore non-significant error/warning codes
   if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
 
@@ -133,71 +134,71 @@ void Window::glDebugOutput(unsigned int source, unsigned int type,
   std::cout << "Debug message (" << id << "): " << message << std::endl;
 
   switch (source) {
-    case GL_DEBUG_SOURCE_API:
-      std::cout << "Source: API";
-      break;
-    case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-      std::cout << "Source: Window System";
-      break;
-    case GL_DEBUG_SOURCE_SHADER_COMPILER:
-      std::cout << "Source: Shader Compiler";
-      break;
-    case GL_DEBUG_SOURCE_THIRD_PARTY:
-      std::cout << "Source: Third Party";
-      break;
-    case GL_DEBUG_SOURCE_APPLICATION:
-      std::cout << "Source: Application";
-      break;
-    case GL_DEBUG_SOURCE_OTHER:
-      std::cout << "Source: Other";
-      break;
+  case GL_DEBUG_SOURCE_API:
+    std::cout << "Source: API";
+    break;
+  case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
+    std::cout << "Source: Window System";
+    break;
+  case GL_DEBUG_SOURCE_SHADER_COMPILER:
+    std::cout << "Source: Shader Compiler";
+    break;
+  case GL_DEBUG_SOURCE_THIRD_PARTY:
+    std::cout << "Source: Third Party";
+    break;
+  case GL_DEBUG_SOURCE_APPLICATION:
+    std::cout << "Source: Application";
+    break;
+  case GL_DEBUG_SOURCE_OTHER:
+    std::cout << "Source: Other";
+    break;
   }
   std::cout << std::endl;
 
   switch (type) {
-    case GL_DEBUG_TYPE_ERROR:
-      std::cout << "Type: Error";
-      break;
-    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-      std::cout << "Type: Deprecated Behaviour";
-      break;
-    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-      std::cout << "Type: Undefined Behaviour";
-      break;
-    case GL_DEBUG_TYPE_PORTABILITY:
-      std::cout << "Type: Portability";
-      break;
-    case GL_DEBUG_TYPE_PERFORMANCE:
-      std::cout << "Type: Performance";
-      break;
-    case GL_DEBUG_TYPE_MARKER:
-      std::cout << "Type: Marker";
-      break;
-    case GL_DEBUG_TYPE_PUSH_GROUP:
-      std::cout << "Type: Push Group";
-      break;
-    case GL_DEBUG_TYPE_POP_GROUP:
-      std::cout << "Type: Pop Group";
-      break;
-    case GL_DEBUG_TYPE_OTHER:
-      std::cout << "Type: Other";
-      break;
+  case GL_DEBUG_TYPE_ERROR:
+    std::cout << "Type: Error";
+    break;
+  case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+    std::cout << "Type: Deprecated Behaviour";
+    break;
+  case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+    std::cout << "Type: Undefined Behaviour";
+    break;
+  case GL_DEBUG_TYPE_PORTABILITY:
+    std::cout << "Type: Portability";
+    break;
+  case GL_DEBUG_TYPE_PERFORMANCE:
+    std::cout << "Type: Performance";
+    break;
+  case GL_DEBUG_TYPE_MARKER:
+    std::cout << "Type: Marker";
+    break;
+  case GL_DEBUG_TYPE_PUSH_GROUP:
+    std::cout << "Type: Push Group";
+    break;
+  case GL_DEBUG_TYPE_POP_GROUP:
+    std::cout << "Type: Pop Group";
+    break;
+  case GL_DEBUG_TYPE_OTHER:
+    std::cout << "Type: Other";
+    break;
   }
   std::cout << std::endl;
 
   switch (severity) {
-    case GL_DEBUG_SEVERITY_HIGH:
-      std::cout << "Severity: high";
-      break;
-    case GL_DEBUG_SEVERITY_MEDIUM:
-      std::cout << "Severity: medium";
-      break;
-    case GL_DEBUG_SEVERITY_LOW:
-      std::cout << "Severity: low";
-      break;
-    case GL_DEBUG_SEVERITY_NOTIFICATION:
-      std::cout << "Severity: notification";
-      break;
+  case GL_DEBUG_SEVERITY_HIGH:
+    std::cout << "Severity: high";
+    break;
+  case GL_DEBUG_SEVERITY_MEDIUM:
+    std::cout << "Severity: medium";
+    break;
+  case GL_DEBUG_SEVERITY_LOW:
+    std::cout << "Severity: low";
+    break;
+  case GL_DEBUG_SEVERITY_NOTIFICATION:
+    std::cout << "Severity: notification";
+    break;
   }
   std::cout << std::endl;
   std::cout << std::endl;

@@ -4,18 +4,18 @@
 #include <string>
 
 class Texture2D {
- private:
+private:
   std::string filePath;
   std::string fileExtension;
   GLuint textureUnit;
   GLuint id;
 
   void createTexture(const int& width, const int& height,
-                     const unsigned char* data);
- public : Texture2D(const std::string& filePath, const GLuint& textureUnit)
-      : filePath(filePath),
-        fileExtension(filePath.substr(filePath.find(".") + 1)),
-        textureUnit(textureUnit) {};
-  void init();
-  void bind();
+    const unsigned char* data);
+public: Texture2D(const std::string& filePath, const GLuint& textureUnit)
+  : filePath(filePath),
+  fileExtension(filePath.substr(filePath.find(".") + 1)),
+  textureUnit(textureUnit) {};
+      void init();
+      void bind();
 };

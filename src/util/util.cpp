@@ -1,45 +1,44 @@
 #include "util.h"
 
 namespace util {
+  std::string util::getWorkingDirectory() {
+    char cCurrentPath[FILENAME_MAX];
 
-std::string util::getWorkingDirectory() {
-  char cCurrentPath[FILENAME_MAX];
+    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath))) {
+      return "";
+    }
 
-  if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath))) {
-    return "";
+    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+    // We use forward slash for all our file paths in code, so make it consistent
+    // between Windows and Linux
+    std::string currentPath = std::string(cCurrentPath);
+    std::replace(currentPath.begin(), currentPath.end(), '\\', '\/');
+    return currentPath;
   }
 
-  cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
-  // We use forward slash for all our file paths in code, so make it consistent
-  // between Windows and Linux
-  std::string currentPath = std::string(cCurrentPath);
-  std::replace(currentPath.begin(), currentPath.end(), '\\', '\/');
-  return currentPath;
-}
-
-/**
- * Reads a file into a string.
- * https://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring
- * @param path The path to the file to read from
- * @return The file's contents as a a string
- */
-std::string util::getFileAsString(const std::string& path) {
-  Log::getLogger()->debug("Loading resource: {}/{}",
-                          util::getWorkingDirectory(), path);
-  std::ifstream file(FILE_PATH_PREFIX + path);
-  if (!file) {
-    Log::getLogger()->error("Error opening: {}", path);
+  /**
+   * Reads a file into a string.
+   * https://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring
+   * @param path The path to the file to read from
+   * @return The file's contents as a a string
+   */
+  std::string util::getFileAsString(const std::string& path) {
+    Log::getLogger()->debug("Loading resource: {}/{}",
+      util::getWorkingDirectory(), path);
+    std::ifstream file(FILE_PATH_PREFIX + path);
+    if (!file) {
+      Log::getLogger()->error("Error opening: {}", path);
+    }
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
   }
-  std::stringstream buffer;
-  buffer << file.rdbuf();
-  return buffer.str();
-}
 
-GLenum util::glCheckError_(const char* file, int line) {
-  GLenum errorCode;
-  while ((errorCode = glGetError()) != GL_NO_ERROR) {
-    std::string error;
-    switch (errorCode) {
+  GLenum util::glCheckError_(const char* file, int line) {
+    GLenum errorCode;
+    while ((errorCode = glGetError()) != GL_NO_ERROR) {
+      std::string error;
+      switch (errorCode) {
       case GL_INVALID_ENUM:
         error = "INVALID_ENUM";
         break;
@@ -61,18 +60,17 @@ GLenum util::glCheckError_(const char* file, int line) {
       case GL_INVALID_FRAMEBUFFER_OPERATION:
         error = "INVALID_FRAMEBUFFER_OPERATION";
         break;
+      }
+      Log::getLogger()->error("{} | {}({})", error, file, line);
     }
-    Log::getLogger()->error("{} | {}({})", error, file, line);
+    return errorCode;
   }
-  return errorCode;
-}
 
-//  const char* getFileAsCharArray(const std::string &path) {
-//    std::string contents = getFileAsString(path);
-//    char contentsArray[contents.size() + 1];
-//    contents.copy(contentsArray, contents.size() + 1);
-//    contentsArray[contents.size()] = '\0';
-//    return contentsArray;
-//  }
-
+  //  const char* getFileAsCharArray(const std::string &path) {
+  //    std::string contents = getFileAsString(path);
+  //    char contentsArray[contents.size() + 1];
+  //    contents.copy(contentsArray, contents.size() + 1);
+  //    contentsArray[contents.size()] = '\0';
+  //    return contentsArray;
+  //  }
 }  // namespace util

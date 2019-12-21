@@ -19,12 +19,10 @@
 #endif
 
 namespace util {
+  const std::string FILE_PATH_PREFIX = "";
 
-const std::string FILE_PATH_PREFIX = "";
-
-std::string getWorkingDirectory();
-std::string getFileAsString(const std::string &path);
-GLenum glCheckError_(const char *file, int line);
+  std::string getWorkingDirectory();
+  std::string getFileAsString(const std::string& path);
+  GLenum glCheckError_(const char* file, int line);
 #define glCheckError() glCheckError_(__FILE__, __LINE__)
-
 }  // namespace util

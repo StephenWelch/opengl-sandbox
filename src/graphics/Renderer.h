@@ -7,18 +7,18 @@
 #include "Texture2D.h"
 
 class Renderer {
- private:
+private:
   int width;
   int height;
 
   Shader shader = Shader("src/shaders/direct_transform.vert",
-                         "src/shaders/single_color.frag");
+    "src/shaders/single_color.frag");
   Texture2D textureA = Texture2D("res/container.jpg", GL_TEXTURE0);
   Texture2D textureB = Texture2D("res/awesomeface.png", GL_TEXTURE1);
 
- public:
+public:
   Renderer(const int& width, const int& height)
-      : width(width), height(height){};
+    : width(width), height(height) {};
   void init();
   void render();
   void close();
