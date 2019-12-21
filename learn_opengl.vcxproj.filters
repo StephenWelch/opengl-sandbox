@@ -10,6 +10,12 @@
     <ClCompile Include="C:\code\learn-opengl\src\graphics\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\code\learn-opengl\src\graphics\Texture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\code\learn-opengl\src\graphics\TextureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\code\learn-opengl\src\graphics\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +40,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\code\learn-opengl\src\graphics\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\code\learn-opengl\src\graphics\Texture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\code\learn-opengl\src\graphics\TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\code\learn-opengl\src\graphics\Window.h">

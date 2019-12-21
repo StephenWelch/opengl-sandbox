@@ -66,7 +66,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Texture2D.h;C:\code\learn-opengl\src\graphics\TextureManager.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -88,7 +88,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Texture2D.h;C:\code\learn-opengl\src\graphics\TextureManager.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -110,7 +110,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Texture2D.h;C:\code\learn-opengl\src\graphics\TextureManager.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -132,7 +132,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\code\learn-opengl\src\engine\Game.h;C:\code\learn-opengl\src\graphics\Renderer.h;C:\code\learn-opengl\src\graphics\Shader.h;C:\code\learn-opengl\src\graphics\Texture2D.h;C:\code\learn-opengl\src\graphics\TextureManager.h;C:\code\learn-opengl\src\graphics\Window.h;C:\code\learn-opengl\src\util\Log.h;C:\code\learn-opengl\src\util\util.h;C:\code\learn-opengl\include\glad\include;C:\code\learn-opengl\include\glfw\include;C:\code\learn-opengl\include\spdlog\include;C:\code\learn-opengl\include\glm;C:\code\learn-opengl\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -167,6 +167,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\code\learn-opengl\CMakeFiles\INSTALL_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VerifyInputsAndOutputsExist>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 cd .
@@ -180,6 +181,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\code\learn-opengl\CMakeFiles\INSTALL_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</VerifyInputsAndOutputsExist>
       <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
 cd .
@@ -193,6 +195,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\code\learn-opengl\CMakeFiles\INSTALL_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</VerifyInputsAndOutputsExist>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
 cd .
@@ -206,6 +209,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\code\learn-opengl\CMakeFiles\INSTALL_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</VerifyInputsAndOutputsExist>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
