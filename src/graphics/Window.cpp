@@ -68,6 +68,7 @@ bool Window::init() {
   Log::getLogger()->debug("Version: {0}", glGetString(GL_VERSION));
 
   glfwSetWindowUserPointer(window, this);
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   // Set OpenGL viewport dimensions to same size as window
   glViewport(0, 0, width, height);
@@ -78,7 +79,23 @@ bool Window::init() {
     [](GLFWwindow* window, int width, int height) {
       Window& userWindow = *(Window*)glfwGetWindowUserPointer(window);
       userWindow.setSize(width, height);
-  });
+    }
+  );
+  /*glfwSetCursorPosCallback(window, 
+    [](GLFWwindow* window, double xPos, double yPos) {
+      Window& userWindow = *(Window*)glfwGetWindowUserPointer(window);
+
+    }
+  );
+  glfwSetMouseButtonCallback(window,
+    [](GLFWwindow* window, int button, int action, int mods) {
+
+    }
+  );
+  glfwSetKeyCallback(window, 
+    [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+    }
+  );*/
 
 
   Log::getLogger()->info("Window initialization finished");
@@ -111,6 +128,20 @@ bool Window::isKeyReleased(const int& key) {
   return glfwGetKey(window, key) == GLFW_RELEASE;
 }
 
+double Window::getMouseX()
+{
+  double x, y;
+  glfwGetCursorPos(window, &x, &y);
+  return x;
+}
+
+double Window::getMouseY()
+{
+  double x, y;
+  glfwGetCursorPos(window, &x, &y);
+  return y;
+}
+
 void Window::setTitle(char*& p_title) {
   this->title = p_title;
   glfwSetWindowTitle(window, p_title);
@@ -128,6 +159,16 @@ void Window::close() { glfwSetWindowShouldClose(window, true); }
 
 bool Window::closeRequested() {
   return static_cast<bool>(glfwWindowShouldClose(window));
+}
+
+int Window::getWidth()
+{
+  return width;
+}
+
+int Window::getHeight()
+{
+  return height;
 }
 
 void Window::glDebugOutput(unsigned int source, unsigned int type,

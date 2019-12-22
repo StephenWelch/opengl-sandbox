@@ -16,10 +16,14 @@ public:
   void update();
   bool isKeyPressed(const int& key);
   bool isKeyReleased(const int& key);
+  double getMouseX();
+  double getMouseY();
   void setTitle(char*& title);
   void clear(const float& r, const float& g, const float& b, const float& a);
   void close();
   bool closeRequested();
+  int getWidth();
+  int getHeight();
   void setSize(const int& newWidth, const int& newHeight);
   //void framebuffer_size_callback(GLFWwindow *window, int width, int height);
   static void glDebugOutput(GLenum source, GLenum type, GLuint id,

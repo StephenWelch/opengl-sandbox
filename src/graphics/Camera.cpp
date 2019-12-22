@@ -4,12 +4,6 @@
 
 void Camera::update()
 {
-  // Vector pointing from target to camera's position
-  targetToCamera = glm::normalize(target - position);
-  // Create vector orthogonal to direction camera is pointing and y-axis
-  right = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), targetToCamera));
-  up = glm::cross(targetToCamera, right);
-  view = glm::lookAt(position, target, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 glm::vec3 Camera::getPosition()
@@ -34,6 +28,5 @@ void Camera::setTarget(const glm::vec3& target)
 
 glm::mat4 Camera::getViewMatrix()
 {
-  Log::getLogger()->debug("{},{},{}", position.x,position.y, position.z);
-  return glm::lookAt(position, target, up);
+  return glm::lookAt(position, position + target, glm::vec3(0.0f, 1.0f, 0.0f));
 }
