@@ -106,7 +106,8 @@ bool Window::init() {
 void Window::update() {
   if (!glfwWindowShouldClose(window)) {
     glfwSwapBuffers(window);
-    double frameTime = frameTimer.mark();
+    frameTimer.mark();
+    double frameTime = frameTimer.getMovingAverage();
     double fps = 1.0 / frameTime;
     std::string title = "FPS: " + std::to_string(fps) + " MPF: " + std::to_string(frameTime * 1000.0);
     setTitle(title.c_str());
