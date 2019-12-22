@@ -1,13 +1,13 @@
-#include "Renderer.h"
+#include <graphics/Renderer.h>
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <stb_image.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../util/Log.h"
-#include "../util/util.h"
-#include "Shader.h"
+#include <util/Log.h>
+#include <util/util.h>
+#include <graphics/Shader.h>
 
 std::array<float, 200> modelData {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -121,10 +121,15 @@ void Renderer::init() {
 
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+
+  camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
+  camera.setTarget(glm::vec3(0.0f, 0.0f, 0.0f));
+
   Log::getLogger()->info("Finished Renderer initialization");
 }
 
 void Renderer::render() {
+
   textureA.bind();
   textureB.bind();
 
@@ -132,6 +137,7 @@ void Renderer::render() {
 
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = glm::mat4(1.0f);
+  //glm::mat4 view = camera.getViewMatrix();
   glm::mat4 projection = glm::mat4(1.0f);
   model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
   view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));

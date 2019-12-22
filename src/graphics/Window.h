@@ -11,7 +11,7 @@ private:
   int height;
   bool debugOutput;
 public:
-  Window(const char* title, const int& width, const int& height, const bool& debugOutput = false) : title(const_cast<char*>(title)), width(width), height(height), debugOutput(debugOutput), window(nullptr) {};
+  Window(const char* title, const int& width, const int& height, const bool& debugOutput = false) : title(const_cast<char*>(title)), width(width), height(height), debugOutput(debugOutput) {};
   bool init();
   void update();
   bool isKeyPressed(const int& key);

@@ -2,11 +2,9 @@
 // Created by Stephen Welch on 11/20/2019.
 //
 
-#include "Window.h"
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
+#include <graphics/Window.h>
 #include <iostream>
-#include "../util/Log.h"
+#include <util/Log.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   // make sure the viewport matches the new window dimensions; note that width
@@ -45,10 +43,10 @@ bool Window::init() {
   //}
 
   // Create a window object
-  window = glfwCreateWindow(width, height, "Game", nullptr, nullptr);
+  window = glfwCreateWindow(width, height, "Game", NULL, NULL);
 
   // If initialization fails, print an error message and terminate GLFW
-  if (window == nullptr) {
+  if (window == NULL) {
     Log::getLogger()->error("Failed to create GLFW window, terminating");
     glfwTerminate();
     return false;
@@ -57,25 +55,31 @@ bool Window::init() {
   // Selects this window for any future OpenGL calls
   glfwMakeContextCurrent(window);
 
-  glfwSetWindowUserPointer(window, this);
 
   // Initialize GLAD before calling OpenGL
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    std::cout << "Failed to initialize GLAD" << std::endl;
+    Log::getLogger()->error("Failed to initialize GLAD");
     return false;
   }
 
+  Log::getLogger()->debug("OpenGL Info:");
+  Log::getLogger()->debug("Vendor: {0}", glGetString(GL_VENDOR));
+  Log::getLogger()->debug("Renderer: {0}", glGetString(GL_RENDERER));
+  Log::getLogger()->debug("Version: {0}", glGetString(GL_VERSION));
+
+  glfwSetWindowUserPointer(window, this);
+
   // Set OpenGL viewport dimensions to same size as window
   glViewport(0, 0, width, height);
+  glEnable(GL_DEPTH_TEST);
 
   // Set the callback for window resizing
   glfwSetFramebufferSizeCallback(window,
     [](GLFWwindow* window, int width, int height) {
       Window& userWindow = *(Window*)glfwGetWindowUserPointer(window);
       userWindow.setSize(width, height);
-    });
+  });
 
-  glEnable(GL_DEPTH_TEST);
 
   Log::getLogger()->info("Window initialization finished");
 

@@ -1,7 +1,7 @@
 #include "Texture2D.h"
 #include <stb_image.h>
-#include <../util.h>
-#include "../util/Log.h"
+#include <util/util.h>
+#include "util/Log.h"
 
 void Texture2D::init() {
   Log::getLogger()->debug("Loading texture {}", filePath);
@@ -38,9 +38,7 @@ void Texture2D::init() {
 
 void Texture2D::bind() {
   glActiveTexture(textureUnit);
-  util::glCheckError();
   glBindTexture(GL_TEXTURE_2D, id);
-  util::glCheckError();
 }
 
 void Texture2D::createTexture(const int& width, const int& height, const unsigned char* data) {

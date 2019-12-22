@@ -1,5 +1,5 @@
 #include "Shader.h"
-#include "../util/util.h"
+#include "util/util.h"
 
 bool Shader::shaderCompiledSuccessfully(const GLuint& shaderId) const {
   int success;
