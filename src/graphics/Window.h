@@ -2,14 +2,17 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <string>
+#include <util\SimpleTimer.h>
 
 class Window {
 private:
   GLFWwindow* window;
-  char* title;
+  std::string title;
   int width;
   int height;
   bool debugOutput;
+  SimpleTimer frameTimer;
 public:
   Window(const char* title, const int& width, const int& height, const bool& debugOutput = false) : title(const_cast<char*>(title)), width(width), height(height), debugOutput(debugOutput) {};
   bool init();
@@ -18,13 +21,14 @@ public:
   bool isKeyReleased(const int& key);
   double getMouseX();
   double getMouseY();
-  void setTitle(char*& title);
+  void setTitle(std::string title);
   void clear(const float& r, const float& g, const float& b, const float& a);
   void close();
   bool closeRequested();
   int getWidth();
   int getHeight();
   void setSize(const int& newWidth, const int& newHeight);
+  void setVsync(const bool& on);
   //void framebuffer_size_callback(GLFWwindow *window, int width, int height);
   static void glDebugOutput(GLenum source, GLenum type, GLuint id,
     GLenum severity, GLsizei length,

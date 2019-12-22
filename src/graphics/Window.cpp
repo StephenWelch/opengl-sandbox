@@ -106,6 +106,10 @@ bool Window::init() {
 void Window::update() {
   if (!glfwWindowShouldClose(window)) {
     glfwSwapBuffers(window);
+    double frameTime = frameTimer.mark();
+    double fps = 1.0 / frameTime;
+    std::string title = "FPS: " + std::to_string(fps) + " MPF: " + std::to_string(frameTime * 1000.0);
+    setTitle(title.c_str());
     glfwPollEvents();
   }
   else {
@@ -118,6 +122,16 @@ void Window::setSize(const int& newWidth, const int& newHeight) {
   this->height = newHeight;
   Log::getLogger()->debug("Set window size to {}x{}", width, height);
   glViewport(0, 0, width, height);
+}
+
+void Window::setVsync(const bool& on)
+{
+  if (on) {
+    glfwSwapInterval(1);
+  }
+  else {
+    glfwSwapInterval(0);
+  }
 }
 
 bool Window::isKeyPressed(const int& key) {
@@ -142,9 +156,9 @@ double Window::getMouseY()
   return y;
 }
 
-void Window::setTitle(char*& p_title) {
+void Window::setTitle(std::string p_title) {
   this->title = p_title;
-  glfwSetWindowTitle(window, p_title);
+  glfwSetWindowTitle(window, p_title.c_str());
 }
 
 void Window::clear(const float& r, const float& g, const float& b,
