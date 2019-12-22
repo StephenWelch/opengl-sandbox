@@ -122,9 +122,6 @@ void Renderer::init() {
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
 
-  camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
-  camera.setTarget(glm::vec3(0.0f, 0.0f, 0.0f));
-
   Log::getLogger()->info("Finished Renderer initialization");
 }
 
@@ -135,12 +132,14 @@ void Renderer::render() {
 
   shader.use();
 
+  glm::vec3 cameraPos;
+  glm::vec3 cameraFront;
+  glm::vec3 cameraUp;
+
   glm::mat4 model = glm::mat4(1.0f);
-  glm::mat4 view = glm::mat4(1.0f);
-  //glm::mat4 view = camera.getViewMatrix();
+  glm::mat4 view = camera->getViewMatrix();
   glm::mat4 projection = glm::mat4(1.0f);
   model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-  view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
   projection =
     glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
   shader.setMat4("model", model);

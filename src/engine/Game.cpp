@@ -13,15 +13,16 @@ int Game::run() {
 
   Log::init();
 
+
   window->init();
   renderer->init();
   while (!window->closeRequested()) {
-    window->update();
-    window->clear(0, 0, 0, 0);
-    renderer->render();
-
     camera->update();
     input->update();
+
+    window->clear(0, 0, 0, 0);
+    renderer->render();
+    window->update();
 
   }
   renderer->close();

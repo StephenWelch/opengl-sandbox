@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include <glm\gtc\matrix_transform.hpp>
+#include <util\Log.h>
 
 void Camera::update()
 {
@@ -18,7 +19,7 @@ glm::vec3 Camera::getPosition()
 
 void Camera::setPosition(const glm::vec3& position)
 {
-  this->position = position;
+   this->position = position;
 }
 
 glm::vec3 Camera::getTarget()
@@ -33,5 +34,6 @@ void Camera::setTarget(const glm::vec3& target)
 
 glm::mat4 Camera::getViewMatrix()
 {
-  return view;
+  Log::getLogger()->debug("{},{},{}", position.x,position.y, position.z);
+  return glm::lookAt(position, target, up);
 }

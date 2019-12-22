@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <string>
+#include <memory>
 #include <graphics/Texture2D.h>
 #include <graphics/Camera.h>
 #include <graphics\Shader.h>
@@ -12,7 +13,7 @@ private:
   int width;
   int height;
 
-  Camera camera;
+  const std::unique_ptr<Camera>& camera;
 
   Shader shader = Shader("shaders/direct_transform.vert",
     "shaders/single_color.frag");
@@ -20,7 +21,7 @@ private:
   Texture2D textureB = Texture2D("res/awesomeface.png", GL_TEXTURE1);
 
 public:
-  Renderer(const Camera& camera, const int& width, const int& height)
+  Renderer(const std::unique_ptr<Camera>& camera, const int& width, const int& height)
     : camera(camera), width(width), height(height) {};
   void init();
   void render();
