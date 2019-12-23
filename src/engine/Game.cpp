@@ -6,13 +6,12 @@
 #include <engine/Input.h>  
 
 int Game::run() {
+  Log::init();
+
   auto camera = std::make_unique<Camera>();
   auto renderer = std::make_unique<Renderer>(camera, 800, 600);
   auto window = std::make_unique<Window>("Game", 800, 600);
   auto input = std::make_unique<Input>(window, camera);
-
-  Log::init();
-
 
   window->init();
   renderer->init();
