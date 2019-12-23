@@ -12,7 +12,7 @@ namespace util {
     // We use forward slash for all our file paths in code, so make it consistent
     // between Windows and Linux
     std::string currentPath = std::string(cCurrentPath);
-    std::replace(currentPath.begin(), currentPath.end(), '\\', '\/');
+    std::replace(currentPath.begin(), currentPath.end(), '\\', '/');
     return currentPath;
   }
 

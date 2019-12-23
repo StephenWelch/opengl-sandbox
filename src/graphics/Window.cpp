@@ -20,27 +20,16 @@ bool Window::init() {
   // Clear errors
   // glGetError();
 
-  // Set OpenGL version to 3.3
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  // Set OpenGL version to 4.3
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
   // Set OpenGL profile to Core
   glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  // if(debugOutput) {
-  //  glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-  //  GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-  //  if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-  //  {
-  //    glEnable(GL_DEBUG_OUTPUT);
-  //    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-  //    glDebugMessageCallback(glDebugOutput, nullptr);
-  //    glDebugMessageControl(GL_DEBUG_SOURCE_API,
-  //                          GL_DEBUG_TYPE_ERROR,
-  //                          GL_DEBUG_SEVERITY_HIGH,
-  //                          0, nullptr, GL_TRUE);
-  //  }
-  //}
+  if(debugOutput) {
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+  }
 
   // Create a window object
   window = glfwCreateWindow(width, height, "Game", NULL, NULL);
@@ -60,6 +49,21 @@ bool Window::init() {
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     Log::getLogger()->error("Failed to initialize GLAD");
     return false;
+  }
+
+  if (debugOutput) {
+    GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+    if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+    {
+      Log::getLogger()->info("Enabling debug output");
+      glEnable(GL_DEBUG_OUTPUT);
+      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+      glDebugMessageCallback(glDebugOutput, nullptr);
+      glDebugMessageControl(GL_DONT_CARE,
+        GL_DONT_CARE,
+        GL_DONT_CARE,
+        0, nullptr, GL_TRUE);
+    }
   }
 
   Log::getLogger()->debug("OpenGL Info:");

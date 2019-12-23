@@ -1,6 +1,5 @@
 #include <memory>
-#include "engine/Game.h"
-#include <glm/glm.hpp>
+#include <engine/Game.h>
 
 int main() {
   auto game = std::make_unique<Game>();

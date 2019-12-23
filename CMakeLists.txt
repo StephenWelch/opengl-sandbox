@@ -43,9 +43,9 @@ target_link_libraries(${CMAKE_PROJECT_NAME} glad glfw ${GLFW_LIBRARIES})
 #target_link_libraries(${CMAKE_PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
 set (resourceSourcePath "${CMAKE_SOURCE_DIR}/res")
-set (resourceDestPath "${CMAKE_CURRENT_BINARY_DIR}/res")
+set (resourceDestPath "${CMAKE_BINARY_DIR}/res")
 set (shaderSourcePath "${CMAKE_SOURCE_DIR}/src/shaders")
-set (shaderDestPath "${CMAKE_CURRENT_BINARY_DIR}/shaders")
+set (shaderDestPath "${CMAKE_BINARY_DIR}/shaders")
 add_custom_command(
  TARGET ${PROJECT_NAME} POST_BUILD
  COMMAND ${CMAKE_COMMAND} -E create_symlink ${resourceSourcePath} ${resourceDestPath} 
