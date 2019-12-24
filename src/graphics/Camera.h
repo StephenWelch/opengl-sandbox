@@ -3,20 +3,32 @@
 class Camera
 {
 private:
+  const float DEFAULT_MIN_VIEW_DIST = 0.1f;
+  const float DEFAULT_MAX_VIEW_DIST = 100.0f;
+
+  float fieldOfView;
+  float minViewDist, maxViewDist;
+  float screenWidth, screenHeight;
+
   glm::vec3 position = glm::vec3(0.0f, 0.0f, 3.0f);
   glm::vec3 target = glm::vec3(0.0f, 0.0f, -1.0f);
   glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-  glm::vec3 right;
-  glm::vec3 targetToCamera;
-
-  glm::mat4 view;
 public:
-  void update();
-  /*void translate(const glm::vec3& translation);
-  void rotate(const glm::vec3& rotation);*/
-  glm::vec3 getPosition();
+  Camera(const float& fieldOfView, const float& screenWidth, const float& screenHeight);
+  glm::vec3 getPosition() const;
   void setPosition(const glm::vec3& position);
-  glm::vec3 getTarget();
+  glm::vec3 getTarget() const;
   void setTarget(const glm::vec3& target);
-  glm::mat4 getViewMatrix();
+  float getFieldOfView() const;
+  void setFieldOfView(const float& fieldOfView);
+  float getMinViewDistance() const;
+  void setMinViewDistance(const float& minViewDist);
+  float getMaxViewDistance() const;
+  void setMaxViewDistance(const float& maxViewDist);
+  float getScreenWidth() const;
+  void setScreenWidth(const float& screenWidth);
+  float getScreenHeight() const;
+  void setScreenHeight(const float& screenHeight);
+  glm::mat4 getViewMatrix() const;
+  glm::mat4 getProjectionMatrix() const;
 };

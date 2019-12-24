@@ -31,6 +31,7 @@ void Renderer::init() {
   shader.use();
   shader.setInt("textureA", 0);
   shader.setInt("textureB", 1);
+  shader.setMat4("projection", camera->getProjectionMatrix());
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
@@ -47,16 +48,10 @@ void Renderer::render() {
 
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = camera->getViewMatrix();
-  glm::mat4 projection = glm::mat4(1.0f);
   model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-  projection =
-    glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+  
   shader.setMat4("model", model);
   shader.setMat4("view", view);
-  // note: currently we set the projection matrix each frame, but since the
-  // projection matrix rarely changes it's often best practice to set it outside
-  // the main loop only once.
-  shader.setMat4("projection", projection);
 
   mesh.bind();
   mesh.draw();
