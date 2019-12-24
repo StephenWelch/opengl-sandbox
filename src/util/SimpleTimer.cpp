@@ -6,12 +6,11 @@ double SimpleTimer::mark() {
     started = true;
     lastTime = currentTime;
     deltaTime = currentTime - lastTime;
-    return deltaTime;
+    return movingAverage.update(deltaTime);
   }
   deltaTime = currentTime - lastTime;
   lastTime = currentTime;
-  accumulator = (MOVING_AVERAGE_ALPHA * deltaTime) + (1.0 - MOVING_AVERAGE_ALPHA) * accumulator;
-  return deltaTime;
+  return movingAverage.update(deltaTime);
 }
 
 double SimpleTimer::getDelta() {
@@ -20,6 +19,6 @@ double SimpleTimer::getDelta() {
 
 double SimpleTimer::getMovingAverage()
 {
-  return accumulator;
+  return movingAverage.getAverage();
 }
 

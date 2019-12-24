@@ -1,14 +1,14 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <util\MovingAverage.h>
 class SimpleTimer {
 private:
-  const double MOVING_AVERAGE_ALPHA = 0.03;
   bool started = false;
   double lastTime;
   double deltaTime;
   double currentTime;
-  double accumulator;
+  MovingAverage movingAverage = MovingAverage(10000);
 
 public:
   double mark();

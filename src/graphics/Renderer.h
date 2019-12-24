@@ -16,7 +16,7 @@ private:
 
   const std::unique_ptr<Camera>& camera;
 
-  Shader shader = Shader("shaders/textured_model.vert",
+  Shader cubeShader = Shader("shaders/textured_model.vert",
     "shaders/textured_model.frag");
   Texture2D texture = Texture2D("res/container.jpg", GL_TEXTURE0);
   
@@ -112,7 +112,7 @@ private:
       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36
   };
   
-  Mesh mesh = Mesh(GL_STATIC_DRAW, vertices, textureCoords, indices);
+  Mesh cubeMesh = Mesh(GL_STATIC_DRAW, vertices, textureCoords, indices);
 
 public:
   Renderer(const std::unique_ptr<Camera>& camera, const int& width, const int& height)

@@ -4,6 +4,7 @@ void Input::init()
 {
 }
 
+// TODO Simplfy by rewriting with vec3
 void Input::update() {
   float currentTime = glfwGetTime();
   float dt = currentTime - lastTime;
