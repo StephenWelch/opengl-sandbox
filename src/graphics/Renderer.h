@@ -18,8 +18,7 @@ private:
 
   Shader shader = Shader("shaders/textured_model.vert",
     "shaders/textured_model.frag");
-  Texture2D textureA = Texture2D("res/container.jpg", GL_TEXTURE0);
-  Texture2D textureB = Texture2D("res/awesomeface.png", GL_TEXTURE1);
+  Texture2D texture = Texture2D("res/container.jpg", GL_TEXTURE0);
   
   std::vector<float> vertices {
       -0.5f, -0.5f, -0.5f,   

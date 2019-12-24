@@ -21,17 +21,14 @@ void Renderer::init() {
 
   Log::getLogger()->info("Loading textures");
 
-  textureA.init();
-  textureB.init();
+  texture.init();
 
   Log::getLogger()->info("Loading shaders");
   shader.init();
 
-  // Configure which uniform belongs to each texture unit
   shader.use();
-  shader.setInt("textureA", 0);
-  shader.setInt("textureB", 1);
-  shader.setMat4("projection", camera->getProjectionMatrix());
+  shader.setInt("uTexture", 0);
+  shader.setMat4("uProjection", camera->getProjectionMatrix());
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
@@ -41,8 +38,7 @@ void Renderer::init() {
 
 void Renderer::render() {
 
-  textureA.bind();
-  textureB.bind();
+  texture.bind();
 
   shader.use();
 
@@ -50,8 +46,8 @@ void Renderer::render() {
   glm::mat4 view = camera->getViewMatrix();
   model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
   
-  shader.setMat4("model", model);
-  shader.setMat4("view", view);
+  shader.setMat4("uModel", model);
+  shader.setMat4("uView", view);
 
   mesh.bind();
   mesh.draw();
