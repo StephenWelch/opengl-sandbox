@@ -28,13 +28,19 @@ void Renderer::init() {
 
   cubeShader.use();
 
+  // Lighting config
   cubeShader.setVec3("uAmbientLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
   cubeShader.setVec3("uPositionalLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+
   cubeShader.setFloat("uAmbientLightStrength", 0.1f);
   cubeShader.setFloat("uPositionalLightStrength", 1.0f);
 
-  cubeShader.setVec3("uLightPos", glm::vec3(1.0f, 1.0f, 1.0f));
+  cubeShader.setFloat("uSpecularStrength", 1.0f);
+  cubeShader.setFloat("uShininess", 64.0f);
 
+  cubeShader.setVec3("uLightPos", glm::vec3(1.0f, 0.0f, 1.0f));
+
+  // Other setup
   cubeShader.setInt("uTexture", 0);
   cubeShader.setMat4("uProjection", camera->getProjectionMatrix());
 
@@ -51,6 +57,8 @@ void Renderer::render() {
   glm::mat4 view = camera->getViewMatrix();
   //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
   
+  cubeShader.setMat3("uNormalMatrix", glm::transpose(glm::inverse(model)));
+  cubeShader.setVec3("uViewPos", camera->getPosition());
   cubeShader.setMat4("uModel", model);
   cubeShader.setMat4("uView", view);
 
