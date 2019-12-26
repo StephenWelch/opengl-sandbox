@@ -29,16 +29,16 @@ void Renderer::init() {
   cubeShader.use();
 
   // Lighting config
-  cubeShader.setVec3("uAmbientLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-  cubeShader.setVec3("uPositionalLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+  cubeShader.setVec3("uLight.ambientIntensity", 0.2f, 0.2f, 0.2f);
+  cubeShader.setVec3("uLight.diffuseIntensity", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
+  cubeShader.setVec3("uLight.specularIntensity", 1.0f, 1.0f, 1.0f);
 
-  cubeShader.setFloat("uAmbientLightStrength", 0.1f);
-  cubeShader.setFloat("uPositionalLightStrength", 1.0f);
+  cubeShader.setVec3("uLight.position", 0.0f, 0.0f, 1.0f);
 
-  cubeShader.setFloat("uSpecularStrength", 1.0f);
-  cubeShader.setFloat("uShininess", 64.0f);
-
-  cubeShader.setVec3("uLightPos", glm::vec3(1.0f, 0.0f, 1.0f));
+  cubeShader.setVec3("uMaterial.ambientStrength", 1.0f, 0.5f, 0.31f);
+  cubeShader.setVec3("uMaterial.diffuseStrength", 1.0f, 0.5f, 0.31f);
+  cubeShader.setVec3("uMaterial.specularStrength", 0.5f, 0.5f, 0.5f);
+  cubeShader.setFloat("uMaterial.shininess", 32.0f);
 
   // Other setup
   cubeShader.setInt("uTexture", 0);
