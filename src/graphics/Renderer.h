@@ -16,8 +16,8 @@ private:
 
   const std::unique_ptr<Camera>& camera;
 
-  Shader cubeShader = Shader("shaders/lighted_textured_model.vert",
-    "shaders/lighted_textured_model.frag");
+  Shader cubeShader = Shader("shaders/lightmap_textured_model.vert",
+    "shaders/lightmap_textured_model.frag");
   Texture2D diffuseTexture = Texture2D("res/container2.png", GL_TEXTURE0);
   Texture2D specularTexture = Texture2D("res/container2_specular.png", GL_TEXTURE1);
 
