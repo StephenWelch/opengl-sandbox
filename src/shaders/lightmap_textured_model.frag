@@ -40,5 +40,5 @@ void main() {
 	float specularScalar = pow(max(0.0, dot(viewDirection, reflectDirection)), uMaterial.shininess);
 	vec3 specularColor = uLight.specularIntensity * materialSpecular * specularScalar;
 
-	oFragColor = vec4(ambientLightColor + diffuseColor + specularColor, 1.0) * texture(uTexture, iTexCoord);
+	oFragColor = vec4(combinedLightingColor, 1.0);
 }
