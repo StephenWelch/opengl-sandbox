@@ -27,9 +27,15 @@ void Renderer::init() {
   cubeShader.init();
 
   cubeShader.use();
+
+  cubeShader.setVec3("uAmbientLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+  cubeShader.setVec3("uPositionalLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+  cubeShader.setFloat("uAmbientLightStrength", 0.1f);
+  cubeShader.setFloat("uPositionalLightStrength", 1.0f);
+
+  cubeShader.setVec3("uLightPos", glm::vec3(1.0f, 1.0f, 1.0f));
+
   cubeShader.setInt("uTexture", 0);
-  cubeShader.setVec3("uAmbientLightColor", glm::vec3(1.0f, 0.0f, 0.0f));
-  cubeShader.setFloat("uAmbientLightStrength", 1.0f);
   cubeShader.setMat4("uProjection", camera->getProjectionMatrix());
 
   Log::getLogger()->info("Finished Renderer initialization");
@@ -43,7 +49,7 @@ void Renderer::render() {
 
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = camera->getViewMatrix();
-  model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+  //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
   
   cubeShader.setMat4("uModel", model);
   cubeShader.setMat4("uView", view);
