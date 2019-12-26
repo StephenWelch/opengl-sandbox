@@ -41,6 +41,19 @@ void Texture2D::bind() {
   glBindTexture(GL_TEXTURE_2D, id);
 }
 
+GLuint Texture2D::getId() const {
+  return id;
+}
+
+GLuint Texture2D::getTextureUnit() const {
+  return textureUnit;
+}
+
+GLuint Texture2D::getTextureUnitNum() const
+{
+  return textureUnit - GL_TEXTURE0;
+}
+
 void Texture2D::createTexture(const int& width, const int& height, const unsigned char* data) {
   GLuint colorChannels = GL_RGBA;
   if (fileExtension == "jpg") {

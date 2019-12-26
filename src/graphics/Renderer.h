@@ -18,9 +18,10 @@ private:
 
   Shader cubeShader = Shader("shaders/lighted_textured_model.vert",
     "shaders/lighted_textured_model.frag");
-  Texture2D texture = Texture2D("res/container.jpg", GL_TEXTURE0);
+  Texture2D diffuseTexture = Texture2D("res/container2.png", GL_TEXTURE0);
+  Texture2D specularTexture = Texture2D("res/container2_specular.png", GL_TEXTURE1);
 
-  std::vector<float> vertices{
+  std::vector<float> vertices {
       -0.5f, -0.5f, -0.5f,
       0.5f, -0.5f, -0.5f,
       0.5f,  0.5f, -0.5f,

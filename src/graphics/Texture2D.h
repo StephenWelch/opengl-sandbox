@@ -18,4 +18,7 @@ public: Texture2D(const std::string& filePath, const GLuint& textureUnit)
   textureUnit(textureUnit) {};
       void init();
       void bind();
+      GLuint getId() const;
+      GLuint getTextureUnit() const;
+      GLuint getTextureUnitNum() const;
 };

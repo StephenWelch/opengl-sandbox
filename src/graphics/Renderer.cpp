@@ -21,7 +21,8 @@ void Renderer::init() {
 
   Log::getLogger()->info("Loading textures");
 
-  texture.init();
+  diffuseTexture.init();
+  specularTexture.init();
 
   Log::getLogger()->info("Loading shaders");
   cubeShader.init();
@@ -33,12 +34,11 @@ void Renderer::init() {
   cubeShader.setVec3("uLight.diffuseIntensity", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
   cubeShader.setVec3("uLight.specularIntensity", 1.0f, 1.0f, 1.0f);
 
-  cubeShader.setVec3("uLight.position", 0.0f, 0.0f, 1.0f);
+  cubeShader.setVec3("uLight.position", 1.2f, 1.0f, 2.0f);
 
-  cubeShader.setVec3("uMaterial.ambientStrength", 1.0f, 0.5f, 0.31f);
-  cubeShader.setVec3("uMaterial.diffuseStrength", 1.0f, 0.5f, 0.31f);
-  cubeShader.setVec3("uMaterial.specularStrength", 0.5f, 0.5f, 0.5f);
-  cubeShader.setFloat("uMaterial.shininess", 32.0f);
+  cubeShader.setInt("uMaterial.diffuseTexture", diffuseTexture.getTextureUnitNum());
+  cubeShader.setInt("uMaterial.specularTexture", specularTexture.getTextureUnitNum());
+  cubeShader.setFloat("uMaterial.shininess", 64.0f);
 
   // Other setup
   cubeShader.setInt("uTexture", 0);
@@ -49,7 +49,8 @@ void Renderer::init() {
 
 void Renderer::render() {
 
-  texture.bind();
+  diffuseTexture.bind();
+  specularTexture.bind();
 
   cubeShader.use();
 
