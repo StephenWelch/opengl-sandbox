@@ -28,6 +28,8 @@ void Renderer::init() {
 
   cubeShader.use();
   cubeShader.setInt("uTexture", 0);
+  cubeShader.setVec3("uAmbientLightColor", glm::vec3(1.0f, 0.0f, 0.0f));
+  cubeShader.setFloat("uAmbientLightStrength", 1.0f);
   cubeShader.setMat4("uProjection", camera->getProjectionMatrix());
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

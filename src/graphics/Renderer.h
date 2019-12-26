@@ -17,7 +17,7 @@ private:
   const std::unique_ptr<Camera>& camera;
 
   Shader cubeShader = Shader("shaders/textured_model.vert",
-    "shaders/textured_model.frag");
+    "shaders/lighted_textured_model.frag");
   Texture2D texture = Texture2D("res/container.jpg", GL_TEXTURE0);
   
   std::vector<float> vertices {
