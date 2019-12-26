@@ -1,20 +1,30 @@
 #include "Mesh.h"
 #include <util\Log.h>
 
-Mesh::Mesh(const GLenum& usage, const std::vector<float>& vertices, const std::vector<float>& textureCoords, const std::vector<int>& indices)
+Mesh::Mesh(const GLenum& usage, const std::vector<float>& vertices, const std::vector<float> normals, const std::vector<float>& textureCoords, const std::vector<int>& indices)
 {
-  this->modelData = std::vector<float>(vertices.size() + textureCoords.size());
+  this->modelData = std::vector<float>();
 
+  int numElements = vertices.size() + normals.size() + textureCoords.size();
   int currentVertex = 0;
+  int currentNormal = 0;
   int currentTextureCoord = 0;
-  for (int i = 0; i <= modelData.size() - 5; i += VERTEX_ATTRIB_SIZE) {
-    this->modelData[i] = vertices[currentVertex];
-    this->modelData[i + 1.0] = vertices[currentVertex + 1.0];
-    this->modelData[i + 2.0] = vertices[currentVertex + 2.0];
-    this->modelData[i + 3.0] = textureCoords[currentTextureCoord];
-    this->modelData[i + 4.0] = textureCoords[currentTextureCoord + 1.0];
+  Log::getLogger()->debug("Num data: {}", numElements);
+  while(modelData.size() < numElements) {
+    // Pack vertices
+    this->modelData.push_back(vertices[currentVertex]);
+    this->modelData.push_back(vertices[currentVertex + 1.0]);
+    this->modelData.push_back(vertices[currentVertex + 2.0]);
+    // Pack normals
+    this->modelData.push_back(normals[currentNormal]);
+    this->modelData.push_back(normals[currentNormal + 1.0]);
+    this->modelData.push_back(normals[currentNormal + 2.0]);
+    // Pack texture coordinates
+    this->modelData.push_back(textureCoords[currentTextureCoord]);
+    this->modelData.push_back(textureCoords[currentTextureCoord + 1.0]);
 
     currentVertex += 3;
+    currentNormal += 3;
     currentTextureCoord += 2;
   }
   this->indexData = indices;
@@ -35,26 +45,29 @@ void Mesh::init()
 
   glBindVertexArray(vao);
   
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexData.size() * sizeof(float), indexData.data(), usage);
 
       glBufferData(GL_ARRAY_BUFFER, modelData.size() * sizeof(float), modelData.data(), usage);
-
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float),
+      glVertexAttribPointer(0, VERTEX_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float),
         (void*)0);
-      glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float),
-        (void*)(3 * sizeof(float)));
+      glVertexAttribPointer(1, NORMAL_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float),
+        (void*)((VERTEX_SIZE) * sizeof(float)));
+      glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float),
+        (void*)((VERTEX_SIZE + NORMAL_SIZE) * sizeof(float)));
 
       glEnableVertexAttribArray(0);
       glEnableVertexAttribArray(1);
+      glEnableVertexAttribArray(2);
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   
   glBindVertexArray(0);
-   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   Log::getLogger()->debug("Finished mesh initialization");
 }
 
