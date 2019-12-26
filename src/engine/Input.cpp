@@ -38,6 +38,12 @@ void Input::update() {
   if (window->isKeyPressed(GLFW_KEY_D)) {
     translation += displacement * glm::normalize(glm::cross(camera->getTarget(), glm::vec3(0.0f, 1.0f, 0.0f)));
   }
+  if (window->isKeyPressed(GLFW_KEY_F)) {
+    window->setWireframe(true);
+  }
+  if (window->isKeyReleased(GLFW_KEY_F)) {
+    window->setWireframe(false);
+  }
   camera->setPosition(camera->getPosition() + translation);
 
   glm::vec3 rotation = glm::vec3(0.0f);

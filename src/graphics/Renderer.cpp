@@ -32,9 +32,6 @@ void Renderer::init() {
   cubeShader.setFloat("uAmbientLightStrength", 1.0f);
   cubeShader.setMat4("uProjection", camera->getProjectionMatrix());
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-
   Log::getLogger()->info("Finished Renderer initialization");
 }
 

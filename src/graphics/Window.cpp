@@ -139,6 +139,16 @@ void Window::setVsync(const bool& on)
   }
 }
 
+void Window::setWireframe(const bool& on)
+{
+  if (on) {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  }
+  else {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
+}
+
 bool Window::isKeyPressed(const int& key) {
   return glfwGetKey(window, key) == GLFW_PRESS;
 }
@@ -180,12 +190,12 @@ bool Window::closeRequested() {
   return static_cast<bool>(glfwWindowShouldClose(window));
 }
 
-int Window::getWidth()
+int Window::getWidth() const
 {
   return width;
 }
 
-int Window::getHeight()
+int Window::getHeight() const
 {
   return height;
 }
