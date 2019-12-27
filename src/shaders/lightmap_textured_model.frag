@@ -3,6 +3,7 @@
 struct Material {
 	sampler2D diffuseTexture;
 	sampler2D specularTexture;
+	sampler2D emissionTexture;
 	float shininess;
 };
 
@@ -25,20 +26,33 @@ uniform vec3 uViewPos;
 
 uniform Light uLight;
 uniform Material uMaterial;
+uniform bool uEmissionsEnabled = false;
 
 void main() {
 	vec3 normal = normalize(iNormal);
+
 	vec3 lightDirection = normalize(uLight.position - iFragPos);
 	vec3 viewDirection = normalize(uViewPos - iFragPos);
 	vec3 reflectDirection = reflect(-lightDirection, normal);
-	vec3 materialDiffuse = vec3(texture(uMaterial.diffuseTexture, iTexCoord).rgb);
-	vec3 materialSpecular = vec3(texture(uMaterial.specularTexture, iTexCoord).rgb);
+
+	vec3 materialDiffuse = texture(uMaterial.diffuseTexture, iTexCoord).rgb;
+	vec3 materialSpecular = texture(uMaterial.specularTexture, iTexCoord).rgb;
 
 	vec3 ambientLightColor = uLight.ambientIntensity * materialDiffuse;
+
 	float diffuseScalar = max(0.0, dot(normal, lightDirection));
 	vec3 diffuseColor = uLight.diffuseIntensity * diffuseScalar * materialDiffuse;
+
 	float specularScalar = pow(max(0.0, dot(viewDirection, reflectDirection)), uMaterial.shininess);
-	vec3 specularColor = uLight.specularIntensity * materialSpecular * specularScalar;
+	vec3 specularColor = uLight.specularIntensity * specularScalar * materialSpecular;
+
+	vec3 emissionColor;
+	if(uEmissionsEnabled) {
+		emissionColor = texture(uMaterial.emissionTexture, iTexCoord).rgb;
+	}
+	
+
+	vec3 combinedLightingColor = ambientLightColor + diffuseColor + specularColor + emissionColor;
 
 	oFragColor = vec4(combinedLightingColor, 1.0);
 }

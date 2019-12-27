@@ -23,6 +23,7 @@ void Renderer::init() {
 
   diffuseTexture.init();
   specularTexture.init();
+  emissionTexture.init();
 
   Log::getLogger()->info("Loading shaders");
   cubeShader.init();
@@ -34,10 +35,12 @@ void Renderer::init() {
   cubeShader.setVec3("uLight.diffuseIntensity", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
   cubeShader.setVec3("uLight.specularIntensity", 1.0f, 1.0f, 1.0f);
 
-  cubeShader.setVec3("uLight.position", 1.2f, 1.0f, 2.0f);
+  cubeShader.setVec3("uLight.position", 1.0f, 1.0f, 1.0f);
 
   cubeShader.setInt("uMaterial.diffuseTexture", diffuseTexture.getTextureUnitNum());
   cubeShader.setInt("uMaterial.specularTexture", specularTexture.getTextureUnitNum());
+  cubeShader.setInt("uMaterial.emissionTexture", emissionTexture.getTextureUnitNum());
+  cubeShader.setBool("uEmissionsEnabled", false);
   cubeShader.setFloat("uMaterial.shininess", 64.0f);
 
   // Other setup
@@ -51,13 +54,17 @@ void Renderer::render() {
 
   diffuseTexture.bind();
   specularTexture.bind();
+  emissionTexture.bind();
 
   cubeShader.use();
 
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = camera->getViewMatrix();
+
   //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-  
+
+  cubeShader.setVec3("uLight.position", cos((float)glfwGetTime()) * 5.0, 0.0f, sin((float)glfwGetTime()) * 5.0);
+
   cubeShader.setMat3("uNormalMatrix", glm::transpose(glm::inverse(model)));
   cubeShader.setVec3("uViewPos", camera->getPosition());
   cubeShader.setMat4("uModel", model);

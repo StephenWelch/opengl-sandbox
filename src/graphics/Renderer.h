@@ -20,6 +20,7 @@ private:
     "shaders/lightmap_textured_model.frag");
   Texture2D diffuseTexture = Texture2D("res/container2.png", GL_TEXTURE0);
   Texture2D specularTexture = Texture2D("res/container2_specular.png", GL_TEXTURE1);
+  Texture2D emissionTexture = Texture2D("res/matrix.jpg", GL_TEXTURE2);
 
   std::vector<float> vertices {
       -0.5f, -0.5f, -0.5f,
