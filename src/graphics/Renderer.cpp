@@ -26,56 +26,104 @@ void Renderer::init() {
   emissionTexture.init();
 
   LOG_INFO("Loading shaders");
-  cubeShader.init();
+  lightingShader.init();
 
-  cubeShader.use();
+  lightingShader.use();
 
   // Lighting config
-  cubeShader.setVec3("uLight.ambientIntensity", 0.2f, 0.2f, 0.2f);
-  cubeShader.setVec3("uLight.diffuseIntensity", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
-  cubeShader.setVec3("uLight.specularIntensity", 1.0f, 1.0f, 1.0f);
+  lightingShader.setVec3("uDirectionalLights[0].direction", -0.2f, -1.0f, -0.3f);
+  lightingShader.setVec3("uDirectionalLights[0].ambientIntensity", 0.05f, 0.05f, 0.05f);
+  lightingShader.setVec3("uDirectionalLights[0].diffuseIntensity", 0.4f, 0.4f, 0.4f);
+  lightingShader.setVec3("uDirectionalLights[0].specularIntensity", 0.5f, 0.5f, 0.5f);
+  // point light 1
+  lightingShader.setVec3("uPointLights[0].position", pointLightPositions[0]);
+  lightingShader.setVec3("uPointLights[0].ambientIntensity", 0.05f, 0.05f, 0.05f);
+  lightingShader.setVec3("uPointLights[0].diffuseIntensity", 0.8f, 0.8f, 0.8f);
+  lightingShader.setVec3("uPointLights[0].specularIntensity", 1.0f, 1.0f, 1.0f);
+  lightingShader.setFloat("uPointLights[0].constant", 1.0f);
+  lightingShader.setFloat("uPointLights[0].linear", 0.09);
+  lightingShader.setFloat("uPointLights[0].quadratic", 0.032);
+  // point light 2
+  lightingShader.setVec3("uPointLights[1].position", pointLightPositions[1]);
+  lightingShader.setVec3("uPointLights[1].ambientIntensity", 0.05f, 0.05f, 0.05f);
+  lightingShader.setVec3("uPointLights[1].diffuseIntensity", 0.8f, 0.8f, 0.8f);
+  lightingShader.setVec3("uPointLights[1].specularIntensity", 1.0f, 1.0f, 1.0f);
+  lightingShader.setFloat("uPointLights[1].constant", 1.0f);
+  lightingShader.setFloat("uPointLights[1].linear", 0.09);
+  lightingShader.setFloat("uPointLights[1].quadratic", 0.032);
+  // point light 3
+  lightingShader.setVec3("uPointLights[2].position", pointLightPositions[2]);
+  lightingShader.setVec3("uPointLights[2].ambientIntensity", 0.05f, 0.05f, 0.05f);
+  lightingShader.setVec3("uPointLights[2].diffuseIntensity", 0.8f, 0.8f, 0.8f);
+  lightingShader.setVec3("uPointLights[2].specularIntensity", 1.0f, 1.0f, 1.0f);
+  lightingShader.setFloat("uPointLights[2].constant", 1.0f);
+  lightingShader.setFloat("uPointLights[2].linear", 0.09);
+  lightingShader.setFloat("uPointLights[2].quadratic", 0.032);
+  // point light 4
+  lightingShader.setVec3("uPointLights[3].position", pointLightPositions[3]);
+  lightingShader.setVec3("uPointLights[3].ambientIntensity", 0.05f, 0.05f, 0.05f);
+  lightingShader.setVec3("uPointLights[3].diffuseIntensity", 0.8f, 0.8f, 0.8f);
+  lightingShader.setVec3("uPointLights[3].specularIntensity", 1.0f, 1.0f, 1.0f);
+  lightingShader.setFloat("uPointLights[3].constant", 1.0f);
+  lightingShader.setFloat("uPointLights[3].linear", 0.09);
+  lightingShader.setFloat("uPointLights[3].quadratic", 0.032);
+  // uSpotLights[0]
+  lightingShader.setVec3("uSpotLights[0].ambientIntensity", 0.0f, 0.0f, 0.0f);
+  lightingShader.setVec3("uSpotLights[0].diffuseIntensity", 1.0f, 1.0f, 1.0f);
+  lightingShader.setVec3("uSpotLights[0].specularIntensity", 1.0f, 1.0f, 1.0f);
+  lightingShader.setFloat("uSpotLights[0].constant", 1.0f);
+  lightingShader.setFloat("uSpotLights[0].linear", 0.09);
+  lightingShader.setFloat("uSpotLights[0].quadratic", 0.032);
+  lightingShader.setFloat("uSpotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+  lightingShader.setFloat("uSpotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
 
-  cubeShader.setVec3("uLight.position", 1.0f, 1.0f, 1.0f);
-
-  cubeShader.setInt("uMaterial.diffuseTexture", diffuseTexture.getTextureUnitNum());
-  cubeShader.setInt("uMaterial.specularTexture", specularTexture.getTextureUnitNum());
-  cubeShader.setInt("uMaterial.emissionTexture", emissionTexture.getTextureUnitNum());
-  cubeShader.setBool("uEmissionsEnabled", false);
-  cubeShader.setFloat("uMaterial.shininess", 64.0f);
+  lightingShader.setInt("uMaterial.diffuseTexture", diffuseTexture.getTextureUnitNum());
+  lightingShader.setInt("uMaterial.specularTexture", specularTexture.getTextureUnitNum());
+  lightingShader.setInt("uMaterial.emissionTexture", emissionTexture.getTextureUnitNum());
+  lightingShader.setBool("uEmissionsEnabled", false);
+  lightingShader.setFloat("uMaterial.shininess", 64.0f);
 
   // Other setup
-  cubeShader.setInt("uTexture", 0);
-  cubeShader.setMat4("uProjection", camera->getProjectionMatrix());
+  lightingShader.setMat4("uProjection", camera->getProjectionMatrix());
 
   LOG_INFO("Finished Renderer initialization");
 }
 
 void Renderer::render() {
 
+  lightingShader.use();
+
+  glm::mat4 view = camera->getViewMatrix();
+  lightingShader.setMat4("uView", view);
+  lightingShader.setVec3("uViewPos", camera->getPosition());
+
+  // User
+  lightingShader.setVec3("uSpotLights[0].position", camera->getPosition());
+  lightingShader.setVec3("uSpotLights[0].direction", camera->getTarget());
+
+
   diffuseTexture.bind();
   specularTexture.bind();
   emissionTexture.bind();
 
-  cubeShader.use();
-
-  glm::mat4 model = glm::mat4(1.0f);
-  glm::mat4 view = camera->getViewMatrix();
-
-  //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-
-  cubeShader.setVec3("uLight.position", cos((float)glfwGetTime()) * 5.0, 0.0f, sin((float)glfwGetTime()) * 5.0);
-
-  cubeShader.setMat3("uNormalMatrix", glm::transpose(glm::inverse(model)));
-  cubeShader.setVec3("uViewPos", camera->getPosition());
-  cubeShader.setMat4("uModel", model);
-  cubeShader.setMat4("uView", view);
-
   cubeMesh.bind();
-  cubeMesh.draw();
+  for (unsigned int i = 0; i < 10; i++)
+  {
+    // calculate the model matrix for each object and pass it to shader before drawing
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, cubePositions[i]);
+    float angle = 20.0f * i;
+    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+    lightingShader.setMat4("uModel", model);
+    lightingShader.setMat3("uNormalMatrix", glm::transpose(glm::inverse(model)));
+
+    cubeMesh.draw();
+  }
+
 }
 
 void Renderer::close() {
-  cubeShader.cleanup();
+  lightingShader.cleanup();
   cubeMesh.cleanup();
 }
 
