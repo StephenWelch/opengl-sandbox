@@ -83,10 +83,20 @@ void Camera::setScreenHeight(const float& screenHeight)
 
 glm::mat4 Camera::getViewMatrix() const
 {
-  return glm::lookAt(position, position + target, glm::vec3(0.0f, 1.0f, 0.0f));;
+  return glm::lookAt(position, position + target, WORLD_UP);
 }
 
 glm::mat4 Camera::getProjectionMatrix() const
 {
   return glm::perspective(fieldOfView, screenWidth / screenHeight, minViewDist, maxViewDist);
+}
+
+glm::vec3 Camera::getViewXAxis() const
+{
+  return glm::normalize(glm::cross(getTarget(), WORLD_UP));
+}
+
+glm::vec3 Camera::getViewYAxis() const
+{
+  return glm::normalize(glm::cross(getTarget(), getViewXAxis()));
 }
