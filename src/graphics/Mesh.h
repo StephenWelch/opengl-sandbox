@@ -11,7 +11,9 @@ private:
   const GLint VERTEX_ATTRIB_SIZE = 8;
 
   GLenum usage;
-  std::vector<float> modelData;
+  std::vector<float> vertexData;
+  std::vector<float> normalData;
+  std::vector<float> texCoordData;
   std::vector<int> indexData;
   GLuint vao;
   GLuint vbo;
