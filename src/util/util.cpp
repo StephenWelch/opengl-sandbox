@@ -23,11 +23,11 @@ namespace util {
    * @return The file's contents as a a string
    */
   std::string util::getFileAsString(const std::string& path) {
-    Log::getLogger()->debug("Loading resource: {}/{}",
+    LOG_DEBUG("Loading resource: {}/{}",
       util::getWorkingDirectory(), path);
     std::ifstream file(FILE_PATH_PREFIX + path);
     if (!file) {
-      Log::getLogger()->error("Error opening: {}", path);
+      LOG_ERROR("Error opening: {}", path);
     }
     std::stringstream buffer;
     buffer << file.rdbuf();
@@ -61,7 +61,7 @@ namespace util {
         error = "INVALID_FRAMEBUFFER_OPERATION";
         break;
       }
-      Log::getLogger()->error("{} | {}({})", error, file, line);
+      LOG_ERROR("{} | {}({})", error, file, line);
     }
     return errorCode;
   }

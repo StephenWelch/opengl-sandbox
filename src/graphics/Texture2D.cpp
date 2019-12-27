@@ -4,7 +4,7 @@
 #include "util/Log.h"
 
 void Texture2D::init() {
-  Log::getLogger()->debug("Loading texture {}", filePath);
+  LOG_DEBUG("Loading texture {}", filePath);
   stbi_set_flip_vertically_on_load(true);
 
   // Allocate texture
@@ -28,12 +28,12 @@ void Texture2D::init() {
     glGenerateMipmap(GL_TEXTURE_2D);
   }
   else {
-    Log::getLogger()->error("Failed to load texture {}", filePath);
+    LOG_ERROR("Failed to load texture {}", filePath);
   }
 
   stbi_image_free(data);
 
-  Log::getLogger()->debug("Loaded texture {} with extension {} into id {} on unit {}.", filePath, fileExtension, id, textureUnit);
+  LOG_DEBUG("Loaded texture {} with extension {} into id {} on unit {}.", filePath, fileExtension, id, textureUnit);
 }
 
 void Texture2D::bind() {

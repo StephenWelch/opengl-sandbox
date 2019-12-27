@@ -30,12 +30,12 @@ Mesh::Mesh(const GLenum& usage, const std::vector<float>& vertices, const std::v
   this->indexData = indices;
   this->usage = usage;
 
-  Log::getLogger()->debug("Created mesh with {} vertices and data size of {}", modelData.size() / VERTEX_ATTRIB_SIZE,  modelData.size());
+  LOG_DEBUG("Created mesh with {} vertices and data size of {}", modelData.size() / VERTEX_ATTRIB_SIZE,  modelData.size());
 }
 
 void Mesh::init()
 {
-  Log::getLogger()->debug("Initializing mesh");
+  LOG_DEBUG("Initializing mesh");
   glGenVertexArrays(1, &vao);
   glGenBuffers(1, &vbo);
   glGenBuffers(1, &ebo);
@@ -65,12 +65,12 @@ void Mesh::init()
   
   glBindVertexArray(0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-  Log::getLogger()->debug("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo, ebo);
+  LOG_DEBUG("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo, ebo);
 }
 
 void Mesh::bind()
 {
-  //Log::getLogger()->debug("Binding VAO with ID: {}", vao);
+  //LOG_DEBUG("Binding VAO with ID: {}", vao);
   glBindVertexArray(vao);
 }
 

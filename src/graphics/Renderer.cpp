@@ -14,18 +14,18 @@ GLuint vbo;
 GLuint ebo;
 
 void Renderer::init() {
-  Log::getLogger()->info("Initializing Renderer with {}x{} resolution", width, height);
+  LOG_INFO("Initializing Renderer with {}x{} resolution", width, height);
 
-  Log::getLogger()->info("Creating rendering data structures");
+  LOG_INFO("Creating rendering data structures");
   cubeMesh.init();
 
-  Log::getLogger()->info("Loading textures");
+  LOG_INFO("Loading textures");
 
   diffuseTexture.init();
   specularTexture.init();
   emissionTexture.init();
 
-  Log::getLogger()->info("Loading shaders");
+  LOG_INFO("Loading shaders");
   cubeShader.init();
 
   cubeShader.use();
@@ -47,7 +47,7 @@ void Renderer::init() {
   cubeShader.setInt("uTexture", 0);
   cubeShader.setMat4("uProjection", camera->getProjectionMatrix());
 
-  Log::getLogger()->info("Finished Renderer initialization");
+  LOG_INFO("Finished Renderer initialization");
 }
 
 void Renderer::render() {

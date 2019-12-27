@@ -13,7 +13,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 bool Window::init() {
-  Log::getLogger()->info("Starting Window initialization");
+  LOG_INFO("Starting Window initialization");
 
   // Initialize GLFW
   glfwInit();
@@ -34,7 +34,7 @@ bool Window::init() {
   window = glfwCreateWindow(width, height, "Game", NULL, NULL);
   // If initialization fails, print an error message and terminate GLFW
   if (window == NULL) {
-    Log::getLogger()->error("Failed to create GLFW window, terminating");
+    LOG_ERROR("Failed to create GLFW window, terminating");
     glfwTerminate();
     return false;
   }
@@ -44,20 +44,20 @@ bool Window::init() {
 
   // Initialize GLAD before calling OpenGL
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    Log::getLogger()->error("Failed to initialize GLAD");
+    LOG_ERROR("Failed to initialize GLAD");
     return false;
   }
 
-  Log::getLogger()->debug("OpenGL Info:");
-  Log::getLogger()->debug("Vendor: {0}", glGetString(GL_VENDOR));
-  Log::getLogger()->debug("Renderer: {0}", glGetString(GL_RENDERER));
-  Log::getLogger()->debug("Version: {0}", glGetString(GL_VERSION));
+  LOG_DEBUG("OpenGL Info:");
+  LOG_DEBUG("Vendor: {0}", glGetString(GL_VENDOR));
+  LOG_DEBUG("Renderer: {0}", glGetString(GL_RENDERER));
+  LOG_DEBUG("Version: {0}", glGetString(GL_VERSION));
 
   if (debugOutput) {
     GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
     if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
     {
-      Log::getLogger()->info("Enabling debug output");
+      LOG_INFO("Enabling debug output");
       glEnable(GL_DEBUG_OUTPUT);
       glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
       glDebugMessageCallback(glDebugOutput, nullptr);
@@ -98,7 +98,7 @@ bool Window::init() {
   );*/
 
 
-  Log::getLogger()->info("Window initialization finished");
+  LOG_INFO("Window initialization finished");
 
   return true;
 }
@@ -121,7 +121,7 @@ void Window::cleanup()
 void Window::setSize(const int& newWidth, const int& newHeight) {
   this->width = newWidth;
   this->height = newHeight;
-  Log::getLogger()->debug("Set window size to {}x{}", width, height);
+  LOG_DEBUG("Set window size to {}x{}", width, height);
   glViewport(0, 0, width, height);
 }
 
@@ -270,7 +270,7 @@ void Window::glDebugOutput(unsigned int source, unsigned int type,
     break;
   }
 
-  Log::getLogger()->error("\nDebug message ({}): \n{}\n{}\n{}\n{}", id, message, sourceMessage, typeMessage, severityMessage);
+  LOG_ERROR("\nDebug message ({}): \n{}\n{}\n{}\n{}", id, message, sourceMessage, typeMessage, severityMessage);
 
 
 }

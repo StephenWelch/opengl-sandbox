@@ -44,11 +44,11 @@ void Shader::init() {
   glCompileShader(fragmentId);
 
   if (!shaderCompiledSuccessfully(vertexId)) {
-    Log::getLogger()->error("Error compiling shader {}:\n{}", vertexPath,
+    LOG_ERROR("Error compiling shader {}:\n{}", vertexPath,
       getShaderCompilationErrors(vertexId));
   }
   if (!shaderCompiledSuccessfully(fragmentId)) {
-    Log::getLogger()->error("Error compiling shader {}:\n{}", fragmentPath,
+    LOG_ERROR("Error compiling shader {}:\n{}", fragmentPath,
       getShaderCompilationErrors(fragmentId));
   }
 
@@ -58,7 +58,7 @@ void Shader::init() {
   glLinkProgram(programId);
 
   if (!programLinkedSuccessfully(programId)) {
-    Log::getLogger()->error("Error linking shader program:\n{}",
+    LOG_ERROR("Error linking shader program:\n{}",
       getProgramLinkErrors(programId));
   }
 
