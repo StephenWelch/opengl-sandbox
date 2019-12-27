@@ -23,10 +23,9 @@ int Game::run() {
     window->clear(0, 0, 0, 0);
     renderer->render();
     window->update();
-
   }
   renderer->close();
-  window->close();
+  window->cleanup();
 
   return 0;
 }

@@ -17,13 +17,14 @@ public:
   Window(const char* title, const int& width, const int& height, const bool& debugOutput = false) : title(const_cast<char*>(title)), width(width), height(height), debugOutput(debugOutput) {};
   bool init();
   void update();
+  void cleanup();
   bool isKeyPressed(const int& key);
   bool isKeyReleased(const int& key);
   double getMouseX();
   double getMouseY();
   void setTitle(std::string title);
   void clear(const float& r, const float& g, const float& b, const float& a);
-  void close();
+  void requestClose();
   bool closeRequested();
   int getWidth() const;
   int getHeight() const;

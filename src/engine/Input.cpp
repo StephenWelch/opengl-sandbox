@@ -76,7 +76,7 @@ void Input::updateCameraControls()
 void Input::updateWindowControls()
 {
   if (window->isKeyPressed(GLFW_KEY_ESCAPE)) {
-    window->close();
+    window->requestClose();
   }
   if (window->isKeyPressed(GLFW_KEY_F)) {
     window->setWireframe(true);

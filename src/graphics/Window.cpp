@@ -20,20 +20,18 @@ bool Window::init() {
   // Clear errors
   // glGetError();
 
+  glfwDefaultWindowHints();
   // Set OpenGL version to 4.3
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
   // Set OpenGL profile to Core
   glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
   if(debugOutput) {
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
   }
 
   // Create a window object
   window = glfwCreateWindow(width, height, "Game", NULL, NULL);
-
   // If initialization fails, print an error message and terminate GLFW
   if (window == NULL) {
     Log::getLogger()->error("Failed to create GLFW window, terminating");
@@ -50,6 +48,11 @@ bool Window::init() {
     return false;
   }
 
+  Log::getLogger()->debug("OpenGL Info:");
+  Log::getLogger()->debug("Vendor: {0}", glGetString(GL_VENDOR));
+  Log::getLogger()->debug("Renderer: {0}", glGetString(GL_RENDERER));
+  Log::getLogger()->debug("Version: {0}", glGetString(GL_VERSION));
+
   if (debugOutput) {
     GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
     if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
@@ -65,14 +68,8 @@ bool Window::init() {
     }
   }
 
-  Log::getLogger()->debug("OpenGL Info:");
-  Log::getLogger()->debug("Vendor: {0}", glGetString(GL_VENDOR));
-  Log::getLogger()->debug("Renderer: {0}", glGetString(GL_RENDERER));
-  Log::getLogger()->debug("Version: {0}", glGetString(GL_VERSION));
-
   glfwSetWindowUserPointer(window, this);
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
   // Set OpenGL viewport dimensions to same size as window
   glViewport(0, 0, width, height);
   glEnable(GL_DEPTH_TEST);
@@ -107,18 +104,18 @@ bool Window::init() {
 }
 
 void Window::update() {
-  if (!glfwWindowShouldClose(window)) {
-    glfwSwapBuffers(window);
-    frameTimer.mark();
-    double frameTime = frameTimer.getMovingAverage();
-    double fps = 1.0 / frameTime;
-    std::string title = "FPS: " + std::to_string(fps) + " MPF: " + std::to_string(frameTime * 1000.0);
-    setTitle(title.c_str());
-    glfwPollEvents();
-  }
-  else {
-    glfwTerminate();
-  }
+  glfwSwapBuffers(window);
+  frameTimer.mark();
+  double frameTime = frameTimer.getMovingAverage();
+  double fps = 1.0 / frameTime;
+  std::string title = "FPS: " + std::to_string(fps) + " MPF: " + std::to_string(frameTime * 1000.0);
+  setTitle(title.c_str());
+  glfwPollEvents();
+}
+
+void Window::cleanup()
+{
+  glfwTerminate();
 }
 
 void Window::setSize(const int& newWidth, const int& newHeight) {
@@ -183,10 +180,10 @@ void Window::clear(const float& r, const float& g, const float& b,
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Window::close() { glfwSetWindowShouldClose(window, true); }
+void Window::requestClose() { glfwSetWindowShouldClose(window, true); }
 
 bool Window::closeRequested() {
-  return static_cast<bool>(glfwWindowShouldClose(window));
+  return glfwWindowShouldClose(window) == GL_TRUE;
 }
 
 int Window::getWidth() const
