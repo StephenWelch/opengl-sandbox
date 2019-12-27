@@ -33,7 +33,7 @@ void Texture2D::init() {
 
   stbi_image_free(data);
 
-  Log::getLogger()->debug("Loaded texture id {} on unit {} from {} with extension {}.", id, textureUnit, filePath, fileExtension);
+  Log::getLogger()->debug("Loaded texture {} with extension {} into id {} on unit {}.", filePath, fileExtension, id, textureUnit);
 }
 
 void Texture2D::bind() {
@@ -58,11 +58,9 @@ void Texture2D::createTexture(const int& width, const int& height, const unsigne
   GLuint colorChannels = GL_RGBA;
   if (fileExtension == "jpg") {
     colorChannels = GL_RGB;
-    Log::getLogger()->debug("Loading RGB texture");
   }
   else if (fileExtension == "png") {
     colorChannels = GL_RGBA;
-    Log::getLogger()->debug("Loading RGBA texture");
   }
   glTexImage2D(GL_TEXTURE_2D, 0, colorChannels, width, height, 0, colorChannels,
     GL_UNSIGNED_BYTE, data);

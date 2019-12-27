@@ -10,6 +10,4 @@ void Log::init() {
   // Color, timestamp, name of logger, message
   spdlog::set_pattern("%^[%T] %n: %v%$");
   logger = spdlog::stdout_color_mt("ENGINE");
-
-  logger->set_level(spdlog::level::trace);
 }

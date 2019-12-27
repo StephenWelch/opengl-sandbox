@@ -9,7 +9,7 @@ Mesh::Mesh(const GLenum& usage, const std::vector<float>& vertices, const std::v
   int currentVertex = 0;
   int currentNormal = 0;
   int currentTextureCoord = 0;
-  Log::getLogger()->debug("Num data: {}", numElements);
+
   while(modelData.size() < numElements) {
     // Pack vertices
     this->modelData.push_back(vertices[currentVertex]);
@@ -40,9 +40,6 @@ void Mesh::init()
   glGenBuffers(1, &vbo);
   glGenBuffers(1, &ebo);
 
-  Log::getLogger()->debug("Created VAO with ID: {}", vao);
-  Log::getLogger()->debug("Created VBO with ID: {}", vbo);
-
   glBindVertexArray(vao);
   
 
@@ -68,7 +65,7 @@ void Mesh::init()
   
   glBindVertexArray(0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-  Log::getLogger()->debug("Finished mesh initialization");
+  Log::getLogger()->debug("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo, ebo);
 }
 
 void Mesh::bind()

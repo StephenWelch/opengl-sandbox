@@ -8,6 +8,7 @@
 
 int Game::run() {
   Log::init();
+  Log::getLogger()->set_level(spdlog::level::trace);
 
   auto camera = std::make_unique<Camera>(45.0f, 800, 600);
   auto renderer = std::make_unique<Renderer>(camera, 800, 600);
