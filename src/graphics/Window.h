@@ -5,6 +5,8 @@
 #include <string>
 #include <util\SimpleTimer.h>
 
+#define FRAME_STAT_UPDATE_INTERVAL 1.0/20.0
+
 class Window {
 private:
   GLFWwindow* window;
@@ -13,6 +15,7 @@ private:
   int height;
   bool debugOutput;
   SimpleTimer frameTimer;
+  SimpleTimer frameStatUpdateTimer;
 public:
   Window(const char* title, const int& width, const int& height, const bool& debugOutput = false) : title(const_cast<char*>(title)), width(width), height(height), debugOutput(debugOutput) {};
   bool init();

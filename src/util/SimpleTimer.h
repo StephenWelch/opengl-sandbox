@@ -8,10 +8,11 @@ private:
   double lastTime;
   double deltaTime;
   double currentTime;
-  MovingAverage movingAverage = MovingAverage(10000);
+  MovingAverage movingAverage = MovingAverage(100);
 
 public:
   double mark();
   double getDelta();
   double getMovingAverage();
+  double getLastMarkTime() const;
 };

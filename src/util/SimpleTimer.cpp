@@ -22,3 +22,8 @@ double SimpleTimer::getMovingAverage()
   return movingAverage.getAverage();
 }
 
+double SimpleTimer::getLastMarkTime() const
+{
+  return lastTime;
+}
+
