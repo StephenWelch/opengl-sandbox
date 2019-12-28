@@ -88,8 +88,7 @@ void main() {
 	}
 	
 	vec3 combinedLightingColor = directionalLightColor + pointLightColor + spotLightColor + emissionColor;
-//	vec3 combinedLightingColor = pointLightColor + emissionColor;
-//
+
 	oFragColor = vec4(combinedLightingColor, 1.0);
 }
 

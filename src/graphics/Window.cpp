@@ -145,6 +145,16 @@ void Window::setWireframe(const bool& on)
   }
 }
 
+void Window::setCulling(const bool& on)
+{
+  if (on) {
+    glEnable(GL_CULL_FACE);
+  }
+  else {
+    glDisable(GL_CULL_FACE);
+  }
+}
+
 bool Window::isKeyPressed(const int& key) {
   return glfwGetKey(window, key) == GLFW_PRESS;
 }

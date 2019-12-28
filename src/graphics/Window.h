@@ -31,6 +31,7 @@ public:
   void setSize(const int& newWidth, const int& newHeight);
   void setVsync(const bool& on);
   void setWireframe(const bool& on);
+  void setCulling(const bool& on);
   //void framebuffer_size_callback(GLFWwindow *window, int width, int height);
   static void glDebugOutput(GLenum source, GLenum type, GLuint id,
     GLenum severity, GLsizei length,

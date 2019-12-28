@@ -4,7 +4,6 @@ void Input::init()
 {
 }
 
-// TODO Simplfy by rewriting with vec3
 void Input::update() {
   float currentTime = glfwGetTime();
   dt = currentTime - lastTime;
@@ -20,7 +19,7 @@ void Input::update() {
   updateCameraControls();
   updateWindowControls();
 
-  
+ 
   lastTime = currentTime;
   lastMousePos = mousePos;
 }
@@ -83,5 +82,11 @@ void Input::updateWindowControls()
   }
   if (window->isKeyReleased(GLFW_KEY_F)) {
     window->setWireframe(false);
+  }
+  if (window->isKeyPressed(GLFW_KEY_C)) {
+    window->setCulling(true);
+  }
+  if (window->isKeyReleased(GLFW_KEY_C)) {
+    window->setCulling(false);
   }
 }
