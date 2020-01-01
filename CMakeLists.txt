@@ -14,8 +14,11 @@ endif()
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
+set(BUILD_ASSIMP_TOOLS  ON)
+set(ASSIMP_BUILD_STATIC_LIB ON)
 add_subdirectory(include/glfw)
 add_subdirectory(include/glm)
+add_subdirectory(include/assimp)
 
 add_definitions(-DGLFW_INCLUDE_NONE
         -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
@@ -39,7 +42,7 @@ add_library(glad include/glad/src/glad.c)
 #add_library(stb_image include/stb_image/stb_image.cpp)
 #find_package(OpenGL REQUIRED)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} glad glfw ${GLFW_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} assimp glad glfw ${GLFW_LIBRARIES})
 #target_link_libraries(${CMAKE_PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
 set (resourceSourcePath "${CMAKE_SOURCE_DIR}/res")
