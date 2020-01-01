@@ -1,12 +1,12 @@
 #pragma once
 #include <glm/glm.hpp>
+
+#define DEFAULT_MIN_VIEW_DIST 0.1f
+#define DEFAULT_MAX_VIEW_DIST 100.0f
+
 class Camera
 {
 private:
-  const float DEFAULT_MIN_VIEW_DIST = 0.1f;
-  const float DEFAULT_MAX_VIEW_DIST = 100.0f;
-  
-
   float fieldOfView;
   float minViewDist, maxViewDist;
   float screenWidth, screenHeight;

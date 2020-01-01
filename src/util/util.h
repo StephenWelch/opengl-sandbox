@@ -18,8 +18,9 @@
 #define GetCurrentDir getcwd
 #endif
 
+#define FILE_PATH_PREFIX ""
+
 namespace util {
-  const std::string FILE_PATH_PREFIX = "";
 
   std::string getWorkingDirectory();
   std::string getFileAsString(const std::string& path);
