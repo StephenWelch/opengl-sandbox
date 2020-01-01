@@ -1,15 +1,22 @@
 #include "Mesh.h"
 #include <util\Log.h>
 
-Mesh::Mesh(const GLenum& usage, const std::vector<float>& vertices, const std::vector<float> normals, const std::vector<float>& textureCoords, const std::vector<int>& indices)
+Mesh::Mesh(const GLenum& usage, const std::vector<glm::vec3>& vertices, const std::vector<glm::vec3> normals, const std::vector<glm::vec2>& textureCoords, const std::vector<GLuint>& indices)
 {
-  this->vertexData = vertices;
-  this->normalData = normals;
-  this->texCoordData = textureCoords;
-  this->indexData = indices;
   this->usage = usage;
+  for (int i = 0; i < vertices.size(); i++) {
+    vertexData.push_back(Vertex{ vertices[i], normals[i], textureCoords[i] });
+  }
+  this->indexData = indices;
+}
 
-  LOG_DEBUG("Created mesh with {} vertices",  vertexData.size());
+Mesh::Mesh(const GLenum& usage, const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices)
+{
+  this->usage = usage;
+  this->vertexData = vertices;
+  this->indexData = indices;
+
+  LOG_DEBUG("Created mesh with {} vertices", vertexData.size());
 }
 
 void Mesh::init()
@@ -22,34 +29,24 @@ void Mesh::init()
   glBindVertexArray(vao);
   
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexData.size() * sizeof(GLuint), indexData.data(), usage);
+
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(Vertex), vertexData.data(), usage);
+
+  glVertexAttribPointer(0, VERTEX_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+    (void*)offsetof(Vertex, position));
+  glVertexAttribPointer(1, NORMAL_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+    (void*)offsetof(Vertex, normal));
+  glVertexAttribPointer(2, TEX_COORD_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+    (void*)offsetof(Vertex, texCoords));
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
     
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexData.size() * sizeof(float), indexData.data(), usage);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-      int vertexDataSize = vertexData.size() * sizeof(float);
-      int normalDataSize = normalData.size() * sizeof(float);
-      int texCoordDataSize = texCoordData.size() * sizeof(float);
-
-      glBufferData(GL_ARRAY_BUFFER, vertexDataSize + normalDataSize + texCoordDataSize, nullptr, usage);
-      glBufferSubData(GL_ARRAY_BUFFER, 0, vertexDataSize, vertexData.data());
-      glBufferSubData(GL_ARRAY_BUFFER, vertexDataSize, normalDataSize, normalData.data());
-      glBufferSubData(GL_ARRAY_BUFFER, vertexDataSize + normalDataSize, texCoordDataSize, texCoordData.data());
-
-      glVertexAttribPointer(0, VERTEX_SIZE, GL_FLOAT, GL_FALSE, VERTEX_SIZE * sizeof(float),
-        (void*)0);
-      glVertexAttribPointer(1, NORMAL_SIZE, GL_FLOAT, GL_FALSE, NORMAL_SIZE * sizeof(float),
-        (void*)(vertexDataSize));
-      glVertexAttribPointer(2, TEX_COORD_SIZE, GL_FLOAT, GL_FALSE, TEX_COORD_SIZE * sizeof(float),
-        (void*)(vertexDataSize + normalDataSize));
-
-      glEnableVertexAttribArray(0);
-      glEnableVertexAttribArray(1);
-      glEnableVertexAttribArray(2);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-  
   glBindVertexArray(0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   LOG_DEBUG("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo, ebo);

@@ -1,25 +1,32 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 #include <vector>
 
 class Mesh {
 private:
+
+  struct Vertex {
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 texCoords;
+  };
+
   const GLint VERTEX_SIZE = 3;
   const GLint NORMAL_SIZE = 3;
   const GLint TEX_COORD_SIZE = 2;
-  const GLint VERTEX_ATTRIB_SIZE = 8;
 
   GLenum usage;
-  std::vector<float> vertexData;
-  std::vector<float> normalData;
-  std::vector<float> texCoordData;
-  std::vector<int> indexData;
+  std::vector<Vertex> vertexData;
+  std::vector<GLuint> indexData;
   GLuint vao;
   GLuint vbo;
   GLuint ebo;
+
 public:
-  Mesh(const GLenum& usage, const std::vector<float>& vertices, const std::vector<float> normals, const std::vector<float>& textureCoords, const std::vector<int>& indices);
+  Mesh(const GLenum& usage, const std::vector<glm::vec3>& vertices, const std::vector<glm::vec3> normals, const std::vector<glm::vec2>& textureCoords, const std::vector<GLuint>& indices);
+  Mesh(const GLenum& usage, const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices);
   void init();
   void bind();
   void draw();
