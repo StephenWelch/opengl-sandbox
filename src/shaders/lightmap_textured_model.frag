@@ -3,7 +3,7 @@
 struct Material {
 	sampler2D diffuseTexture;
 	sampler2D specularTexture;
-	sampler2D emissionTexture;
+	sampler2D emissiveTexture;
 	float shininess;
 };
 
@@ -84,7 +84,7 @@ void main() {
 	}
 	vec3 emissionColor;
 	if(uEmissionsEnabled) {
-		emissionColor = texture(uMaterial.emissionTexture, iTexCoord).rgb;
+		emissionColor = texture(uMaterial.emissiveTexture, iTexCoord).rgb;
 	}
 	
 	vec3 combinedLightingColor = directionalLightColor + pointLightColor + spotLightColor + emissionColor;

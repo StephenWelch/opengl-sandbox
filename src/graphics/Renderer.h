@@ -12,6 +12,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <array>
+#include <graphics\Model.h>
 
 class Renderer {
 private:
@@ -22,9 +23,6 @@ private:
 
   Shader lightingShader = Shader("shaders/lightmap_textured_model.vert",
     "shaders/lightmap_textured_model.frag");
-  Texture2D diffuseTexture = Texture2D("res/container2.png", GL_TEXTURE0);
-  Texture2D specularTexture = Texture2D("res/container2_specular.png", GL_TEXTURE1);
-  Texture2D emissionTexture = Texture2D("res/matrix.jpg", GL_TEXTURE2);
 
   // positions all containers
   std::vector<glm::vec3> cubePositions = {
@@ -186,7 +184,11 @@ private:
       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36
   };
 
+  Texture2D diffuseTexture = Texture2D(Texture2D::TextureType::DIFFUSE, "res/container2.png", GL_TEXTURE0);
+  Texture2D specularTexture = Texture2D(Texture2D::TextureType::SPECULAR, "res/container2_specular.png", GL_TEXTURE1);
+  Texture2D emissionTexture = Texture2D(Texture2D::TextureType::EMISSIVE, "res/matrix.jpg", GL_TEXTURE2);
   Mesh cubeMesh = Mesh(GL_STATIC_DRAW, vertices, normals, textureCoords, indices);
+  Model model = Model(cubeMesh, { diffuseTexture, specularTexture, emissionTexture });
 
 public:
   Renderer(const std::unique_ptr<Camera>& camera, const int& width, const int& height)

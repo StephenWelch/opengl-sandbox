@@ -41,6 +41,15 @@ void Texture2D::bind() {
   glBindTexture(GL_TEXTURE_2D, id);
 }
 
+void Texture2D::cleanup()
+{
+}
+
+Texture2D::TextureType Texture2D::getType() const
+{
+  return type;
+}
+
 GLuint Texture2D::getId() const {
   return id;
 }

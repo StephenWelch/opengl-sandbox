@@ -16,14 +16,8 @@ GLuint ebo;
 void Renderer::init() {
   LOG_INFO("Initializing Renderer with {}x{} resolution", width, height);
 
-  LOG_INFO("Creating rendering data structures");
-  cubeMesh.init();
-
-  LOG_INFO("Loading textures");
-
-  diffuseTexture.init();
-  specularTexture.init();
-  emissionTexture.init();
+  LOG_INFO("Loading models");
+  model.init();
 
   LOG_INFO("Loading shaders");
   lightingShader.init();
@@ -76,10 +70,24 @@ void Renderer::init() {
   lightingShader.setFloat("uSpotLights[0].quadratic", 0.032);
   lightingShader.setFloat("uSpotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
   lightingShader.setFloat("uSpotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+  
+  for (const Texture2D& texture : model.getTextures()) {
+    std::string type;
+    switch (texture.getType()) {
+    case Texture2D::TextureType::SPECULAR:
+      type = "specular";
+      break;
+    case Texture2D::TextureType::DIFFUSE:
+      type = "diffuse";
+      break;
+    case Texture2D::TextureType::EMISSIVE:
+      type = "emissive";
+      break;
+    }
+    LOG_DEBUG("uMaterial." + type + "Texture");
+    lightingShader.setInt("uMaterial." + type + "Texture", texture.getTextureUnitNum());
+  }
 
-  lightingShader.setInt("uMaterial.diffuseTexture", diffuseTexture.getTextureUnitNum());
-  lightingShader.setInt("uMaterial.specularTexture", specularTexture.getTextureUnitNum());
-  lightingShader.setInt("uMaterial.emissionTexture", emissionTexture.getTextureUnitNum());
   lightingShader.setBool("uEmissionsEnabled", false);
   lightingShader.setFloat("uMaterial.shininess", 64.0f);
 
@@ -93,8 +101,8 @@ void Renderer::render() {
 
   lightingShader.use();
 
-  glm::mat4 view = camera->getViewMatrix();
-  lightingShader.setMat4("uView", view);
+  glm::mat4 viewMatrix = camera->getViewMatrix();
+  lightingShader.setMat4("uView", viewMatrix);
   lightingShader.setVec3("uViewPos", camera->getPosition());
 
   // User
@@ -102,29 +110,25 @@ void Renderer::render() {
   lightingShader.setVec3("uSpotLights[0].direction", camera->getTarget());
 
 
-  diffuseTexture.bind();
-  specularTexture.bind();
-  emissionTexture.bind();
-
-  cubeMesh.bind();
+  model.bind();
   for (unsigned int i = 0; i < 10; i++)
   {
     // calculate the model matrix for each object and pass it to shader before drawing
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, cubePositions[i]);
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
     float angle = 20.0f * i;
-    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-    lightingShader.setMat4("uModel", model);
-    lightingShader.setMat3("uNormalMatrix", glm::transpose(glm::inverse(model)));
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+    lightingShader.setMat4("uModel", modelMatrix);
+    lightingShader.setMat3("uNormalMatrix", glm::transpose(glm::inverse(modelMatrix)));
 
-    cubeMesh.draw();
+    model.draw();
   }
 
 }
 
 void Renderer::close() {
   lightingShader.cleanup();
-  cubeMesh.cleanup();
+  model.cleanup();
 }
 
 void Renderer::setWidth(const int& width) { this->width = width; }
