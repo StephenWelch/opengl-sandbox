@@ -1,5 +1,9 @@
 #version 330 core
 
+#define NUM_DIRECTIONAL_LIGHTS 1
+#define NUM_POINT_LIGHTS 4
+#define NUM_SPOTLIGHTS 1
+
 struct Material {
 	sampler2D diffuseTexture;
 	sampler2D specularTexture;
@@ -43,9 +47,20 @@ struct SpotLight {
 	float outerCutOff;
 };
 
-#define NUM_DIRECTIONAL_LIGHTS 1
-#define NUM_POINT_LIGHTS 4
-#define NUM_SPOTLIGHTS 1
+uniform uDirectionalLights {
+	DirectionalLight directionalLights[NUM_DIRECTIONAL_LIGHTS];
+	int numDirectionalLights;
+};
+
+uniform uPointLights {
+	PointLight pointLights[NUM_POINT_LIGHTS];
+	int numPointLights;
+};
+
+uniform uSpotLights {
+	SpotLight spotLights[NUM_SPOTLIGHTS];
+	int numSpotLights;
+};
 
 out vec4 oFragColor;
 
@@ -57,10 +72,6 @@ uniform Material uMaterial;
 uniform vec3 uViewPos;
 uniform bool uEmissionsEnabled = false;
 
-uniform DirectionalLight uDirectionalLights[NUM_DIRECTIONAL_LIGHTS];
-uniform PointLight uPointLights[NUM_POINT_LIGHTS];
-uniform SpotLight uSpotLights[NUM_SPOTLIGHTS];
-
 vec3 calcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection);
 vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDirection);
 vec3 calcSpotLight(SpotLight light, vec3 normal, vec3 viewDirection);
@@ -71,16 +82,16 @@ void main() {
 	vec3 viewDirection = normalize(uViewPos - iFragPos);
 
 	vec3 directionalLightColor;
-	for(int i = 0; i < NUM_DIRECTIONAL_LIGHTS; i++) {
-		directionalLightColor += calcDirectionalLight(uDirectionalLights[i], normal, viewDirection);
+	for(int i = 0; i < numDirectionalLights; i++) {
+		directionalLightColor += calcDirectionalLight(directionalLights[i], normal, viewDirection);
 	}
 	vec3 pointLightColor;
-	for(int i = 0; i < NUM_POINT_LIGHTS; i++) {
-		pointLightColor += calcPointLight(uPointLights[i], normal, viewDirection);
+	for(int i = 0; i < numPointLights; i++) {
+		pointLightColor += calcPointLight(pointLights[i], normal, viewDirection);
 	}
 	vec3 spotLightColor;
-	for(int i = 0; i < NUM_SPOTLIGHTS; i++) {
-		spotLightColor += calcSpotLight(uSpotLights[i], normal, viewDirection);
+	for(int i = 0; i < numSpotLights; i++) {
+		spotLightColor += calcSpotLight(spotLights[i], normal, viewDirection);
 	}
 	vec3 emissionColor;
 	if(uEmissionsEnabled) {

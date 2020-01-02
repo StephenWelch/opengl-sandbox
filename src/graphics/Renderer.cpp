@@ -25,51 +25,108 @@ void Renderer::init() {
   lightingShader.use();
 
   // Lighting config
-  lightingShader.setVec3("uDirectionalLights[0].direction", -0.2f, -1.0f, -0.3f);
+  /*lightingShader.setVec3("uDirectionalLights[0].direction", -0.2f, -1.0f, -0.3f);
   lightingShader.setVec3("uDirectionalLights[0].ambientIntensity", 0.05f, 0.05f, 0.05f);
   lightingShader.setVec3("uDirectionalLights[0].diffuseIntensity", 0.4f, 0.4f, 0.4f);
-  lightingShader.setVec3("uDirectionalLights[0].specularIntensity", 0.5f, 0.5f, 0.5f);
+  lightingShader.setVec3("uDirectionalLights[0].specularIntensity", 0.5f, 0.5f, 0.5f);*/
+  directionalLights.push_back({ 
+    {-0.2f, -1.0f, -0.3f},
+    {0.05f, 0.05f, 0.05f},
+    {0.4f, 0.4f, 0.4f},
+    {0.5f, 0.5f, 0.5f}
+  });
   // point light 1
-  lightingShader.setVec3("uPointLights[0].position", pointLightPositions[0]);
+  /*lightingShader.setVec3("uPointLights[0].position", pointLightPositions[0]);
   lightingShader.setVec3("uPointLights[0].ambientIntensity", 0.05f, 0.05f, 0.05f);
   lightingShader.setVec3("uPointLights[0].diffuseIntensity", 0.8f, 0.8f, 0.8f);
   lightingShader.setVec3("uPointLights[0].specularIntensity", 1.0f, 1.0f, 1.0f);
   lightingShader.setFloat("uPointLights[0].constant", 1.0f);
   lightingShader.setFloat("uPointLights[0].linear", 0.09);
-  lightingShader.setFloat("uPointLights[0].quadratic", 0.032);
+  lightingShader.setFloat("uPointLights[0].quadratic", 0.032);*/
+  pointLights.push_back({
+    pointLightPositions[0],
+    {0.05f, 0.05f, 0.05f},
+    {0.8f, 0.8f, 0.8f},
+    {1.0f, 1.0f, 1.0f},
+    1.0f,
+    0.09,
+    0.032
+  });
   // point light 2
-  lightingShader.setVec3("uPointLights[1].position", pointLightPositions[1]);
+  /*lightingShader.setVec3("uPointLights[1].position", pointLightPositions[1]);
   lightingShader.setVec3("uPointLights[1].ambientIntensity", 0.05f, 0.05f, 0.05f);
   lightingShader.setVec3("uPointLights[1].diffuseIntensity", 0.8f, 0.8f, 0.8f);
   lightingShader.setVec3("uPointLights[1].specularIntensity", 1.0f, 1.0f, 1.0f);
   lightingShader.setFloat("uPointLights[1].constant", 1.0f);
   lightingShader.setFloat("uPointLights[1].linear", 0.09);
-  lightingShader.setFloat("uPointLights[1].quadratic", 0.032);
+  lightingShader.setFloat("uPointLights[1].quadratic", 0.032);*/
+  pointLights.push_back({
+    pointLightPositions[1],
+    {0.05f, 0.05f, 0.05f},
+    {0.8f, 0.8f, 0.8f},
+    {1.0f, 1.0f, 1.0f},
+    1.0f,
+    0.09,
+    0.032
+    });
   // point light 3
-  lightingShader.setVec3("uPointLights[2].position", pointLightPositions[2]);
+  /*lightingShader.setVec3("uPointLights[2].position", pointLightPositions[2]);
   lightingShader.setVec3("uPointLights[2].ambientIntensity", 0.05f, 0.05f, 0.05f);
   lightingShader.setVec3("uPointLights[2].diffuseIntensity", 0.8f, 0.8f, 0.8f);
   lightingShader.setVec3("uPointLights[2].specularIntensity", 1.0f, 1.0f, 1.0f);
   lightingShader.setFloat("uPointLights[2].constant", 1.0f);
   lightingShader.setFloat("uPointLights[2].linear", 0.09);
-  lightingShader.setFloat("uPointLights[2].quadratic", 0.032);
+  lightingShader.setFloat("uPointLights[2].quadratic", 0.032);*/
+  pointLights.push_back({
+    pointLightPositions[2],
+    {0.05f, 0.05f, 0.05f},
+    {0.8f, 0.8f, 0.8f},
+    {1.0f, 1.0f, 1.0f},
+    1.0f,
+    0.09,
+    0.032
+  });
   // point light 4
-  lightingShader.setVec3("uPointLights[3].position", pointLightPositions[3]);
+  /*lightingShader.setVec3("uPointLights[3].position", pointLightPositions[3]);
   lightingShader.setVec3("uPointLights[3].ambientIntensity", 0.05f, 0.05f, 0.05f);
   lightingShader.setVec3("uPointLights[3].diffuseIntensity", 0.8f, 0.8f, 0.8f);
   lightingShader.setVec3("uPointLights[3].specularIntensity", 1.0f, 1.0f, 1.0f);
   lightingShader.setFloat("uPointLights[3].constant", 1.0f);
   lightingShader.setFloat("uPointLights[3].linear", 0.09);
-  lightingShader.setFloat("uPointLights[3].quadratic", 0.032);
+  lightingShader.setFloat("uPointLights[3].quadratic", 0.032);*/
+  pointLights.push_back({
+    pointLightPositions[3],
+    {0.05f, 0.05f, 0.05f},
+    {0.8f, 0.8f, 0.8f},
+    {1.0f, 1.0f, 1.0f},
+    1.0f,
+    0.09,
+    0.032
+    });
   // uSpotLights[0]
-  lightingShader.setVec3("uSpotLights[0].ambientIntensity", 0.0f, 0.0f, 0.0f);
+  /*lightingShader.setVec3("uSpotLights[0].ambientIntensity", 0.0f, 0.0f, 0.0f);
   lightingShader.setVec3("uSpotLights[0].diffuseIntensity", 1.0f, 1.0f, 1.0f);
   lightingShader.setVec3("uSpotLights[0].specularIntensity", 1.0f, 1.0f, 1.0f);
   lightingShader.setFloat("uSpotLights[0].constant", 1.0f);
   lightingShader.setFloat("uSpotLights[0].linear", 0.09);
   lightingShader.setFloat("uSpotLights[0].quadratic", 0.032);
   lightingShader.setFloat("uSpotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-  lightingShader.setFloat("uSpotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+  lightingShader.setFloat("uSpotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));*/
+  spotLights.push_back({
+    glm::vec3(),
+    glm::vec3(),
+    {0.0f, 0.0f, 0.0f},
+    {1.0f, 1.0f, 1.0f},
+    {1.0f, 1.0f, 1.0f},
+    1.0f,
+    0.09,
+    0.032,
+    glm::cos(glm::radians(12.5f)),
+    glm::cos(glm::radians(15.0f))
+  });
+  lightingShader.setInt("numDirectionalLights", 1);
+  lightingShader.setInt("numPointLights", 4);
+  lightingShader.setInt("numSpotLights", 1);
   
   for (const Texture2D& texture : model.getTextures()) {
     std::string type;
@@ -106,8 +163,8 @@ void Renderer::render() {
   lightingShader.setVec3("uViewPos", camera->getPosition());
 
   // User
-  lightingShader.setVec3("uSpotLights[0].position", camera->getPosition());
-  lightingShader.setVec3("uSpotLights[0].direction", camera->getTarget());
+  lightingShader.setVec3("spotLights[0].position", camera->getPosition());
+  lightingShader.setVec3("spotLights[0].direction", camera->getTarget());
 
 
   model.bind();

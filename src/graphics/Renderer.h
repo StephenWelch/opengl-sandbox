@@ -16,13 +16,53 @@
 
 class Renderer {
 private:
-  int width;
-  int height;
+
+  struct DirectionalLight {
+    glm::vec3 direction;
+
+    glm::vec3 ambientIntensity;
+    glm::vec3 diffuseIntensity;
+    glm::vec3 specularIntensity;
+  };
+
+  struct PointLight {
+    glm::vec3 position;
+
+    glm::vec3 ambientIntensity;
+    glm::vec3 diffuseIntensity;
+    glm::vec3 specularIntensity;
+
+    float constant;
+    float linear;
+    float quadratic;
+  };
+
+  struct SpotLight {
+    glm::vec3 position;
+    glm::vec3 direction;
+
+    glm::vec3 ambientIntensity;
+    glm::vec3 diffuseIntensity;
+    glm::vec3 specularIntensity;
+
+    float constant;
+    float linear;
+    float quadratic;
+
+    float cutOff;
+    float outerCutOff;
+  };
 
   const std::unique_ptr<Camera>& camera;
+  std::vector<DirectionalLight> directionalLights;
+  std::vector<PointLight> pointLights;
+  std::vector<SpotLight> spotLights;
 
+  int width;
+  int height;
   Shader lightingShader = Shader("shaders/lightmap_textured_model.vert",
     "shaders/lightmap_textured_model.frag");
+  UniformBuffer matrixBuffer = UniformBuffer(GL_STATIC_DRAW);
 
   // positions all containers
   std::vector<glm::vec3> cubePositions = {
@@ -37,6 +77,7 @@ private:
       glm::vec3(1.5f,  0.2f, -1.5f),
       glm::vec3(-1.3f,  1.0f, -1.5f)
   };
+
   // positions of the point lights
   std::vector<glm::vec3> pointLightPositions = {
       glm::vec3(0.7f,  0.2f,  2.0f),
