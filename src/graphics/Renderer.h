@@ -13,64 +13,27 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <array>
 #include <graphics\Model.h>
+#include <graphics/Light.h>
 
-#define MAX_DIRECTIONAL_LIGHTS 1
-#define MAX_POINT_LIGHTS 4
-#define MAX_SPOTLIGHTS 1
+#define MAX_DIRECTIONAL_LIGHTS 100
+#define MAX_POINT_LIGHTS 100
+#define MAX_SPOTLIGHTS 100
 
 class Renderer {
 private:
 
-  struct DirectionalLight {
-    glm::vec4 direction;
-
-    glm::vec4 ambientIntensity;
-    glm::vec4 diffuseIntensity;
-    glm::vec4 specularIntensity;
-  };
-
-  struct PointLight {
-    glm::vec4 position;
-
-    glm::vec4 ambientIntensity;
-    glm::vec4 diffuseIntensity;
-    glm::vec4 specularIntensity;
-
-    float constant;
-    float linear;
-    float quadratic;
-    float padding;
-  };
-
-  struct SpotLight {
-    glm::vec4 position;
-    glm::vec4 direction;
-
-    glm::vec4 ambientIntensity;
-    glm::vec4 diffuseIntensity;
-    glm::vec4 specularIntensity;
-
-    float constant;
-    float linear;
-    float quadratic;
-
-    float cutOff;
-    float outerCutOff;
-    float padding, padding2, padding3;
-  };
-
   struct DirectionalLightData {
-    DirectionalLight directionalLights[MAX_DIRECTIONAL_LIGHTS];
+    DirectionalLight::Data directionalLights[MAX_DIRECTIONAL_LIGHTS];
     int numDirectionalLights;
   };
 
   struct PointLightData{
-    PointLight pointLights[MAX_POINT_LIGHTS];
+    PointLight::Data pointLights[MAX_POINT_LIGHTS];
     int numPointLights;
   };
 
   struct SpotLightData {
-    SpotLight spotLights[MAX_SPOTLIGHTS];
+    SpotLight::Data spotLights[MAX_SPOTLIGHTS];
     int numSpotLights;
   };
 

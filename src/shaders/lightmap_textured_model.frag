@@ -1,8 +1,8 @@
 #version 330 core
 
-#define MAX_DIRECTIONAL_LIGHTS 1
-#define MAX_POINT_LIGHTS 4
-#define NUM_SPOTLIGHTS 1
+#define MAX_DIRECTIONAL_LIGHTS 100
+#define MAX_POINT_LIGHTS 100
+#define NUM_SPOTLIGHTS 100
 
 struct Material {
 	sampler2D diffuseTexture;

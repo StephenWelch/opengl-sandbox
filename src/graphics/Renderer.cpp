@@ -33,24 +33,13 @@ void Renderer::init() {
   spotLightData.numSpotLights = 1;
 
   // Lighting config
-  /*lightingShader.setVec3("uDirectionalLights[0].direction", -0.2f, -1.0f, -0.3f);
-  lightingShader.setVec3("uDirectionalLights[0].ambientIntensity", 0.05f, 0.05f, 0.05f);
-  lightingShader.setVec3("uDirectionalLights[0].diffuseIntensity", 0.4f, 0.4f, 0.4f);
-  lightingShader.setVec3("uDirectionalLights[0].specularIntensity", 0.5f, 0.5f, 0.5f);*/
   directionalLightData.directionalLights[0] = {
     {-0.2f, -1.0f, -0.3f, 0.0f},
     {0.05f, 0.05f, 0.05f, 0.0f},
     {0.4f, 0.4f, 0.4f, 0.0f},
     {0.5f, 0.5f, 0.5f, 0.0f}
   };
-  // point light 1
-  /*lightingShader.setVec3("uPointLights[0].position", pointLightPositions[0]);
-  lightingShader.setVec3("uPointLights[0].ambientIntensity", 0.05f, 0.05f, 0.05f);
-  lightingShader.setVec3("uPointLights[0].diffuseIntensity", 0.8f, 0.8f, 0.8f);
-  lightingShader.setVec3("uPointLights[0].specularIntensity", 1.0f, 1.0f, 1.0f);
-  lightingShader.setFloat("uPointLights[0].constant", 1.0f);
-  lightingShader.setFloat("uPointLights[0].linear", 0.09);
-  lightingShader.setFloat("uPointLights[0].quadratic", 0.032);*/
+
   pointLightData.pointLights[0] = {
     {0.7f,  0.2f,  2.0f, 0.0f},
     {0.05f, 0.05f, 0.05f, 0.0f},
@@ -60,14 +49,7 @@ void Renderer::init() {
     0.09,
     0.032
   };
-  // point light 2
-  /*lightingShader.setVec3("uPointLights[1].position", pointLightPositions[1]);
-  lightingShader.setVec3("uPointLights[1].ambientIntensity", 0.05f, 0.05f, 0.05f);
-  lightingShader.setVec3("uPointLights[1].diffuseIntensity", 0.8f, 0.8f, 0.8f);
-  lightingShader.setVec3("uPointLights[1].specularIntensity", 1.0f, 1.0f, 1.0f);
-  lightingShader.setFloat("uPointLights[1].constant", 1.0f);
-  lightingShader.setFloat("uPointLights[1].linear", 0.09);
-  lightingShader.setFloat("uPointLights[1].quadratic", 0.032);*/
+
   pointLightData.pointLights[1] = {
     {2.3f, -3.3f, -4.0f, 0.0f},
     {0.05f, 0.05f, 0.05f, 0.0f},
@@ -77,14 +59,7 @@ void Renderer::init() {
     0.09,
     0.032
   };
-  // point light 3
-  /*lightingShader.setVec3("uPointLights[2].position", pointLightPositions[2]);
-  lightingShader.setVec3("uPointLights[2].ambientIntensity", 0.05f, 0.05f, 0.05f);
-  lightingShader.setVec3("uPointLights[2].diffuseIntensity", 0.8f, 0.8f, 0.8f);
-  lightingShader.setVec3("uPointLights[2].specularIntensity", 1.0f, 1.0f, 1.0f);
-  lightingShader.setFloat("uPointLights[2].constant", 1.0f);
-  lightingShader.setFloat("uPointLights[2].linear", 0.09);
-  lightingShader.setFloat("uPointLights[2].quadratic", 0.032);*/
+
   pointLightData.pointLights[2] = {
     {-4.0f,  2.0f, -12.0f, 0.0f},
     {0.05f, 0.05f, 0.05f, 0.0f},
@@ -94,14 +69,7 @@ void Renderer::init() {
     0.09,
     0.032
   };
-  // point light 4
-  /*lightingShader.setVec3("uPointLights[3].position", pointLightPositions[3]);
-  lightingShader.setVec3("uPointLights[3].ambientIntensity", 0.05f, 0.05f, 0.05f);
-  lightingShader.setVec3("uPointLights[3].diffuseIntensity", 0.8f, 0.8f, 0.8f);
-  lightingShader.setVec3("uPointLights[3].specularIntensity", 1.0f, 1.0f, 1.0f);
-  lightingShader.setFloat("uPointLights[3].constant", 1.0f);
-  lightingShader.setFloat("uPointLights[3].linear", 0.09);
-  lightingShader.setFloat("uPointLights[3].quadratic", 0.032);*/
+
   pointLightData.pointLights[3] = {
     {0.0f,  0.0f, -3.0f, 0.0f},
     {0.05f, 0.05f, 0.05f, 0.0f},
@@ -111,15 +79,7 @@ void Renderer::init() {
     0.09,
     0.032
   };
-  // uSpotLights[0]
-  /*lightingShader.setVec3("uSpotLights[0].ambientIntensity", 0.0f, 0.0f, 0.0f);
-  lightingShader.setVec3("uSpotLights[0].diffuseIntensity", 1.0f, 1.0f, 1.0f);
-  lightingShader.setVec3("uSpotLights[0].specularIntensity", 1.0f, 1.0f, 1.0f);
-  lightingShader.setFloat("uSpotLights[0].constant", 1.0f);
-  lightingShader.setFloat("uSpotLights[0].linear", 0.09);
-  lightingShader.setFloat("uSpotLights[0].quadratic", 0.032);
-  lightingShader.setFloat("uSpotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-  lightingShader.setFloat("uSpotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));*/
+  
   spotLightData.spotLights[0] = {
     {},
     {},
