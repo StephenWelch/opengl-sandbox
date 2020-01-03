@@ -31,7 +31,7 @@ void Renderer::init() {
   directionalLightData.numDirectionalLights = 1;
   pointLightData.numPointLights = 4;
   spotLightData.numSpotLights = 1;
-
+  
   // Lighting config
   directionalLightData.directionalLights[0] = {
     {-0.2f, -1.0f, -0.3f, 0.0f},

@@ -8,6 +8,7 @@
 #include <stdio.h>  /* defines FILENAME_MAX */
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <graphics/Mesh.h>
 
 #define WINDOWS
 #ifdef WINDOWS
@@ -22,8 +23,9 @@
 
 namespace util {
 
+  Mesh generateCube(const float& sideLength, const GLenum& usage);
   std::string getWorkingDirectory();
   std::string getFileAsString(const std::string& path);
   GLenum glCheckError_(const char* file, int line);
-#define glCheckError() glCheckError_(__FILE__, __LINE__)
+  #define glCheckError() glCheckError_(__FILE__, __LINE__)
 }  // namespace util
