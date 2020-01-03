@@ -70,7 +70,7 @@ void Shader::use() { glUseProgram(programId); }
 
 void Shader::cleanup() { glDeleteProgram(programId); }
 
-void Shader::bindUniformBuffer(const std::string& name, const GLuint& bindingIndex)
+void Shader::setBindingPoint(const std::string& name, const GLuint& bindingIndex)
 {
   GLuint uniformIndex = glGetUniformBlockIndex(programId, name.c_str());
   glUniformBlockBinding(programId, uniformIndex, bindingIndex);

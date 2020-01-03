@@ -15,6 +15,7 @@
 #include <graphics/Model.h>
 #include <graphics/Light.h>
 #include <util/util.h>
+#include <graphics/Buffer.h>
 
 #define MAX_DIRECTIONAL_LIGHTS 100
 #define MAX_POINT_LIGHTS 100
@@ -69,7 +70,7 @@ private:
   Texture2D diffuseTexture = Texture2D(Texture2D::TextureType::DIFFUSE, "res/container2.png", GL_TEXTURE0);
   Texture2D specularTexture = Texture2D(Texture2D::TextureType::SPECULAR, "res/container2_specular.png", GL_TEXTURE1);
   Texture2D emissionTexture = Texture2D(Texture2D::TextureType::EMISSIVE, "res/matrix.jpg", GL_TEXTURE2);
-  Mesh cubeMesh = util::generateCube(2.0f, GL_STATIC_DRAW);
+  Mesh cubeMesh = util::generateCube(1.0f, GL_STATIC_DRAW);
   Model model = Model(cubeMesh, { diffuseTexture, specularTexture, emissionTexture });
 
 public:

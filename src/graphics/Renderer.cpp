@@ -94,17 +94,23 @@ void Renderer::init() {
   };
 
   directionalLightBuffer.bindShaderProgram(0);
-  lightingShader.bindUniformBuffer("uDirectionalLights", 0);
+  lightingShader.setBindingPoint("uDirectionalLights", 0);
 
   pointLightBuffer.bindShaderProgram(1);
-  lightingShader.bindUniformBuffer("uPointLights", 1);
+  lightingShader.setBindingPoint("uPointLights", 1);
 
   spotLightBuffer.bindShaderProgram(2);
-  lightingShader.bindUniformBuffer("uSpotLights", 2);
+  lightingShader.setBindingPoint("uSpotLights", 2);
 
-  directionalLightBuffer.setData(&directionalLightData);
-  pointLightBuffer.setData(&pointLightData);
-  spotLightBuffer.setData(&spotLightData);
+  directionalLightBuffer.execute([&](auto buffer) {
+    buffer->setData(&directionalLightData);
+  });
+  pointLightBuffer.execute([&](auto buffer) {
+    buffer->setData(&pointLightData);
+  });
+  spotLightBuffer.execute([&](auto buffer) {
+    buffer->setData(&spotLightData);
+  });
 
   for (const Texture2D& texture : model.getTextures()) {
     std::string type;
@@ -143,7 +149,9 @@ void Renderer::render() {
   // User
   spotLightData.spotLights[0].position = glm::vec4(camera->getPosition(), 0.0f);
   spotLightData.spotLights[0].direction = glm::vec4(camera->getTarget(), 0.0f);
-  spotLightBuffer.setData(&spotLightData);
+  spotLightBuffer.execute([&](auto buffer) {
+    buffer->setData(&spotLightData);
+  });
 
   model.bind();
   for (unsigned int i = 0; i < 10; i++)

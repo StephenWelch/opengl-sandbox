@@ -5,7 +5,6 @@
 #include <string>
 #include <map>
 #include <algorithm>
-#include <graphics\UniformBuffer.h>
 
 class Shader {
 private:
@@ -23,7 +22,7 @@ public:
   void init();
   void use();
   void cleanup();
-  void bindUniformBuffer(const std::string& name, const GLuint& bindingIndex);  // Wrapper functions for uniforms taken from https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/shader.h
+  void setBindingPoint(const std::string& name, const GLuint& bindingIndex);  // Wrapper functions for uniforms taken from https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/shader.h
   void setBool(const std::string& name, bool value) const;
   void setInt(const std::string& name, int value) const;
   void setFloat(const std::string& name, float value) const;
