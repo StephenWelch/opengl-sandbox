@@ -70,6 +70,12 @@ void Shader::use() { glUseProgram(programId); }
 
 void Shader::cleanup() { glDeleteProgram(programId); }
 
+void Shader::bindUniformBuffer(const std::string& name, const GLuint& bindingIndex)
+{
+  GLuint uniformIndex = glGetUniformBlockIndex(programId, name.c_str());
+  glUniformBlockBinding(programId, uniformIndex, bindingIndex);
+}
+
 // Wrapper functions for uniforms taken from
 // https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/shader.h
 void Shader::setBool(const std::string& name, bool value) const {

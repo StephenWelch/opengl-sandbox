@@ -13,14 +13,41 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <array>
 #include <graphics\Model.h>
+#include <graphics/Light.h>
+
+#define MAX_DIRECTIONAL_LIGHTS 100
+#define MAX_POINT_LIGHTS 100
+#define MAX_SPOTLIGHTS 100
 
 class Renderer {
 private:
-  int width;
-  int height;
+
+  struct DirectionalLightData {
+    DirectionalLight::Data directionalLights[MAX_DIRECTIONAL_LIGHTS];
+    int numDirectionalLights;
+  };
+
+  struct PointLightData{
+    PointLight::Data pointLights[MAX_POINT_LIGHTS];
+    int numPointLights;
+  };
+
+  struct SpotLightData {
+    SpotLight::Data spotLights[MAX_SPOTLIGHTS];
+    int numSpotLights;
+  };
+
+  DirectionalLightData directionalLightData;
+  PointLightData pointLightData;
+  SpotLightData spotLightData;
+  UniformBuffer directionalLightBuffer = UniformBuffer(GL_STATIC_DRAW, sizeof(DirectionalLightData));
+  UniformBuffer pointLightBuffer = UniformBuffer(GL_STATIC_DRAW, sizeof(PointLightData));
+  UniformBuffer spotLightBuffer = UniformBuffer(GL_STREAM_DRAW, sizeof(SpotLightData));
 
   const std::unique_ptr<Camera>& camera;
 
+  int width;
+  int height;
   Shader lightingShader = Shader("shaders/lightmap_textured_model.vert",
     "shaders/lightmap_textured_model.frag");
 
@@ -36,13 +63,6 @@ private:
       glm::vec3(1.5f,  2.0f, -2.5f),
       glm::vec3(1.5f,  0.2f, -1.5f),
       glm::vec3(-1.3f,  1.0f, -1.5f)
-  };
-  // positions of the point lights
-  std::vector<glm::vec3> pointLightPositions = {
-      glm::vec3(0.7f,  0.2f,  2.0f),
-      glm::vec3(2.3f, -3.3f, -4.0f),
-      glm::vec3(-4.0f,  2.0f, -12.0f),
-      glm::vec3(0.0f,  0.0f, -3.0f)
   };
 
   // Defined in winding order
