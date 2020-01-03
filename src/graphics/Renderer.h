@@ -14,36 +14,41 @@
 #include <array>
 #include <graphics\Model.h>
 
+#define MAX_DIRECTIONAL_LIGHTS 1
+#define MAX_POINT_LIGHTS 4
+#define MAX_SPOTLIGHTS 1
+
 class Renderer {
 private:
 
   struct DirectionalLight {
-    glm::vec3 direction;
+    glm::vec4 direction;
 
-    glm::vec3 ambientIntensity;
-    glm::vec3 diffuseIntensity;
-    glm::vec3 specularIntensity;
+    glm::vec4 ambientIntensity;
+    glm::vec4 diffuseIntensity;
+    glm::vec4 specularIntensity;
   };
 
   struct PointLight {
-    glm::vec3 position;
+    glm::vec4 position;
 
-    glm::vec3 ambientIntensity;
-    glm::vec3 diffuseIntensity;
-    glm::vec3 specularIntensity;
+    glm::vec4 ambientIntensity;
+    glm::vec4 diffuseIntensity;
+    glm::vec4 specularIntensity;
 
     float constant;
     float linear;
     float quadratic;
+    float padding;
   };
 
   struct SpotLight {
-    glm::vec3 position;
-    glm::vec3 direction;
+    glm::vec4 position;
+    glm::vec4 direction;
 
-    glm::vec3 ambientIntensity;
-    glm::vec3 diffuseIntensity;
-    glm::vec3 specularIntensity;
+    glm::vec4 ambientIntensity;
+    glm::vec4 diffuseIntensity;
+    glm::vec4 specularIntensity;
 
     float constant;
     float linear;
@@ -51,18 +56,37 @@ private:
 
     float cutOff;
     float outerCutOff;
+    float padding, padding2, padding3;
   };
 
+  struct DirectionalLightData {
+    DirectionalLight directionalLights[MAX_DIRECTIONAL_LIGHTS];
+    int numDirectionalLights;
+  };
+
+  struct PointLightData{
+    PointLight pointLights[MAX_POINT_LIGHTS];
+    int numPointLights;
+  };
+
+  struct SpotLightData {
+    SpotLight spotLights[MAX_SPOTLIGHTS];
+    int numSpotLights;
+  };
+
+  DirectionalLightData directionalLightData;
+  PointLightData pointLightData;
+  SpotLightData spotLightData;
+  UniformBuffer directionalLightBuffer = UniformBuffer(GL_STATIC_DRAW, sizeof(DirectionalLightData));
+  UniformBuffer pointLightBuffer = UniformBuffer(GL_STATIC_DRAW, sizeof(PointLightData));
+  UniformBuffer spotLightBuffer = UniformBuffer(GL_STREAM_DRAW, sizeof(SpotLightData));
+
   const std::unique_ptr<Camera>& camera;
-  std::vector<DirectionalLight> directionalLights;
-  std::vector<PointLight> pointLights;
-  std::vector<SpotLight> spotLights;
 
   int width;
   int height;
   Shader lightingShader = Shader("shaders/lightmap_textured_model.vert",
     "shaders/lightmap_textured_model.frag");
-  UniformBuffer matrixBuffer = UniformBuffer(GL_STATIC_DRAW);
 
   // positions all containers
   std::vector<glm::vec3> cubePositions = {
@@ -76,14 +100,6 @@ private:
       glm::vec3(1.5f,  2.0f, -2.5f),
       glm::vec3(1.5f,  0.2f, -1.5f),
       glm::vec3(-1.3f,  1.0f, -1.5f)
-  };
-
-  // positions of the point lights
-  std::vector<glm::vec3> pointLightPositions = {
-      glm::vec3(0.7f,  0.2f,  2.0f),
-      glm::vec3(2.3f, -3.3f, -4.0f),
-      glm::vec3(-4.0f,  2.0f, -12.0f),
-      glm::vec3(0.0f,  0.0f, -3.0f)
   };
 
   // Defined in winding order
