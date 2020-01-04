@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <graphics/Buffer.h>
 #include <vector>
 
 class Mesh {
@@ -21,12 +22,13 @@ private:
   std::vector<Vertex> vertexData;
   std::vector<GLuint> indexData;
   GLuint vao;
-  GLuint vbo;
-  GLuint ebo;
+  VertexBuffer vbo;
+  IndexBuffer ebo;
 
 public:
   Mesh(const GLenum& usage, const std::vector<glm::vec3>& vertices, const std::vector<glm::vec3> normals, const std::vector<glm::vec2>& textureCoords, const std::vector<GLuint>& indices);
   Mesh(const GLenum& usage, const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices);
+  
   void init();
   void bind();
   void draw();

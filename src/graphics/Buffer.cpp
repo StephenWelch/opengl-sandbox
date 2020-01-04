@@ -1,7 +1,9 @@
 #include "Buffer.h"
 
-void Buffer::init()
-{
+void Buffer::init(const GLenum& usage, const GLsizeiptr& size) {
+  this->usage = usage;
+  this->size = size;
+
   glGenBuffers(1, &id);
   bind();
   glBufferData(type, size, nullptr, GL_STATIC_DRAW);
@@ -44,4 +46,24 @@ void Buffer::setData(const void* data)
 GLuint Buffer::getId() const
 {
   return id;
+}
+
+GLenum Buffer::getUsage() const
+{
+  return usage;
+}
+
+void Buffer::setUsage(const GLenum& usage)
+{
+  this->usage = usage;
+}
+
+GLsizeiptr Buffer::getSize() const
+{
+  return size;
+}
+
+void Buffer::setSize(const GLsizeiptr& size)
+{
+  this->size = size;
 }
