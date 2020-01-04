@@ -18,9 +18,10 @@ struct DirectionalLight {
   glm::vec4 specularIntensity;
 
   bool operator < (const DirectionalLight& other) const {
-    return  glm::all(glm::lessThan(ambientIntensity, other.ambientIntensity)) ||
-            glm::all(glm::lessThan(diffuseIntensity, other.diffuseIntensity)) ||
-            glm::all(glm::lessThan(specularIntensity, other.specularIntensity));
+    return  glm::length(direction) < glm::length(other.direction) ||
+      glm::length(ambientIntensity) < glm::length(other.ambientIntensity) ||
+      glm::length(diffuseIntensity) < glm::length(other.diffuseIntensity) ||
+      glm::length(specularIntensity) < glm::length(other.specularIntensity);
   }
 
 };
@@ -38,9 +39,10 @@ struct PointLight {
   float padding;
 
   bool operator < (const PointLight& other) const {
-    return  glm::all(glm::lessThan(ambientIntensity, other.ambientIntensity)) ||
-      glm::all(glm::lessThan(diffuseIntensity, other.diffuseIntensity)) ||
-      glm::all(glm::lessThan(specularIntensity, other.specularIntensity));
+    return  glm::length(position) < glm::length(other.position) ||
+      glm::length(ambientIntensity) < glm::length(other.ambientIntensity) ||
+      glm::length(diffuseIntensity) < glm::length(other.diffuseIntensity) ||
+      glm::length(specularIntensity) < glm::length(other.specularIntensity);
   }
 
 };
@@ -62,9 +64,10 @@ struct SpotLight {
   float padding, padding2, padding3;
 
   bool operator < (const SpotLight& other) const {
-    return  glm::all(glm::lessThan(ambientIntensity, other.ambientIntensity)) ||
-      glm::all(glm::lessThan(diffuseIntensity, other.diffuseIntensity)) ||
-      glm::all(glm::lessThan(specularIntensity, other.specularIntensity));
+    return  glm::length(position) < glm::length(other.position) ||
+      glm::length(ambientIntensity) < glm::length(other.ambientIntensity) ||
+      glm::length(diffuseIntensity) < glm::length(other.diffuseIntensity) ||
+      glm::length(specularIntensity) < glm::length(other.specularIntensity);
   }
 
 };

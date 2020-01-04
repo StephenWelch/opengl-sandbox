@@ -47,25 +47,6 @@ void Renderer::init() {
   pointLightManager.updateAll();
   spotLightManager.updateAll();
 
-  /*directionalLightBuffer.bindShaderProgram(0);
-  lightingShader.setBindingPoint("uDirectionalLights", 0);
-
-  pointLightBuffer.bindShaderProgram(1);
-  lightingShader.setBindingPoint("uPointLights", 1);
-
-  spotLightBuffer.bindShaderProgram(2);
-  lightingShader.setBindingPoint("uSpotLights", 2);
-
-  directionalLightBuffer.execute([&](auto buffer) {
-    buffer->setData(&directionalLightData);
-  });
-  pointLightBuffer.execute([&](auto buffer) {
-    buffer->setData(&pointLightData);
-  });
-  spotLightBuffer.execute([&](auto buffer) {
-    buffer->setData(&spotLightData);
-  });*/
-
   for (const Texture2D& texture : model.getTextures()) {
     std::string type;
     switch (texture.getType()) {
