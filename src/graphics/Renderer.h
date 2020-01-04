@@ -17,34 +17,9 @@
 #include <util/util.h>
 #include <graphics/Buffer.h>
 
-#define MAX_DIRECTIONAL_LIGHTS 100
-#define MAX_POINT_LIGHTS 100
-#define MAX_SPOTLIGHTS 100
-
 class Renderer {
 private:
-
-  struct DirectionalLightData {
-    DirectionalLight::Data directionalLights[MAX_DIRECTIONAL_LIGHTS];
-    int numDirectionalLights;
-  };
-
-  struct PointLightData{
-    PointLight::Data pointLights[MAX_POINT_LIGHTS];
-    int numPointLights;
-  };
-
-  struct SpotLightData {
-    SpotLight::Data spotLights[MAX_SPOTLIGHTS];
-    int numSpotLights;
-  };
-
-  DirectionalLightData directionalLightData;
-  PointLightData pointLightData;
-  SpotLightData spotLightData;
-  UniformBuffer directionalLightBuffer;
-  UniformBuffer pointLightBuffer;
-  UniformBuffer spotLightBuffer;
+  DirectionalLightManager directionalLightManager;
 
   const std::unique_ptr<Camera>& camera;
 
