@@ -43,13 +43,12 @@ void Mesh::init()
       glEnableVertexAttribArray(1);
       glEnableVertexAttribArray(2);
     });
-
+    glBindVertexArray(0);
   });
 
-  glBindVertexArray(0);
 
 
-  LOG_DEBUG("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo, ebo);
+  LOG_DEBUG("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo.getId(), ebo.getId());
 }
 
 void Mesh::bind()
