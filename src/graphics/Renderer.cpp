@@ -16,9 +16,9 @@ GLuint ebo;
 void Renderer::init() {
   LOG_INFO("Initializing Renderer with {}x{} resolution", width, height);
 
-  directionalLightBuffer.init();
-  pointLightBuffer.init();
-  spotLightBuffer.init();
+  directionalLightBuffer.init(GL_STATIC_DRAW, sizeof(DirectionalLightData));
+  pointLightBuffer.init(GL_STATIC_DRAW, sizeof(PointLightData));
+  spotLightBuffer.init(GL_STREAM_DRAW, sizeof(SpotLightData));
 
   LOG_INFO("Loading models");
   model.init();

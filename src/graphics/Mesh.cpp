@@ -23,33 +23,32 @@ void Mesh::init()
 {
   LOG_DEBUG("Initializing mesh");
   glGenVertexArrays(1, &vao);
-  glGenBuffers(1, &vbo);
-  glGenBuffers(1, &ebo);
+  vbo.init(usage, vertexData.size() * sizeof(Vertex));
+  ebo.init(usage, indexData.size() * sizeof(int));
 
   glBindVertexArray(vao);
   
+  ebo.execute([&](auto indexBuffer) {
+    indexBuffer->setData(indexData.data());
+    vbo.execute([&](auto vertexBuffer) {
+      vertexBuffer->setData(vertexData.data());
 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexData.size() * sizeof(GLuint), indexData.data(), usage);
+      glVertexAttribPointer(0, VERTEX_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+        (void*)offsetof(Vertex, position));
+      glVertexAttribPointer(1, NORMAL_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+        (void*)offsetof(Vertex, normal));
+      glVertexAttribPointer(2, TEX_COORD_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+        (void*)offsetof(Vertex, texCoords));
+      glEnableVertexAttribArray(0);
+      glEnableVertexAttribArray(1);
+      glEnableVertexAttribArray(2);
+    });
+    glBindVertexArray(0);
+  });
 
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(Vertex), vertexData.data(), usage);
 
-  glVertexAttribPointer(0, VERTEX_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-    (void*)offsetof(Vertex, position));
-  glVertexAttribPointer(1, NORMAL_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-    (void*)offsetof(Vertex, normal));
-  glVertexAttribPointer(2, TEX_COORD_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-    (void*)offsetof(Vertex, texCoords));
-  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
-  glEnableVertexAttribArray(2);
-    
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-  glBindVertexArray(0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-  LOG_DEBUG("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo, ebo);
+  LOG_DEBUG("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo.getId(), ebo.getId());
 }
 
 void Mesh::bind()
@@ -67,6 +66,6 @@ void Mesh::draw()
 void Mesh::cleanup()
 {
   glDeleteVertexArrays(1, &vao);
-  glDeleteBuffers(1, &vbo);
-  glDeleteBuffers(1, &ebo);
+  vbo.cleanup();
+  ebo.cleanup();
 }

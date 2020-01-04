@@ -42,9 +42,9 @@ private:
   DirectionalLightData directionalLightData;
   PointLightData pointLightData;
   SpotLightData spotLightData;
-  UniformBuffer directionalLightBuffer = UniformBuffer(GL_STATIC_DRAW, sizeof(DirectionalLightData));
-  UniformBuffer pointLightBuffer = UniformBuffer(GL_STATIC_DRAW, sizeof(PointLightData));
-  UniformBuffer spotLightBuffer = UniformBuffer(GL_STREAM_DRAW, sizeof(SpotLightData));
+  UniformBuffer directionalLightBuffer;
+  UniformBuffer pointLightBuffer;
+  UniformBuffer spotLightBuffer;
 
   const std::unique_ptr<Camera>& camera;
 
