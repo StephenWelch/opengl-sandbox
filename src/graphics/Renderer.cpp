@@ -23,81 +23,29 @@ void Renderer::init() {
   lightingShader.init();
 
   lightingShader.use();
-  
-  DirectionalLight dirLight = {
-    {-0.2f, -1.0f, -0.3f, 0.0f},
-    {0.05f, 0.05f, 0.05f, 0.0f},
-    {0.4f, 0.4f, 0.4f, 0.0f},
-    {0.5f, 0.5f, 0.5f, 0.0f}
-  };
 
   directionalLightManager.init();
+  pointLightManager.init();
+  spotLightManager.init();
+
   directionalLightManager.setBindingPoint(0);
   lightingShader.setBindingPoint("uDirectionalLights", 0);
+  pointLightManager.setBindingPoint(1);
+  lightingShader.setBindingPoint("uPointLights", 1);
+  spotLightManager.setBindingPoint(2);
+  lightingShader.setBindingPoint("uSpotLights", 2);
+
 
   directionalLightManager.addLight(dirLight);
-  directionalLightManager.update(dirLight);
+  pointLightManager.addLight(pointLight1);
+  pointLightManager.addLight(pointLight2);
+  pointLightManager.addLight(pointLight3);
+  pointLightManager.addLight(pointLight4);
+  spotLightManager.addLight(spotLight);
 
-  //// Lighting config
-  //directionalLightData.directionalLights[0] = {
-  //  {-0.2f, -1.0f, -0.3f, 0.0f},
-  //  {0.05f, 0.05f, 0.05f, 0.0f},
-  //  {0.4f, 0.4f, 0.4f, 0.0f},
-  //  {0.5f, 0.5f, 0.5f, 0.0f}
-  //};
-
-  //pointLightData.pointLights[0] = {
-  //  {0.7f,  0.2f,  2.0f, 0.0f},
-  //  {0.05f, 0.05f, 0.05f, 0.0f},
-  //  {0.8f, 0.8f, 0.8f, 0.0f},
-  //  {1.0f, 1.0f, 1.0f, 0.0f},
-  //  1.0f,
-  //  0.09,
-  //  0.032
-  //};
-
-  //pointLightData.pointLights[1] = {
-  //  {2.3f, -3.3f, -4.0f, 0.0f},
-  //  {0.05f, 0.05f, 0.05f, 0.0f},
-  //  {0.8f, 0.8f, 0.8f, 0.0f},
-  //  {1.0f, 1.0f, 1.0f, 0.0f},
-  //  1.0f,
-  //  0.09,
-  //  0.032
-  //};
-
-  //pointLightData.pointLights[2] = {
-  //  {-4.0f,  2.0f, -12.0f, 0.0f},
-  //  {0.05f, 0.05f, 0.05f, 0.0f},
-  //  {0.8f, 0.8f, 0.8f, 0.0f},
-  //  {1.0f, 1.0f, 1.0f, 0.0f},
-  //  1.0f,
-  //  0.09,
-  //  0.032
-  //};
-
-  //pointLightData.pointLights[3] = {
-  //  {0.0f,  0.0f, -3.0f, 0.0f},
-  //  {0.05f, 0.05f, 0.05f, 0.0f},
-  //  {0.8f, 0.8f, 0.8f, 0.0f},
-  //  {1.0f, 1.0f, 1.0f, 0.0f},
-  //  1.0f,
-  //  0.09,
-  //  0.032
-  //};
-  //
-  //spotLightData.spotLights[0] = {
-  //  {},
-  //  {},
-  //  {0.0f, 0.0f, 0.0f, 0.0f},
-  //  {1.0f, 1.0f, 1.0f, 0.0f},
-  //  {1.0f, 1.0f, 1.0f, 0.0f},
-  //  1.0f,
-  //  0.09,
-  //  0.032,
-  //  glm::cos(glm::radians(12.5f)),
-  //  glm::cos(glm::radians(15.0f))
-  //};
+  directionalLightManager.updateAll();
+  pointLightManager.updateAll();
+  spotLightManager.updateAll();
 
   /*directionalLightBuffer.bindShaderProgram(0);
   lightingShader.setBindingPoint("uDirectionalLights", 0);
@@ -153,11 +101,11 @@ void Renderer::render() {
   lightingShader.setVec3("uViewPos", camera->getPosition());
 
   // User
-  /*spotLightData.spotLights[0].position = glm::vec4(camera->getPosition(), 0.0f);
-  spotLightData.spotLights[0].direction = glm::vec4(camera->getTarget(), 0.0f);
-  spotLightBuffer.execute([&](auto buffer) {
-    buffer->setData(&spotLightData);
-  });*/
+  spotLightManager.removeLight(spotLight);
+  spotLight.position = glm::vec4(camera->getPosition(), 0.0f);
+  spotLight.direction = glm::vec4(camera->getTarget(), 0.0f);
+  spotLightManager.addLight(spotLight);
+  spotLightManager.updateAll();
 
   model.bind();
   for (unsigned int i = 0; i < 10; i++)

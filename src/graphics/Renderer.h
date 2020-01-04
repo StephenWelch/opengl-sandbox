@@ -20,6 +20,8 @@
 class Renderer {
 private:
   DirectionalLightManager directionalLightManager;
+  PointLightManager pointLightManager;
+  SpotLightManager spotLightManager;
 
   const std::unique_ptr<Camera>& camera;
 
@@ -40,6 +42,66 @@ private:
       glm::vec3(1.5f,  2.0f, -2.5f),
       glm::vec3(1.5f,  0.2f, -1.5f),
       glm::vec3(-1.3f,  1.0f, -1.5f)
+  };
+
+  DirectionalLight dirLight = {
+    {-0.2f, -1.0f, -0.3f, 0.0f},
+    {0.05f, 0.05f, 0.05f, 0.0f},
+    {0.4f, 0.4f, 0.4f, 0.0f},
+    {0.5f, 0.5f, 0.5f, 0.0f}
+  };
+
+  PointLight pointLight1 = {
+    {0.7f,  0.2f,  2.0f, 0.0f},
+    {0.05f, 0.05f, 0.05f, 0.0f},
+    {0.8f, 0.8f, 0.8f, 0.0f},
+    {1.0f, 1.0f, 1.0f, 0.0f},
+    1.0f,
+    0.09,
+    0.032
+  };
+
+  PointLight pointLight2 = {
+    {2.3f, -3.3f, -4.0f, 0.0f},
+    {0.05f, 0.05f, 0.05f, 0.0f},
+    {0.8f, 0.8f, 0.8f, 0.0f},
+    {1.0f, 1.0f, 1.0f, 0.0f},
+    1.0f,
+    0.09,
+    0.032
+  };
+
+  PointLight pointLight3 = {
+    {-4.0f,  2.0f, -12.0f, 0.0f},
+    {0.05f, 0.05f, 0.05f, 0.0f},
+    {0.8f, 0.8f, 0.8f, 0.0f},
+    {1.0f, 1.0f, 1.0f, 0.0f},
+    1.0f,
+    0.09,
+    0.032
+  };
+
+  PointLight pointLight4 = {
+    {0.0f,  0.0f, -3.0f, 0.0f},
+    {0.05f, 0.05f, 0.05f, 0.0f},
+    {0.8f, 0.8f, 0.8f, 0.0f},
+    {1.0f, 1.0f, 1.0f, 0.0f},
+    1.0f,
+    0.09,
+    0.032
+  };
+
+  SpotLight spotLight = {
+    {},
+    {},
+    {0.0f, 0.0f, 0.0f, 0.0f},
+    {1.0f, 1.0f, 1.0f, 0.0f},
+    {1.0f, 1.0f, 1.0f, 0.0f},
+    1.0f,
+    0.09,
+    0.032,
+    glm::cos(glm::radians(12.5f)),
+    glm::cos(glm::radians(15.0f))
   };
 
   Texture2D diffuseTexture = Texture2D(Texture2D::TextureType::DIFFUSE, "res/container2.png", GL_TEXTURE0);

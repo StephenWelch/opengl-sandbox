@@ -1,14 +1,14 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <unordered_map>
+#include <map>
 #include <queue>
 #include <graphics\Buffer.h>
+#include <util/Log.h>
 
 #define MAX_DIRECTIONAL_LIGHTS 100
 #define MAX_POINT_LIGHTS 100
 #define MAX_SPOTLIGHTS 100
-
 
 struct DirectionalLight {
   glm::vec4 direction;
@@ -16,6 +16,13 @@ struct DirectionalLight {
   glm::vec4 ambientIntensity;
   glm::vec4 diffuseIntensity;
   glm::vec4 specularIntensity;
+
+  bool operator < (const DirectionalLight& other) const {
+    return  glm::all(glm::lessThan(ambientIntensity, other.ambientIntensity)) ||
+            glm::all(glm::lessThan(diffuseIntensity, other.diffuseIntensity)) ||
+            glm::all(glm::lessThan(specularIntensity, other.specularIntensity));
+  }
+
 };
 
 struct PointLight {
@@ -29,6 +36,13 @@ struct PointLight {
   float linear;
   float quadratic;
   float padding;
+
+  bool operator < (const PointLight& other) const {
+    return  glm::all(glm::lessThan(ambientIntensity, other.ambientIntensity)) ||
+      glm::all(glm::lessThan(diffuseIntensity, other.diffuseIntensity)) ||
+      glm::all(glm::lessThan(specularIntensity, other.specularIntensity));
+  }
+
 };
 
 struct SpotLight {
@@ -46,6 +60,13 @@ struct SpotLight {
   float cutOff;
   float outerCutOff;
   float padding, padding2, padding3;
+
+  bool operator < (const SpotLight& other) const {
+    return  glm::all(glm::lessThan(ambientIntensity, other.ambientIntensity)) ||
+      glm::all(glm::lessThan(diffuseIntensity, other.diffuseIntensity)) ||
+      glm::all(glm::lessThan(specularIntensity, other.specularIntensity));
+  }
+
 };
 
 template<typename LightStruct, int MaxLights>
@@ -58,16 +79,15 @@ private:
     int numLights;
   } uniformData;
 
-  std::unordered_map<LightStruct, int> lights;
+  std::map<LightStruct, int> lights;
   std::queue<int> unfilledIndexes;
   int lastIndex = 0;
-  int maxLights;
 
 public:
   bool addLight(const LightStruct& light)
   {
     if (unfilledIndexes.empty()) {
-      if (lastIndex > maxLights) {
+      if (lastIndex > MaxLights) {
         return false;
       }
       else {
@@ -94,7 +114,7 @@ public:
   }
 
   void init() {
-    buffer.init(GL_DYNAMIC_DRAW, sizeof(LightStruct));
+    buffer.init(GL_DYNAMIC_DRAW, sizeof(Data));
   }
 
   void update(const LightStruct& light) {
@@ -116,17 +136,12 @@ public:
     buffer.bindShaderProgram(bindingPoint);
   }
 
-  int getMaxLights() const
-  {
-    return maxLights;
-  }
-
-  std::unordered_map<LightStruct, int> getLights() const
+  std::map<LightStruct, int> getLights() const
   {
     return lights;
   }
 };
 
-class DirectionalLightManager : public LightManager<DirectionalLight, MAX_DIRECTIONAL_LIGHTS> {
-
-};
+typedef LightManager<DirectionalLight, MAX_DIRECTIONAL_LIGHTS> DirectionalLightManager;
+typedef LightManager<PointLight, MAX_POINT_LIGHTS> PointLightManager;
+typedef LightManager<SpotLight, MAX_SPOTLIGHTS> SpotLightManager;
