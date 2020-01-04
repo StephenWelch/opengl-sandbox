@@ -159,8 +159,8 @@ void Renderer::render() {
     // calculate the model matrix for each object and pass it to shader before drawing
     glm::mat4 modelMatrix = glm::mat4(1.0f);
     modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
-    float angle = 20.0f * i;
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), { 1.0f, 0.3f, 0.5f });
+    float angle = 20.0f * (i + 1);
+    modelMatrix = glm::rotate(modelMatrix, glm::radians((float)glfwGetTime() * angle), { 1.0f, 0.3f, 0.5f });
     lightingShader.setMat4("uModel", modelMatrix);
     lightingShader.setMat3("uNormalMatrix", glm::transpose(glm::inverse(modelMatrix)));
 
