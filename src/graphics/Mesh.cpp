@@ -27,7 +27,10 @@ void Mesh::init()
   ebo.init(usage, indexData.size() * sizeof(int));
 
   glBindVertexArray(vao);
-  
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
+
   ebo.execute([&](auto indexBuffer) {
     indexBuffer->setData(indexData.data());
     vbo.execute([&](auto vertexBuffer) {
@@ -39,11 +42,9 @@ void Mesh::init()
         (void*)offsetof(Vertex, normal));
       glVertexAttribPointer(2, TEX_COORD_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
         (void*)offsetof(Vertex, texCoords));
-      glEnableVertexAttribArray(0);
-      glEnableVertexAttribArray(1);
-      glEnableVertexAttribArray(2);
+      
+      glBindVertexArray(0);
     });
-    glBindVertexArray(0);
   });
 
 
