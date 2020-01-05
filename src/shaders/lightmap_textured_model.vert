@@ -15,6 +15,6 @@ uniform mat4 uProjection;
 void main() {
     gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0);
 	iTexCoord = vec2(aTexCoord.x, aTexCoord.y);
-	iNormal = aNormal * uNormalMatrix;
+	iNormal = uNormalMatrix * aNormal;
 	iFragPos = vec3(uModel * vec4(aPos, 1.0));
 }
