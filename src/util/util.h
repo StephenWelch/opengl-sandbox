@@ -23,6 +23,12 @@
 
 namespace util {
 
+  template<class T>
+  struct aggregate_adapter : public T {
+    template<class... Args>
+    aggregate_adapter(Args&&... args) : T{ std::forward<Args> args... } {};
+  };
+
   Mesh generateCube(const float& sideLength, const GLenum& usage);
   std::string getWorkingDirectory();
   std::string getFileAsString(const std::string& path);

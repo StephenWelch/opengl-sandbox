@@ -82,10 +82,8 @@ void Renderer::render() {
   lightingShader.setVec3("uViewPos", camera->getPosition());
 
   // User
-  spotLightManager.removeLight(spotLight);
-  spotLight.position = glm::vec4(camera->getPosition(), 0.0f);
-  spotLight.direction = glm::vec4(camera->getTarget(), 0.0f);
-  spotLightManager.addLight(spotLight);
+  spotLight->position = glm::vec4(camera->getPosition(), 0.0f);
+  spotLight->direction = glm::vec4(camera->getTarget(), 0.0f);
   spotLightManager.updateAll();
 
   model.bind();

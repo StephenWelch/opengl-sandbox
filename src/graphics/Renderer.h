@@ -44,65 +44,65 @@ private:
       glm::vec3(-1.3f,  1.0f, -1.5f)
   };
 
-  DirectionalLight dirLight = {
-    {-0.2f, -1.0f, -0.3f, 0.0f},
-    {0.05f, 0.05f, 0.05f, 0.0f},
-    {0.4f, 0.4f, 0.4f, 0.0f},
-    {0.5f, 0.5f, 0.5f, 0.0f}
-  };
+  std::shared_ptr<DirectionalLight> dirLight = std::make_shared<DirectionalLight>(
+    glm::vec3(-0.2f, -1.0f, -0.3f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.4f, 0.4f, 0.4f),
+    glm::vec3(0.5f, 0.5f, 0.5f)
+  );
 
-  PointLight pointLight1 = {
-    {0.7f,  0.2f,  2.0f, 0.0f},
-    {0.05f, 0.05f, 0.05f, 0.0f},
-    {0.8f, 0.8f, 0.8f, 0.0f},
-    {1.0f, 1.0f, 1.0f, 0.0f},
+  std::shared_ptr<PointLight> pointLight1 = std::make_shared<PointLight>(
+    glm::vec3(0.7f,  0.2f,  2.0f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.8f, 0.8f, 0.8f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
     1.0f,
     0.09,
     0.032
-  };
+  );
 
-  PointLight pointLight2 = {
-    {2.3f, -3.3f, -4.0f, 0.0f},
-    {0.05f, 0.05f, 0.05f, 0.0f},
-    {0.8f, 0.8f, 0.8f, 0.0f},
-    {1.0f, 1.0f, 1.0f, 0.0f},
+  std::shared_ptr<PointLight> pointLight2 = std::make_shared<PointLight>(
+    glm::vec3(2.3f, -3.3f, -4.0f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.8f, 0.8f, 0.8f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
     1.0f,
     0.09,
     0.032
-  };
+  );
 
-  PointLight pointLight3 = {
-    {-4.0f,  2.0f, -12.0f, 0.0f},
-    {0.05f, 0.05f, 0.05f, 0.0f},
-    {0.8f, 0.8f, 0.8f, 0.0f},
-    {1.0f, 1.0f, 1.0f, 0.0f},
+  std::shared_ptr<PointLight> pointLight3 = std::make_shared<PointLight>(
+    glm::vec3(-4.0f,  2.0f, -12.0f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.8f, 0.8f, 0.8f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
     1.0f,
     0.09,
     0.032
-  };
+  );
 
-  PointLight pointLight4 = {
-    {0.0f,  0.0f, -3.0f, 0.0f},
-    {0.05f, 0.05f, 0.05f, 0.0f},
-    {0.8f, 0.8f, 0.8f, 0.0f},
-    {1.0f, 1.0f, 1.0f, 0.0f},
+  std::shared_ptr<PointLight> pointLight4 = std::make_shared<PointLight>(
+    glm::vec3(0.0f,  0.0f, -3.0f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.8f, 0.8f, 0.8f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
     1.0f,
     0.09,
     0.032
-  };
+  );
 
-  SpotLight spotLight = {
-    {},
-    {},
-    {0.0f, 0.0f, 0.0f, 0.0f},
-    {1.0f, 1.0f, 1.0f, 0.0f},
-    {1.0f, 1.0f, 1.0f, 0.0f},
+  std::shared_ptr<SpotLight> spotLight = std::make_shared<SpotLight>(
+    glm::vec3(),
+    glm::vec3(),
+    glm::vec3(0.0f, 0.0f, 0.0f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
     1.0f,
     0.09,
     0.032,
     glm::cos(glm::radians(12.5f)),
     glm::cos(glm::radians(15.0f))
-  };
+  );
 
   Texture2D diffuseTexture = Texture2D(Texture2D::TextureType::DIFFUSE, "res/container2.png", GL_TEXTURE0);
   Texture2D specularTexture = Texture2D(Texture2D::TextureType::SPECULAR, "res/container2_specular.png", GL_TEXTURE1);
