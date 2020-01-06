@@ -17,34 +17,11 @@
 #include <util/util.h>
 #include <graphics/Buffer.h>
 
-#define MAX_DIRECTIONAL_LIGHTS 100
-#define MAX_POINT_LIGHTS 100
-#define MAX_SPOTLIGHTS 100
-
 class Renderer {
 private:
-
-  struct DirectionalLightData {
-    DirectionalLight::Data directionalLights[MAX_DIRECTIONAL_LIGHTS];
-    int numDirectionalLights;
-  };
-
-  struct PointLightData{
-    PointLight::Data pointLights[MAX_POINT_LIGHTS];
-    int numPointLights;
-  };
-
-  struct SpotLightData {
-    SpotLight::Data spotLights[MAX_SPOTLIGHTS];
-    int numSpotLights;
-  };
-
-  DirectionalLightData directionalLightData;
-  PointLightData pointLightData;
-  SpotLightData spotLightData;
-  UniformBuffer directionalLightBuffer;
-  UniformBuffer pointLightBuffer;
-  UniformBuffer spotLightBuffer;
+  DirectionalLightManager directionalLightManager;
+  PointLightManager pointLightManager;
+  SpotLightManager spotLightManager;
 
   const std::unique_ptr<Camera>& camera;
 
@@ -66,6 +43,66 @@ private:
       glm::vec3(1.5f,  0.2f, -1.5f),
       glm::vec3(-1.3f,  1.0f, -1.5f)
   };
+
+  std::shared_ptr<DirectionalLight> dirLight = std::make_shared<DirectionalLight>(
+    glm::vec3(-0.2f, -1.0f, -0.3f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.4f, 0.4f, 0.4f),
+    glm::vec3(0.5f, 0.5f, 0.5f)
+  );
+
+  std::shared_ptr<PointLight> pointLight1 = std::make_shared<PointLight>(
+    glm::vec3(0.7f,  0.2f,  2.0f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.8f, 0.8f, 0.8f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
+    1.0f,
+    0.09,
+    0.032
+  );
+
+  std::shared_ptr<PointLight> pointLight2 = std::make_shared<PointLight>(
+    glm::vec3(2.3f, -3.3f, -4.0f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.8f, 0.8f, 0.8f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
+    1.0f,
+    0.09,
+    0.032
+  );
+
+  std::shared_ptr<PointLight> pointLight3 = std::make_shared<PointLight>(
+    glm::vec3(-4.0f,  2.0f, -12.0f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.8f, 0.8f, 0.8f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
+    1.0f,
+    0.09,
+    0.032
+  );
+
+  std::shared_ptr<PointLight> pointLight4 = std::make_shared<PointLight>(
+    glm::vec3(0.0f,  0.0f, -3.0f),
+    glm::vec3(0.05f, 0.05f, 0.05f),
+    glm::vec3(0.8f, 0.8f, 0.8f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
+    1.0f,
+    0.09,
+    0.032
+  );
+
+  std::shared_ptr<SpotLight> spotLight = std::make_shared<SpotLight>(
+    glm::vec3(),
+    glm::vec3(),
+    glm::vec3(0.0f, 0.0f, 0.0f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
+    1.0f,
+    0.09,
+    0.032,
+    glm::cos(glm::radians(12.5f)),
+    glm::cos(glm::radians(15.0f))
+  );
 
   Texture2D diffuseTexture = Texture2D(Texture2D::TextureType::DIFFUSE, "res/container2.png", GL_TEXTURE0);
   Texture2D specularTexture = Texture2D(Texture2D::TextureType::SPECULAR, "res/container2_specular.png", GL_TEXTURE1);
