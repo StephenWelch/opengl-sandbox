@@ -1,4 +1,4 @@
-#include <engine/Game.h>
+#include <engine/Application.h>
 #include <memory>
 #include <graphics/Window.h>
 #include <util/Log.h>
@@ -6,7 +6,7 @@
 #include <engine/Input.h>  
 #include <iostream>
 
-int Game::run() {
+int Application::start() {
   Log::init();
   Log::getLogger()->set_level(spdlog::level::trace);
 

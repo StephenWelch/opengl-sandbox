@@ -1,6 +1,6 @@
 #pragma once
-class Game {
+class Application {
 public:
   // Starts the main game loop when called
-  int run();
+  int start();
 };

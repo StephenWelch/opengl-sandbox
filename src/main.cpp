@@ -1,7 +1,7 @@
 #include <memory>
-#include <engine/Game.h>
+#include <engine/Application.h>
 
 int main() {
-  auto game = std::make_unique<Game>();
-  game->run();
+  auto game = std::make_unique<Application>();
+  game->start();
 }
