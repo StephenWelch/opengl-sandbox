@@ -11,6 +11,7 @@ else()
         endif()
 endif()
 
+# Set up libraries with CMake projects
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
@@ -23,11 +24,13 @@ add_subdirectory(include/assimp)
 add_definitions(-DGLFW_INCLUDE_NONE
         -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 
+# Add project files in bulk - this means we have to reload our project when we add a class, but we don't have to add every single class to this list.
 file(GLOB_RECURSE PROJECT_SOURCES src/*.cpp src/*.frag src/*.vert)
 file(GLOB_RECURSE PROJECT_HEADERS src/*.h)
 
 add_executable(learn_opengl ${PROJECT_HEADERS} ${PROJECT_SOURCES})
 
+# Define where to look for headers
 include_directories(
         src/
         include/glad/include
@@ -35,6 +38,7 @@ include_directories(
         include/spdlog/include
         include/glm
         include/stb_image
+        include/imgui
 )
 
 
@@ -42,7 +46,7 @@ add_library(glad include/glad/src/glad.c)
 #add_library(stb_image include/stb_image/stb_image.cpp)
 #find_package(OpenGL REQUIRED)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} assimp glad glfw ${GLFW_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} assimp glad glfw glm ${GLFW_LIBRARIES})
 #target_link_libraries(${CMAKE_PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
 set (resourceSourcePath "${CMAKE_SOURCE_DIR}/res")
