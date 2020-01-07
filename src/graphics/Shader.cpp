@@ -43,24 +43,15 @@ void Shader::init() {
   glCompileShader(vertexId);
   glCompileShader(fragmentId);
 
-  if (!shaderCompiledSuccessfully(vertexId)) {
-    LOG_ERROR("Error compiling shader {}:\n{}", vertexPath,
-      getShaderCompilationErrors(vertexId));
-  }
-  if (!shaderCompiledSuccessfully(fragmentId)) {
-    LOG_ERROR("Error compiling shader {}:\n{}", fragmentPath,
-      getShaderCompilationErrors(fragmentId));
-  }
+  ENGINE_ASSERT(shaderCompiledSuccessfully(vertexId), "Error compiling shader {}:\n{}", vertexPath, getShaderCompilationErrors(vertexId));
+  ENGINE_ASSERT(shaderCompiledSuccessfully(fragmentId), "Error compiling shader {}:\n{}", fragmentPath, getShaderCompilationErrors(fragmentId));
 
   programId = glCreateProgram();
   glAttachShader(programId, vertexId);
   glAttachShader(programId, fragmentId);
   glLinkProgram(programId);
 
-  if (!programLinkedSuccessfully(programId)) {
-    LOG_ERROR("Error linking shader program:\n{}",
-      getProgramLinkErrors(programId));
-  }
+  ENGINE_ASSERT(programLinkedSuccessfully(programId), "Error linking shader program:\n{}", getProgramLinkErrors(programId));
 
   glDeleteShader(vertexId);
   glDeleteShader(fragmentId);
@@ -153,8 +144,8 @@ void Shader::setMat4(const std::string& name,
 GLint Shader::getUniformLocation(std::string name) const
 {
   GLint location = glGetUniformLocation(programId, name.c_str());
-  if (location == -1) {
-    LOG_ERROR("Uniform {} not found", name);
-  }
+
+  ENGINE_ASSERT(location != -1, "Uniform {} does not exist.", name);
+
   return location;
 }

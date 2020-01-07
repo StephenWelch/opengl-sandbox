@@ -5,6 +5,7 @@
 #include <graphics/Window.h>
 #include <iostream>
 #include <util/Log.h>
+#include <engine/Core.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   // make sure the viewport matches the new window dimensions; note that width
@@ -26,7 +27,7 @@ bool Window::init() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   // Set OpenGL profile to Core
   glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  if(debugOutput) {
+  if(ENABLE_GL_DEBUG_OUTPUT) {
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
   }
 
@@ -53,7 +54,7 @@ bool Window::init() {
   LOG_DEBUG("Renderer: {0}", glGetString(GL_RENDERER));
   LOG_DEBUG("Version: {0}", glGetString(GL_VERSION));
 
-  if (debugOutput) {
+  if (ENABLE_GL_DEBUG_OUTPUT) {
     GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
     if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
     {

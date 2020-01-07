@@ -1,18 +1,18 @@
 #include <engine/Application.h>
 #include <memory>
 #include <graphics/Window.h>
-#include <util/Log.h>
 #include <graphics/Renderer.h>
 #include <engine/Input.h>  
 #include <iostream>
+#include <engine/Core.h>
 
 int Application::start() {
   Log::init();
-  Log::getLogger()->set_level(spdlog::level::trace);
+  Log::getLogger()->set_level(LOG_LEVEL);
 
   auto camera = std::make_unique<Camera>(45.0f, 800, 600);
   auto renderer = std::make_unique<Renderer>(camera, 800, 600);
-  auto window = std::make_unique<Window>("Game", 800, 600, true);
+  auto window = std::make_unique<Window>("Game", 800, 600);
   auto input = std::make_unique<Input>(window, camera);
 
   window->init();

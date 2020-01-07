@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <engine/Core.h>
 #include <string>
 #include <map>
 #include <algorithm>
