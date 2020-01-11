@@ -1,6 +1,7 @@
 #pragma once
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <engine/Core.h>
 #include <string>
 
 class Texture2D {

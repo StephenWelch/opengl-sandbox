@@ -169,9 +169,9 @@ namespace util {
     LOG_DEBUG("Loading resource: {}/{}",
       util::getWorkingDirectory(), path);
     std::ifstream file(FILE_PATH_PREFIX + path);
-    if (!file) {
-      LOG_ERROR("Error opening: {}", path);
-    }
+
+    ENGINE_ASSERT(file, "Error opening: {}", path);
+
     std::stringstream buffer;
     buffer << file.rdbuf();
     return buffer.str();

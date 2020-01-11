@@ -23,13 +23,10 @@ void Texture2D::init() {
   int width, height, nrChannels;
   unsigned char* data =
     stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
-  if (data) {
-    createTexture(width, height, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
-  }
-  else {
-    LOG_ERROR("Failed to load texture {}", filePath);
-  }
+
+  ENGINE_ASSERT(data, "Failed to load texture {}", filePath);
+  createTexture(width, height, data);
+  glGenerateMipmap(GL_TEXTURE_2D);
 
   stbi_image_free(data);
 

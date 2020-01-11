@@ -8,6 +8,7 @@
 #include <stdio.h>  /* defines FILENAME_MAX */
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <engine/Core.h>
 #include <graphics/Mesh.h>
 
 #define WINDOWS
@@ -20,6 +21,8 @@
 #endif
 
 #define FILE_PATH_PREFIX ""
+
+#define BIT_AT(x) (1 << x)
 
 namespace util {
 

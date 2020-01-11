@@ -5,7 +5,7 @@
 #include <string>
 #include <util\SimpleTimer.h>
 
-#define FRAME_STAT_UPDATE_INTERVAL 1.0/20.0
+#define FRAME_STAT_UPDATE_INTERVAL 1.0 / 20.0
 
 class Window {
 private:
@@ -13,11 +13,10 @@ private:
   std::string title;
   int width;
   int height;
-  bool debugOutput;
   SimpleTimer frameTimer;
   SimpleTimer frameStatUpdateTimer;
 public:
-  Window(const char* title, const int& width, const int& height, const bool& debugOutput = false) : title(const_cast<char*>(title)), width(width), height(height), debugOutput(debugOutput) {};
+  Window(const char* title, const int& width, const int& height) : title(const_cast<char*>(title)), width(width), height(height) {};
   bool init();
   void update();
   void cleanup();
