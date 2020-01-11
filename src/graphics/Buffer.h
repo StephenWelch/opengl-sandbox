@@ -1,18 +1,19 @@
 #pragma once
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
+
 #include <functional>
 
 class Buffer {
-private:
+ private:
   GLuint id;
   GLenum type;
   GLsizeiptr size;
   GLenum usage;
-public:
-  Buffer(const GLenum& type) : 
-    type(type) {};
+
+ public:
+  Buffer(const GLenum& type) : type(type){};
   void init(const GLenum& usage, const GLsizeiptr& size);
   void cleanup();
   void bindShaderProgram(const GLuint& bindingIndex);
@@ -28,17 +29,16 @@ public:
 };
 
 class UniformBuffer : public Buffer {
-public:
-  UniformBuffer() : Buffer(GL_UNIFORM_BUFFER) {};
+ public:
+  UniformBuffer() : Buffer(GL_UNIFORM_BUFFER){};
 };
 
 class IndexBuffer : public Buffer {
-public:
-  IndexBuffer() : Buffer(GL_ELEMENT_ARRAY_BUFFER) {};
+ public:
+  IndexBuffer() : Buffer(GL_ELEMENT_ARRAY_BUFFER){};
 };
 
 class VertexBuffer : public Buffer {
-public:
-  VertexBuffer() : Buffer(GL_ARRAY_BUFFER) {};
+ public:
+  VertexBuffer() : Buffer(GL_ARRAY_BUFFER){};
 };
-

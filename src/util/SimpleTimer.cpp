@@ -13,17 +13,8 @@ double SimpleTimer::mark() {
   return movingAverage.update(deltaTime);
 }
 
-double SimpleTimer::getDelta() {
-  return deltaTime;
-}
+double SimpleTimer::getDelta() { return deltaTime; }
 
-double SimpleTimer::getMovingAverage()
-{
-  return movingAverage.getAverage();
-}
+double SimpleTimer::getMovingAverage() { return movingAverage.getAverage(); }
 
-double SimpleTimer::getLastMarkTime() const
-{
-  return lastTime;
-}
-
+double SimpleTimer::getLastMarkTime() const { return lastTime; }

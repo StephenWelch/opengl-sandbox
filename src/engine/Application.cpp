@@ -1,10 +1,11 @@
 #include <engine/Application.h>
-#include <memory>
-#include <graphics/Window.h>
-#include <graphics/Renderer.h>
-#include <engine/Input.h>  
-#include <iostream>
 #include <engine/Core.h>
+#include <engine/Input.h>
+#include <graphics/Renderer.h>
+#include <graphics/Window.h>
+
+#include <iostream>
+#include <memory>
 
 int Application::start() {
   Log::init();

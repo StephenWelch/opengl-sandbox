@@ -1,14 +1,15 @@
 #pragma once
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
-#include <glm/glm.hpp>
 #include <engine/Core.h>
-#include <string>
-#include <map>
+#include <glad/glad.h>
+
 #include <algorithm>
+#include <glm/glm.hpp>
+#include <map>
+#include <string>
 
 class Shader {
-private:
+ private:
   std::string vertexPath, fragmentPath;
   GLuint programId;
 
@@ -17,13 +18,17 @@ private:
   bool programLinkedSuccessfully(const GLuint& programId) const;
   std::string getProgramLinkErrors(const GLuint& programId) const;
 
-public:
+ public:
   Shader(const std::string& vertexPath, const std::string& fragmentPath)
-    : vertexPath(vertexPath), fragmentPath(fragmentPath) {};
+      : vertexPath(vertexPath), fragmentPath(fragmentPath){};
   void init();
   void use();
   void cleanup();
-  void setBindingPoint(const std::string& name, const GLuint& bindingIndex);  // Wrapper functions for uniforms taken from https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/shader.h
+  void setBindingPoint(
+      const std::string& name,
+      const GLuint&
+          bindingIndex);  // Wrapper functions for uniforms taken from
+                          // https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/shader.h
   void setBool(const std::string& name, bool value) const;
   void setInt(const std::string& name, int value) const;
   void setFloat(const std::string& name, float value) const;

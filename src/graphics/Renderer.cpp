@@ -1,13 +1,14 @@
-#include <graphics/Renderer.h>
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <graphics/Renderer.h>
+#include <graphics/Shader.h>
 #include <stb_image.h>
+#include <util/Log.h>
+#include <util/util.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <util/Log.h>
-#include <util/util.h>
-#include <graphics/Shader.h>
 
 GLuint vao;
 GLuint vbo;
@@ -35,7 +36,6 @@ void Renderer::init() {
   spotLightManager.setBindingPoint(2);
   lightingShader.setBindingPoint("uSpotLights", 2);
 
-
   directionalLightManager.addLight(dirLight);
   pointLightManager.addLight(pointLight1);
   pointLightManager.addLight(pointLight2);
@@ -50,18 +50,19 @@ void Renderer::init() {
   for (const Texture2D& texture : model.getTextures()) {
     std::string type;
     switch (texture.getType()) {
-    case Texture2D::TextureType::SPECULAR:
-      type = "specular";
-      break;
-    case Texture2D::TextureType::DIFFUSE:
-      type = "diffuse";
-      break;
-    case Texture2D::TextureType::EMISSIVE:
-      type = "emissive";
-      break;
+      case Texture2D::TextureType::SPECULAR:
+        type = "specular";
+        break;
+      case Texture2D::TextureType::DIFFUSE:
+        type = "diffuse";
+        break;
+      case Texture2D::TextureType::EMISSIVE:
+        type = "emissive";
+        break;
     }
-    //LOG_DEBUG("uMaterial." + type + "Texture");
-    lightingShader.setInt("uMaterial." + type + "Texture", texture.getTextureUnitNum());
+    // LOG_DEBUG("uMaterial." + type + "Texture");
+    lightingShader.setInt("uMaterial." + type + "Texture",
+                          texture.getTextureUnitNum());
   }
 
   lightingShader.setBool("uEmissionsEnabled", false);
@@ -74,7 +75,6 @@ void Renderer::init() {
 }
 
 void Renderer::render() {
-
   lightingShader.use();
 
   glm::mat4 viewMatrix = camera->getViewMatrix();
@@ -87,19 +87,21 @@ void Renderer::render() {
   spotLightManager.updateAll();
 
   model.bind();
-  for (unsigned int i = 0; i < 10; i++)
-  {
-    // calculate the model matrix for each object and pass it to shader before drawing
+  for (unsigned int i = 0; i < 10; i++) {
+    // calculate the model matrix for each object and pass it to shader before
+    // drawing
     glm::mat4 modelMatrix = glm::mat4(1.0f);
     modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
     float angle = 20.0f * (i + 1);
-    modelMatrix = glm::rotate(modelMatrix, glm::radians((float)glfwGetTime() * angle), { 1.0f, 0.3f, 0.5f });
+    modelMatrix =
+        glm::rotate(modelMatrix, glm::radians((float)glfwGetTime() * angle),
+                    {1.0f, 0.3f, 0.5f});
     lightingShader.setMat4("uModel", modelMatrix);
-    lightingShader.setMat3("uNormalMatrix", glm::transpose(glm::inverse(modelMatrix)));
+    lightingShader.setMat3("uNormalMatrix",
+                           glm::transpose(glm::inverse(modelMatrix)));
 
     model.draw();
   }
-
 }
 
 void Renderer::close() {

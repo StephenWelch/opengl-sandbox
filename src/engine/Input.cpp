@@ -1,14 +1,12 @@
 #include <engine/Input.h>
 
-void Input::init()
-{
-}
+void Input::init() {}
 
 void Input::update() {
   float currentTime = glfwGetTime();
   dt = currentTime - lastTime;
-  mousePos = { window->getMouseX(), window->getMouseY() };
-  
+  mousePos = {window->getMouseX(), window->getMouseY()};
+
   if (!clickedIn) {
     lastMousePos = mousePos;
     clickedIn = true;
@@ -19,13 +17,11 @@ void Input::update() {
   updateCameraControls();
   updateWindowControls();
 
- 
   lastTime = currentTime;
   lastMousePos = mousePos;
 }
 
-void Input::updateCameraControls()
-{
+void Input::updateCameraControls() {
   glm::vec3 translation = glm::vec3(0.0f);
   glm::vec3 cameraXAxis = camera->getViewXAxis();
   glm::vec3 cameraYAxis = camera->getViewYAxis();
@@ -72,8 +68,7 @@ void Input::updateCameraControls()
   camera->setPosition(camera->getPosition() + translation);
 }
 
-void Input::updateWindowControls()
-{
+void Input::updateWindowControls() {
   if (window->isKeyPressed(GLFW_KEY_ESCAPE)) {
     window->requestClose();
   }

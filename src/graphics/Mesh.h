@@ -1,13 +1,13 @@
 #pragma once
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include <glad/glad.h>
 #include <graphics/Buffer.h>
+
+#include <glm/glm.hpp>
 #include <vector>
 
 class Mesh {
-private:
-
+ private:
   struct Vertex {
     glm::vec3 position;
     glm::vec3 normal;
@@ -25,10 +25,14 @@ private:
   VertexBuffer vbo;
   IndexBuffer ebo;
 
-public:
-  Mesh(const GLenum& usage, const std::vector<glm::vec3>& vertices, const std::vector<glm::vec3> normals, const std::vector<glm::vec2>& textureCoords, const std::vector<GLuint>& indices);
-  Mesh(const GLenum& usage, const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices);
-  
+ public:
+  Mesh(const GLenum& usage, const std::vector<glm::vec3>& vertices,
+       const std::vector<glm::vec3> normals,
+       const std::vector<glm::vec2>& textureCoords,
+       const std::vector<GLuint>& indices);
+  Mesh(const GLenum& usage, const std::vector<Vertex>& vertices,
+       const std::vector<GLuint>& indices);
+
   void init();
   void bind();
   void draw();

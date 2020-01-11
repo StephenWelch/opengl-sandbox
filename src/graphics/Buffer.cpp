@@ -10,10 +10,7 @@ void Buffer::init(const GLenum& usage, const GLsizeiptr& size) {
   unbind();
 }
 
-void Buffer::cleanup()
-{
-  glDeleteBuffers(1, &id);
-}
+void Buffer::cleanup() { glDeleteBuffers(1, &id); }
 
 void Buffer::bindShaderProgram(const GLuint& bindingIndex) {
   bind();
@@ -21,49 +18,26 @@ void Buffer::bindShaderProgram(const GLuint& bindingIndex) {
   unbind();
 }
 
-void Buffer::bind()
-{
-  glBindBuffer(type, id);
-}
+void Buffer::bind() { glBindBuffer(type, id); }
 
-void Buffer::unbind()
-{
-  glBindBuffer(type, 0);
-}
+void Buffer::unbind() { glBindBuffer(type, 0); }
 
-void Buffer::execute(std::function<void(Buffer*)> operations)
-{
+void Buffer::execute(std::function<void(Buffer*)> operations) {
   bind();
   operations(this);
   unbind();
 }
 
-void Buffer::setData(const void* data)
-{
+void Buffer::setData(const void* data) {
   glBufferData(type, size, data, usage);
 }
 
-GLuint Buffer::getId() const
-{
-  return id;
-}
+GLuint Buffer::getId() const { return id; }
 
-GLenum Buffer::getUsage() const
-{
-  return usage;
-}
+GLenum Buffer::getUsage() const { return usage; }
 
-void Buffer::setUsage(const GLenum& usage)
-{
-  this->usage = usage;
-}
+void Buffer::setUsage(const GLenum& usage) { this->usage = usage; }
 
-GLsizeiptr Buffer::getSize() const
-{
-  return size;
-}
+GLsizeiptr Buffer::getSize() const { return size; }
 
-void Buffer::setSize(const GLsizeiptr& size)
-{
-  this->size = size;
-}
+void Buffer::setSize(const GLsizeiptr& size) { this->size = size; }
