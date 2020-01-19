@@ -105,17 +105,18 @@ bool Window::init() {
 
 void Window::update() {
   glfwSwapBuffers(window);
-  frameTimer.mark();
-  if (glfwGetTime() - frameStatUpdateTimer.getLastMarkTime() >
-      FRAME_STAT_UPDATE_INTERVAL) {
-    double frameTime = frameTimer.getMovingAverage();
-    double fps = 1.0 / frameTime;
-    std::string title = "FPS: " + std::to_string(fps) +
-                        " MPF: " + std::to_string(frameTime * 1000.0);
-    setTitle(title.c_str());
-    frameStatUpdateTimer.mark();
+  if (ENABLE_PERF_TRACE) {
+    frameTimer.mark();
+    if (glfwGetTime() - frameStatUpdateTimer.getLastMarkTime() >
+        FRAME_STAT_UPDATE_INTERVAL) {
+      double frameTime = frameTimer.getMovingAverage();
+      double fps = 1.0 / frameTime;
+      std::string title = "FPS: " + std::to_string(fps) +
+                          " MPF: " + std::to_string(frameTime * 1000.0);
+      setTitle(title.c_str());
+      frameStatUpdateTimer.mark();
+    }
   }
-
   glfwPollEvents();
 }
 

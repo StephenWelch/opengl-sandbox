@@ -104,7 +104,7 @@ void Renderer::render() {
   }
 }
 
-void Renderer::close() {
+void Renderer::cleanup() {
   /*directionalLightBuffer.cleanup();
   pointLightBuffer.cleanup();
   spotLightBuffer.cleanup();*/

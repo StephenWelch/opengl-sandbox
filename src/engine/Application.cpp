@@ -18,14 +18,20 @@ int Application::start() {
 
   window->init();
   renderer->init();
+
+  // Perform any config after resources are initialized
+  window->setCulling(true);
+  window->setVsync(false);
+
   while (!window->closeRequested()) {
     input->update();
 
+    // Clear screen, write rendering data to GPU, swap framebuffers
     window->clear(0, 0, 0, 0);
     renderer->render();
     window->update();
   }
-  renderer->close();
+  renderer->cleanup();
   window->cleanup();
 
   return 0;

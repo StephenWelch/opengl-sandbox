@@ -4,6 +4,7 @@
 
 #define ENABLE_ASSERTS true
 #define ENABLE_GL_DEBUG_OUTPUT true
+#define ENABLE_PERF_TRACE true
 #define LOG_LEVEL spdlog::level::trace
 
 #ifdef ENABLE_ASSERTS
