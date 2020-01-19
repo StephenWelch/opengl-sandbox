@@ -10,7 +10,7 @@ class Texture2D {
   enum class TextureType { SPECULAR, DIFFUSE, EMISSIVE };
 
   Texture2D(const TextureType& type, const std::string& filePath,
-            const GLuint& textureUnit)
+            const unsigned int& textureUnit)
       : type(type),
         filePath(filePath),
         fileExtension(filePath.substr(filePath.find(".") + 1)),
@@ -20,15 +20,15 @@ class Texture2D {
   void bind();
   void cleanup();
   TextureType getType() const;
-  GLuint getId() const;
-  GLuint getTextureUnit() const;
-  GLuint getTextureUnitNum() const;
+  unsigned int getId() const;
+  unsigned int getTextureUnit() const;
+  unsigned int getTextureUnitNum() const;
 
  private:
   std::string filePath;
   std::string fileExtension;
-  GLuint textureUnit;
-  GLuint id;
+  unsigned int textureUnit;
+  unsigned int id;
   TextureType type;
 
   void createTexture(const int& width, const int& height,

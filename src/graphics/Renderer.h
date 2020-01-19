@@ -77,8 +77,8 @@ class Renderer {
   Texture2D emissionTexture = Texture2D(Texture2D::TextureType::EMISSIVE,
                                         "res/matrix.jpg", GL_TEXTURE2);
   Mesh cubeMesh = util::generateCube(1.0f, GL_STATIC_DRAW);
-  Model model =
-      Model(cubeMesh, {diffuseTexture, specularTexture, emissionTexture});
+  Model model = Model(GL_STATIC_DRAW, {cubeMesh},
+                      {diffuseTexture, specularTexture, emissionTexture});
 
  public:
   Renderer(const std::unique_ptr<Camera>& camera, const int& width,
@@ -86,7 +86,7 @@ class Renderer {
       : camera(camera), width(width), height(height){};
   void init();
   void render();
-  void close();
+  void cleanup();
   void setWidth(const int& width);
   void setHeight(const int& height);
 };
