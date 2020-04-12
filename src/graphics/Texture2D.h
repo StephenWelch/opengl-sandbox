@@ -11,26 +11,26 @@ class Texture2D {
 
   Texture2D(const TextureType& type, const std::string& filePath,
             const unsigned int& textureUnit)
-      : type(type),
-        filePath(filePath),
-        fileExtension(filePath.substr(filePath.find(".") + 1)),
-        textureUnit(textureUnit){};
+      :type(type),
+	   filePath(filePath),
+	   fileExtension(filePath.substr(filePath.find('.')+1)),
+	   textureUnit(textureUnit){};
 
-  void init();
-  void bind();
-  void cleanup();
-  TextureType getType() const;
-  unsigned int getId() const;
-  unsigned int getTextureUnit() const;
-  unsigned int getTextureUnitNum() const;
+	void init();
+	void bind();
+	void cleanup();
+	TextureType getType() const;
+	unsigned int getId() const;
+	unsigned int getTextureUnit() const;
+	unsigned int getTextureUnitNum() const;
 
- private:
-  std::string filePath;
-  std::string fileExtension;
-  unsigned int textureUnit;
-  unsigned int id;
-  TextureType type;
+private:
+	TextureType type;
+	std::string filePath;
+	std::string fileExtension;
+	unsigned int textureUnit;
+	unsigned int id{};
 
-  void createTexture(const int& width, const int& height,
-                     const unsigned char* data);
+	void createTexture(const int& width, const int& height,
+			const unsigned char* data);
 };

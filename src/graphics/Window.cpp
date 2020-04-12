@@ -55,18 +55,18 @@ bool Window::init() {
   LOG_DEBUG("Renderer: {0}", glGetString(GL_RENDERER));
   LOG_DEBUG("Version: {0}", glGetString(GL_VERSION));
 
-  if (ENABLE_GL_DEBUG_OUTPUT) {
-    GLint flags;
-    glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-    if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
-      LOG_INFO("Enabling debug output");
-      glEnable(GL_DEBUG_OUTPUT);
-      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-      glDebugMessageCallback(glDebugOutput, nullptr);
-      glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0,
-                            nullptr, GL_TRUE);
-    }
-  }
+//  if (ENABLE_GL_DEBUG_OUTPUT) {
+//    GLint flags;
+//    glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+//    if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
+//      LOG_INFO("Enabling debug output");
+//      glEnable(GL_DEBUG_OUTPUT);
+//      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+//      glDebugMessageCallback(glDebugOutput, nullptr);
+//      glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0,
+//                            nullptr, GL_TRUE);
+//    }
+//  }
 
   glfwSetWindowUserPointer(window, this);
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

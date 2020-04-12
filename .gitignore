@@ -486,3 +486,4 @@ MigrationBackup/
 
 build/
 CMakeFiles/
+cmake-build-*

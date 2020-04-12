@@ -1,7 +1,11 @@
 #include "util.h"
 
 namespace util {
-Mesh util::generateCube(const float& sideLength, const GLenum& usage) {
+
+// Note: we don't need util:: qualification here if we wrap it in a namespace util {}
+// block, because these fucntions aren't class members. MSVC ignores this, but other compilers
+// don't.
+Mesh generateCube(const float& sideLength, const GLenum& usage) {
   float halfSideLength = sideLength / 2.0f;
   // Defined in winding order
   std::vector<glm::vec3> vertices{
@@ -120,7 +124,7 @@ Mesh util::generateCube(const float& sideLength, const GLenum& usage) {
 
   return Mesh(usage, vertices, normals, textureCoords, indices);
 }
-std::string util::getWorkingDirectory() {
+std::string getWorkingDirectory() {
   char cCurrentPath[FILENAME_MAX];
 
   if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath))) {
@@ -141,7 +145,7 @@ std::string util::getWorkingDirectory() {
  * @param path The path to the file to read from
  * @return The file's contents as a a string
  */
-std::string util::getFileAsString(const std::string& path) {
+std::string getFileAsString(const std::string& path) {
   LOG_DEBUG("Loading resource: {}/{}", util::getWorkingDirectory(), path);
   std::ifstream file(FILE_PATH_PREFIX + path);
 
@@ -152,7 +156,7 @@ std::string util::getFileAsString(const std::string& path) {
   return buffer.str();
 }
 
-GLenum util::glCheckError_(const char* file, int line) {
+GLenum glCheckError_(const char* file, int line) {
   GLenum errorCode;
   while ((errorCode = glGetError()) != GL_NO_ERROR) {
     std::string error;
@@ -191,4 +195,5 @@ GLenum util::glCheckError_(const char* file, int line) {
 //    contentsArray[contents.size()] = '\0';
 //    return contentsArray;
 //  }
+
 }  // namespace util

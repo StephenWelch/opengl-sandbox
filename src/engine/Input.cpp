@@ -1,14 +1,17 @@
 #include <engine/Input.h>
 
-void Input::init() {}
+#include <cmath>
 
-void Input::update() {
-  float currentTime = glfwGetTime();
-  dt = currentTime - lastTime;
-  mousePos = {window->getMouseX(), window->getMouseY()};
+void Input::init() { }
 
-  if (!clickedIn) {
-    lastMousePos = mousePos;
+void Input::update()
+{
+		float currentTime = glfwGetTime();
+		dt = currentTime-lastTime;
+		mousePos = {window->getMouseX(), window->getMouseY()};
+
+		if (!clickedIn) {
+				lastMousePos = mousePos;
     clickedIn = true;
   }
 
@@ -46,26 +49,25 @@ void Input::updateCameraControls() {
   if (window->isKeyPressed(GLFW_KEY_Q)) {
     translation -= displacement * cameraYAxis;
   }
-  if (window->isKeyPressed(GLFW_KEY_SPACE)) {
-    translation += displacement * camera->WORLD_UP;
-  }
-  if (window->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
-    translation -= displacement * camera->WORLD_UP;
-  }
+		if (window->isKeyPressed(GLFW_KEY_SPACE)) {
+				translation += displacement*camera->WORLD_UP;
+		}
+		if (window->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
+				translation -= displacement*camera->WORLD_UP;
+		}
 
-  glm::vec3 rotation = glm::vec3(0.0f);
-  float sensitivity = 0.05f;
-  yaw += mouseDelta.x * sensitivity;
-  pitch += -mouseDelta.y * sensitivity;
-  pitch = fmin(89.0f, pitch);
-  pitch = fmax(-89.0f, pitch);
+		float sensitivity = 0.05f;
+		yaw += mouseDelta.x*sensitivity;
+		pitch += -mouseDelta.y*sensitivity;
+		pitch = std::fmin(89.0f, pitch);
+		pitch = std::fmax(-89.0f, pitch);
 
-  glm::vec3 cameraTarget;
-  cameraTarget.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-  cameraTarget.y = sin(glm::radians(pitch));
-  cameraTarget.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-  camera->setTarget(glm::normalize(cameraTarget));
-  camera->setPosition(camera->getPosition() + translation);
+		glm::vec3 cameraTarget;
+		cameraTarget.x = cos(glm::radians(yaw))*cos(glm::radians(pitch));
+		cameraTarget.y = sin(glm::radians(pitch));
+		cameraTarget.z = sin(glm::radians(yaw))*cos(glm::radians(pitch));
+		camera->setTarget(glm::normalize(cameraTarget));
+		camera->setPosition(camera->getPosition()+translation);
 }
 
 void Input::updateWindowControls() {
