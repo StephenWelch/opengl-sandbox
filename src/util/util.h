@@ -28,7 +28,7 @@
 
 namespace util {
 
-Mesh generateCube(const float& sideLength, const GLenum& usage);
+Mesh generateCube(float sideLength, const GLenum& usage);
 std::string getWorkingDirectory();
 std::string getFileAsString(const std::string& path);
 GLenum glCheckError_(const char* file, int line);

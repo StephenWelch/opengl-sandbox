@@ -2,7 +2,8 @@
 
 #include <memory>
 
-int main() {
-  auto game = std::make_unique<Application>();
-  game->start();
+int main()
+{
+		auto game = std::make_unique<Application>();
+		game->start();
 }

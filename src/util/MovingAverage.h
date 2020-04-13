@@ -3,13 +3,13 @@
 #include <deque>
 
 class MovingAverage {
- private:
-  int numSamples;
-  double runningTotal;
-  std::deque<double> samples;
+private:
+		int numSamples;
+		double runningTotal;
+		std::deque<double> samples;
 
- public:
-  MovingAverage(const int& numSamples);
-  double update(const double& sample);
-  double getAverage() const;
+public:
+		MovingAverage(int numSamples);
+		double update(double sample);
+		double getAverage() const;
 };
