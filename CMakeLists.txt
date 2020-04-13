@@ -54,20 +54,6 @@ set (resourceDestPath "${CMAKE_BINARY_DIR}/res")
 set (shaderSourcePath "${CMAKE_SOURCE_DIR}/src/shaders")
 set (shaderDestPath "${CMAKE_BINARY_DIR}/shaders")
 
-#add_custom_command(
-# TARGET ${PROJECT_NAME} POST_BUILD
-# COMMAND ${CMAKE_COMMAND} -E make_directory ${resourceDestPath}
-# DEPENDS ${resourceDestPath}
-# COMMENT "Create resources folder in ${resourceDestPath}"
-#)
-#
-#add_custom_command(
-# TARGET ${PROJECT_NAME} POST_BUILD
-# COMMAND ${CMAKE_COMMAND} -E make_directory ${shaderDestPath}
-# DEPENDS ${shaderDestPath}
-# COMMENT "Create shaders folder in ${shaderDestPath}"
-#)
-
 add_custom_command(
  TARGET ${PROJECT_NAME} PRE_BUILD
  COMMAND ${CMAKE_COMMAND} -E create_symlink ${resourceSourcePath} ${resourceDestPath} 
