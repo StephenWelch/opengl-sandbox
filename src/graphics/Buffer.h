@@ -20,7 +20,7 @@ public:
 		void bindShaderProgram(const GLuint& bindingIndex);
 		void bind();
 		void unbind();
-		void execute(std::function<void(Buffer*)> operations);
+		void execute(const std::function<void(Buffer*)>& operations);
 		void setData(const void* data);
 		GLuint getId() const;
 		GLenum getUsage() const;

@@ -24,7 +24,7 @@ void Buffer::bind() { glBindBuffer(type, id); }
 
 void Buffer::unbind() { glBindBuffer(type, 0); }
 
-void Buffer::execute(std::function<void(Buffer*)> operations)
+void Buffer::execute(const std::function<void(Buffer*)>& operations)
 {
 		bind();
 		operations(this);

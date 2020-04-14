@@ -12,9 +12,9 @@ int Application::start()
 		Log::init();
 		Log::getLogger()->set_level(LOG_LEVEL);
 
-		auto camera = std::make_unique<Camera>(45.0f, 800, 600);
-		auto renderer = std::make_unique<Renderer>(camera, 800, 600);
-		auto window = std::make_unique<Window>("Game", 800, 600);
+		auto camera = std::make_unique<Camera>(45.0f, 1600, 1200);
+		auto renderer = std::make_unique<Renderer>(camera, 1600, 1200);
+		auto window = std::make_unique<Window>("Game", 1600, 1200);
 		auto input = std::make_unique<Input>(window, camera);
 
 		window->init();
@@ -28,7 +28,7 @@ int Application::start()
 				input->update();
 
 				// Clear screen, write rendering data to GPU, swap framebuffers
-				window->clear(0, 0, 0, 0);
+				window->clear(0.25f, 0.25f, 0.25f, 1.0f);
 				renderer->render();
 				window->update();
 		}

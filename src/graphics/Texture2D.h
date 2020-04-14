@@ -7,7 +7,7 @@
 
 class Texture2D {
 public:
-		enum class TextureType { SPECULAR, DIFFUSE, EMISSIVE };
+		enum class TextureType { SPECULAR, DIFFUSE, EMISSIVE, HEIGHT, AMBIENT };
 
 		Texture2D(const TextureType& type, const std::string& filePath,
 						const unsigned int& textureUnit)
@@ -31,6 +31,6 @@ private:
 		unsigned int textureUnit;
 		unsigned int id{};
 
-		void createTexture(int width, int height,
+		void createTexture(int width, int height, int nrChannels,
 						const unsigned char* data);
 };

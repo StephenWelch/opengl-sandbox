@@ -1,7 +1,5 @@
 #include "Model.h"
 
-#include <algorithm>
-
 void Model::processNode(aiNode* node, const aiScene* scene,
 				const std::string& directory)
 {
@@ -15,15 +13,14 @@ void Model::processNode(aiNode* node, const aiScene* scene,
 }
 
 std::vector<Texture2D> Model::loadMaterialTextures(
-				aiMaterial* mat, aiTextureType type, Texture2D::TextureType engineType,
+				aiMaterial* mat, aiTextureType type, Texture2D::TextureType engineType, unsigned int texture_unit_offset,
 				const std::string& directory)
 {
 		std::vector<Texture2D> loadedTextures;
 		for (unsigned int i = 0; i<mat->GetTextureCount(type); i++) {
-				// Check texture UID is not already loaded
 				aiString str;
 				mat->GetTexture(type, i, &str);
-				Texture2D texture(engineType, directory+std::string(str.C_Str()), 0);
+				Texture2D texture(engineType, directory+"/"+std::string(str.C_Str()), texture_unit_offset + i + GL_TEXTURE0);
 				loadedTextures.push_back(texture);
 		}
 		return loadedTextures;
@@ -36,7 +33,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene,
 		std::vector<unsigned int> indices;
 
 		for (unsigned int i = 0; i<mesh->mNumVertices; i++) {
-				Mesh::Vertex vertex;
+				Mesh::Vertex vertex{};
 				vertex.normal = {mesh->mNormals[i].x, mesh->mNormals[i].y,
 												 mesh->mNormals[i].z};
 				vertex.position = {mesh->mVertices[i].x, mesh->mVertices[i].y,
@@ -44,7 +41,12 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene,
 				if (mesh->mTextureCoords[0]) {
 						vertex.texCoords = {mesh->mTextureCoords[0][i].x,
 																mesh->mTextureCoords[0][i].y};
+				} else {
+						vertex.texCoords = {0.0f, 0.0f};
 				}
+
+				// TODO Tangents and Bitangents
+
 				vertices.push_back(vertex);
 		}
 
@@ -56,23 +58,27 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene,
 				}
 		}
 
-		if (mesh->mMaterialIndex>=0) {
+//		if (mesh->mMaterialIndex>=0) {
 				aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+				std::vector<Texture2D> textures;
 				std::vector<Texture2D> diffuseMaps =
 								loadMaterialTextures(material, aiTextureType_DIFFUSE,
-												Texture2D::TextureType::DIFFUSE, directory);
+												Texture2D::TextureType::DIFFUSE, textures.size(), directory);
 				textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 				std::vector<Texture2D> specularMaps =
 								loadMaterialTextures(material, aiTextureType_SPECULAR,
-												Texture2D::TextureType::SPECULAR, directory);
+												Texture2D::TextureType::SPECULAR, textures.size(), directory);
 				textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 				std::vector<Texture2D> emissiveMaps =
 								loadMaterialTextures(material, aiTextureType_EMISSIVE,
-												Texture2D::TextureType::EMISSIVE, directory);
+												Texture2D::TextureType::EMISSIVE, textures.size(), directory);
 				textures.insert(textures.end(), emissiveMaps.begin(), emissiveMaps.end());
-		}
 
-		return Mesh(usage, vertices, indices);
+				// TODO Heightmaps
+
+//		}
+
+		return Mesh(usage, vertices, indices, textures);
 }
 
 Model::Model(const unsigned int& usage, const std::string& path)
@@ -84,43 +90,28 @@ Model::Model(const unsigned int& usage, const std::string& path)
 
 		ENGINE_ASSERT(
 						scene && !(scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) && scene->mRootNode,
-						"Error loading model with Assimp: {}", importer.GetErrorString());
+						"Error loading model with Assimp: ", importer.GetErrorString())
 
 		processNode(scene->mRootNode, scene, path.substr(0, path.find_last_of('/')));
 }
 
 void Model::init()
 {
-		for (auto& texture : textures) {
-				texture.init();
-		}
 		for (auto& mesh : meshes) {
 				mesh.init();
-		}
-}
-
-void Model::bind()
-{
-		for (auto& texture : textures) {
-				texture.bind();
-		}
-		for (auto& mesh : meshes) {
-				mesh.bind();
 		}
 }
 
 void Model::draw()
 {
 		for (auto& mesh : meshes) {
+				mesh.bind();
 				mesh.draw();
 		}
 }
 
 void Model::cleanup()
 {
-		for (auto& texture : textures) {
-				texture.cleanup();
-		}
 		for (auto& mesh : meshes) {
 				mesh.cleanup();
 		}

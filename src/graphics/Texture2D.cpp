@@ -8,28 +8,25 @@
 void Texture2D::init()
 {
 		LOG_DEBUG("Loading texture {}", filePath);
-		stbi_set_flip_vertically_on_load(true);
+//		stbi_set_flip_vertically_on_load(true);
 
 		// Allocate texture
 		glGenTextures(1, &id);
 		glBindTexture(GL_TEXTURE_2D, id);
 
-		// set the texture wrapping parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-						GL_REPEAT);  // set texture wrapping to GL_REPEAT (default
-		// wrapping method)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+		// Load the texture
 		int width, height, nrChannels;
 		unsigned char* data =
 						stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
 
 		ENGINE_ASSERT(data, "Failed to load texture {}", filePath);
-		createTexture(width, height, data);
+		createTexture(width, height, nrChannels, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		stbi_image_free(data);
 
@@ -39,6 +36,7 @@ void Texture2D::init()
 
 void Texture2D::bind()
 {
+//		LOG_DEBUG("Binding {} to {}", filePath, textureUnit);
 		glActiveTexture(textureUnit);
 		glBindTexture(GL_TEXTURE_2D, id);
 }
@@ -56,16 +54,19 @@ GLuint Texture2D::getTextureUnitNum() const
 		return textureUnit-GL_TEXTURE0;
 }
 
-void Texture2D::createTexture(int width, int height,
+void Texture2D::createTexture(int width, int height, int nrChannels,
 				const unsigned char* data)
 {
 		GLuint colorChannels = GL_RGBA;
-		if (fileExtension=="jpg") {
+		if(nrChannels == 1) {
+				colorChannels = GL_RED;
+		} else if(nrChannels == 3) {
 				colorChannels = GL_RGB;
-		}
-		else if (fileExtension=="png") {
+		} else if(nrChannels == 4) {
 				colorChannels = GL_RGBA;
 		}
+
+
 		glTexImage2D(GL_TEXTURE_2D, 0, colorChannels, width, height, 0, colorChannels,
 						GL_UNSIGNED_BYTE, data);
 }

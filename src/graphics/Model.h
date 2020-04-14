@@ -9,28 +9,24 @@
 
 class Model {
 public:
-		Model(const unsigned int& usage, const std::vector<Mesh>& meshes,
-						const std::vector<Texture2D>& textures)
-						:usage(usage), meshes(meshes), textures(textures) { };
+		Model(const unsigned int& usage, const std::vector<Mesh>& meshes)
+						:usage(usage), meshes(meshes) { };
 		Model(const unsigned int& usage, const std::string& path);
 
 		void init();
-		void bind();
 		void draw();
 		void cleanup();
 		std::vector<Mesh> getMeshes() const { return meshes; };
-		std::vector<Texture2D> getTextures() const { return textures; };
 
 private:
 		const unsigned int& usage;
 		std::vector<Mesh> meshes;
-		std::vector<Texture2D> textures;
 
 		void processNode(aiNode* node, const aiScene* scene,
 						const std::string& directory);
 		Mesh processMesh(aiMesh* mesh, const aiScene* scene,
 						const std::string& directory);
 		static std::vector<Texture2D> loadMaterialTextures(
-						aiMaterial* mat, aiTextureType type, Texture2D::TextureType engineType,
+						aiMaterial* mat, aiTextureType type, Texture2D::TextureType engineType, unsigned int texture_unit_offset,
 						const std::string& directory);
 };

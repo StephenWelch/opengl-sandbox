@@ -38,6 +38,6 @@ public:
 		void setWireframe(const bool& on);
 		void setCulling(const bool& on);
 		// void framebuffer_size_callback(GLFWwindow *window, int width, int height);
-		static void glDebugOutput(unsigned int source, unsigned int type, unsigned int id, unsigned int severity,
+		static void APIENTRY glDebugOutput(unsigned int source, unsigned int type, unsigned int id, unsigned int severity, int length,
 						const char* message, const void* userParam);
 };

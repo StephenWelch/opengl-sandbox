@@ -123,7 +123,7 @@ Mesh generateCube(float sideLength, const GLenum& usage)
 																20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
 																30, 31, 32, 33, 34, 35, 36};
 
-		return Mesh(usage, vertices, normals, textureCoords, indices);
+		return Mesh(usage, vertices, normals, textureCoords, indices, {});
 }
 std::string getWorkingDirectory()
 {

@@ -8,13 +8,6 @@
 
 #include <iostream>
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-		// make sure the viewport matches the new window dimensions; note that width
-		// and height will be significantly larger than specified on retina displays.
-		glViewport(0, 0, width, height);
-}
-
 bool Window::init()
 {
 		LOG_INFO("Starting Window initialization");
@@ -57,18 +50,19 @@ bool Window::init()
 		LOG_DEBUG("Renderer: {0}", glGetString(GL_RENDERER));
 		LOG_DEBUG("Version: {0}", glGetString(GL_VERSION));
 
-//  if (ENABLE_GL_DEBUG_OUTPUT) {
-//    GLint flags;
-//    glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-//    if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
-//      LOG_INFO("Enabling debug output");
-//      glEnable(GL_DEBUG_OUTPUT);
-//      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-//      glDebugMessageCallback(glDebugOutput, nullptr);
-//      glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0,
-//                            nullptr, GL_TRUE);
-//    }
-//  }
+  if (ENABLE_GL_DEBUG_OUTPUT) {
+			glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+			GLint flags;
+    glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+    if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
+      LOG_INFO("Enabling debug output");
+      glEnable(GL_DEBUG_OUTPUT);
+      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+      glDebugMessageCallback(glDebugOutput, nullptr);
+      glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0,
+                            nullptr, GL_TRUE);
+    }
+  }
 
 		glfwSetWindowUserPointer(window, this);
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -213,8 +207,8 @@ int Window::getWidth() const { return width; }
 
 int Window::getHeight() const { return height; }
 
-void Window::glDebugOutput(unsigned int source, unsigned int type, unsigned int id, unsigned int severity,
-				const char* message, const void* userParam)
+void APIENTRY Window::glDebugOutput(unsigned int source, unsigned int type, unsigned int id, unsigned int severity,
+				int length, const char* message, const void* userParam)
 {
 		// ignore non-significant error/warning codes
 		if (id==131169 || id==131185 || id==131218 || id==131204) return;
