@@ -20,7 +20,7 @@ std::vector<Texture> Model::loadMaterialTextures(
 		for (unsigned int i = 0; i<mat->GetTextureCount(type); i++) {
 				aiString str;
 				mat->GetTexture(type, i, &str);
-				Texture texture(engineType, directory+"/"+std::string(str.C_Str()), texture_unit_offset + i + GL_TEXTURE0);
+				Texture texture(engineType, directory+"/"+std::string(str.C_Str()), texture_unit_offset + i);
 				loadedTextures.push_back(texture);
 		}
 		return loadedTextures;
