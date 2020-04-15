@@ -487,3 +487,4 @@ MigrationBackup/
 build/
 CMakeFiles/
 cmake-build-*
+!res/**
