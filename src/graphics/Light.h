@@ -175,7 +175,7 @@ public:
 		{
 				uniformData.lights[lights[light]] = *light;
 				uniformData.numLights = lights.size();
-				buffer.execute([&](auto ubo) { ubo->setData(&uniformData); });
+				buffer.setData(&uniformData);
 		}
 
 		void updateAll()

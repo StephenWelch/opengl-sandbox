@@ -32,30 +32,29 @@ Mesh::Mesh(const GLenum& usage, const std::vector<Vertex>& vertices,
 void Mesh::init()
 {
 		LOG_DEBUG("Initializing mesh");
-		glGenVertexArrays(1, &vao);
+		
 		vbo.init(usage, vertexData.size()*sizeof(Vertex));
 		ebo.init(usage, indexData.size()*sizeof(int));
+		vbo.setData(vertexData.data());
+		ebo.setData(indexData.data());
 
-		glBindVertexArray(vao);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
+		glCreateVertexArrays(1, &vao);
 
-		ebo.execute([&](auto indexBuffer) {
-			indexBuffer->setData(indexData.data());
-			vbo.execute([&](auto vertexBuffer) {
-				vertexBuffer->setData(vertexData.data());
+		glVertexArrayVertexBuffer(vao, 0, vbo.getId(), 0, sizeof(Vertex));
+		glVertexArrayElementBuffer(vao, ebo.getId());
+		
+		glEnableVertexArrayAttrib(vao, 0);
+		glEnableVertexArrayAttrib(vao, 1);
+		glEnableVertexArrayAttrib(vao, 2);
 
-				glVertexAttribPointer(0, VERTEX_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-								(void*)offsetof(Vertex, position));
-				glVertexAttribPointer(1, NORMAL_SIZE, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-								(void*)offsetof(Vertex, normal));
-				glVertexAttribPointer(2, TEX_COORD_SIZE, GL_FLOAT, GL_FALSE,
-								sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
+		glVertexArrayAttribFormat(vao, 0, VERTEX_SIZE, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
+		glVertexArrayAttribFormat(vao, 1, NORMAL_SIZE, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
+		glVertexArrayAttribFormat(vao, 2, TEX_COORD_SIZE, GL_FLOAT, GL_FALSE, offsetof(Vertex, texCoords));
 
-				glBindVertexArray(0);
-			});
-		});
+		glVertexArrayAttribBinding(vao, 0, 0);
+		glVertexArrayAttribBinding(vao, 1, 0);
+		glVertexArrayAttribBinding(vao, 2, 0);
+
 
 		for(auto& texture : textures) {
 				texture.init();

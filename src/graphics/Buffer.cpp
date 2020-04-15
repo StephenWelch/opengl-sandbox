@@ -7,27 +7,13 @@ void Buffer::init(const GLenum& usage, const GLsizeiptr& size)
 
 		glCreateBuffers(1, &id);
 		setData(nullptr);
-		unbind();
 }
 
 void Buffer::cleanup() { glDeleteBuffers(1, &id); }
 
 void Buffer::bindShaderProgram(const GLuint& bindingIndex)
 {
-		bind();
 		glBindBufferBase(type, bindingIndex, id);
-		unbind();
-}
-
-void Buffer::bind() { /*glBindBuffer(type, id);*/ }
-
-void Buffer::unbind() { /*glBindBuffer(type, 0);*/ }
-
-void Buffer::execute(const std::function<void(Buffer*)>& operations)
-{
-		bind();
-		operations(this);
-		unbind();
 }
 
 void Buffer::setData(const void* data)
