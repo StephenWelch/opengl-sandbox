@@ -18,8 +18,8 @@ bool Window::init()
 		// glGetError();
 
 		glfwDefaultWindowHints();
-		// Set OpenGL version to 4.3
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		// Set OpenGL version to 3.3
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		// Set OpenGL profile to Core
 		glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -51,7 +51,6 @@ bool Window::init()
 		LOG_DEBUG("Version: {0}", glGetString(GL_VERSION));
 
   if (ENABLE_GL_DEBUG_OUTPUT) {
-			glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 			GLint flags;
     glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
     if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
