@@ -5,11 +5,11 @@
 
 #include <string>
 
-class Texture2D {
+class Texture {
 public:
 		enum class TextureType { SPECULAR, DIFFUSE, EMISSIVE, HEIGHT, AMBIENT };
 
-		Texture2D(const TextureType& type, const std::string& filePath,
+		Texture(const TextureType& type, const std::string& filePath,
 						const unsigned int& textureUnit)
 						:type(type),
 						 filePath(filePath),

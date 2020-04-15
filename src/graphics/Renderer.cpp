@@ -39,23 +39,23 @@ void Renderer::init()
 		pointLightManager.updateAll();
 		spotLightManager.updateAll();
 
-		std::unordered_map<Texture2D::TextureType, int> typeCount{};
+		std::unordered_map<Texture::TextureType, int> typeCount{};
 		for (auto& mesh : model.getMeshes()) {
 				for(auto& texture : mesh.getTextures()) {
 						std::string type;
 						switch (texture.getType()) {
-						case Texture2D::TextureType::SPECULAR:
+						case Texture::TextureType::SPECULAR:
 								type = "specular";
 								break;
-						case Texture2D::TextureType::DIFFUSE:
+						case Texture::TextureType::DIFFUSE:
 								type = "diffuse";
 								break;
-						case Texture2D::TextureType::EMISSIVE:
+						case Texture::TextureType::EMISSIVE:
 								type = "emissive";
 								break;
-						case Texture2D::TextureType::HEIGHT:
+						case Texture::TextureType::HEIGHT:
 								break;
-						case Texture2D::TextureType::AMBIENT:
+						case Texture::TextureType::AMBIENT:
 								break;
 						}
 
@@ -70,7 +70,7 @@ void Renderer::init()
 		}
 
 		lightingShader.setBool("uEmissionsEnabled", false);
-		lightingShader.setFloat("uMaterial.shininess", 64.0f);
+		lightingShader.setFloat("uMaterial.shininess", 32.0f);
 
 		// This only needs to be updated if we are changing camera FOV or other characteristics
 		lightingShader.setMat4("uProjection", camera->getProjectionMatrix());

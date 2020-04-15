@@ -12,15 +12,15 @@ void Model::processNode(aiNode* node, const aiScene* scene,
 		}
 }
 
-std::vector<Texture2D> Model::loadMaterialTextures(
-				aiMaterial* mat, aiTextureType type, Texture2D::TextureType engineType, unsigned int texture_unit_offset,
+std::vector<Texture> Model::loadMaterialTextures(
+				aiMaterial* mat, aiTextureType type, Texture::TextureType engineType, unsigned int texture_unit_offset,
 				const std::string& directory)
 {
-		std::vector<Texture2D> loadedTextures;
+		std::vector<Texture> loadedTextures;
 		for (unsigned int i = 0; i<mat->GetTextureCount(type); i++) {
 				aiString str;
 				mat->GetTexture(type, i, &str);
-				Texture2D texture(engineType, directory+"/"+std::string(str.C_Str()), texture_unit_offset + i + GL_TEXTURE0);
+				Texture texture(engineType, directory+"/"+std::string(str.C_Str()), texture_unit_offset + i + GL_TEXTURE0);
 				loadedTextures.push_back(texture);
 		}
 		return loadedTextures;
@@ -60,18 +60,18 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene,
 
 //		if (mesh->mMaterialIndex>=0) {
 				aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-				std::vector<Texture2D> textures;
-				std::vector<Texture2D> diffuseMaps =
+				std::vector<Texture> textures;
+				std::vector<Texture> diffuseMaps =
 								loadMaterialTextures(material, aiTextureType_DIFFUSE,
-												Texture2D::TextureType::DIFFUSE, textures.size(), directory);
+												Texture::TextureType::DIFFUSE, textures.size(), directory);
 				textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-				std::vector<Texture2D> specularMaps =
+				std::vector<Texture> specularMaps =
 								loadMaterialTextures(material, aiTextureType_SPECULAR,
-												Texture2D::TextureType::SPECULAR, textures.size(), directory);
+												Texture::TextureType::SPECULAR, textures.size(), directory);
 				textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-				std::vector<Texture2D> emissiveMaps =
+				std::vector<Texture> emissiveMaps =
 								loadMaterialTextures(material, aiTextureType_EMISSIVE,
-												Texture2D::TextureType::EMISSIVE, textures.size(), directory);
+												Texture::TextureType::EMISSIVE, textures.size(), directory);
 				textures.insert(textures.end(), emissiveMaps.begin(), emissiveMaps.end());
 
 				// TODO Heightmaps

@@ -1,5 +1,5 @@
 #include "Mesh.h"
-#include "Texture2D.h"
+#include "Texture.h"
 
 #include <util\Log.h>
 
@@ -7,7 +7,7 @@ Mesh::Mesh(const GLenum& usage, const std::vector<glm::vec3>& vertices,
 				const std::vector<glm::vec3>& normals,
 				const std::vector<glm::vec2>& textureCoords,
 				const std::vector<GLuint>& indices,
-				const std::vector<Texture2D>& textures)
+				const std::vector<Texture>& textures)
 {
 		this->usage = usage;
 		for (int i = 0; i<vertices.size(); i++) {
@@ -19,7 +19,7 @@ Mesh::Mesh(const GLenum& usage, const std::vector<glm::vec3>& vertices,
 
 Mesh::Mesh(const GLenum& usage, const std::vector<Vertex>& vertices,
 				const std::vector<GLuint>& indices,
-				const std::vector<Texture2D>& textures)
+				const std::vector<Texture>& textures)
 {
 		this->usage = usage;
 		this->vertexData = vertices;
@@ -90,6 +90,6 @@ void Mesh::cleanup()
 		}
 }
 
-std::vector<Texture2D> Mesh::getTextures() const {
+std::vector<Texture> Mesh::getTextures() const {
 		return textures;
 }

@@ -1,11 +1,11 @@
-#include "Texture2D.h"
+#include "Texture.h"
 
 #include <stb_image.h>
 #include <util/util.h>
 
 #include "util/Log.h"
 
-void Texture2D::init()
+void Texture::init()
 {
 		LOG_DEBUG("Loading texture {}", filePath);
 //		stbi_set_flip_vertically_on_load(true);
@@ -34,27 +34,27 @@ void Texture2D::init()
 						filePath, fileExtension, id, textureUnit);
 }
 
-void Texture2D::bind()
+void Texture::bind()
 {
 //		LOG_DEBUG("Binding {} to {}", filePath, textureUnit);
 		glActiveTexture(textureUnit);
 		glBindTexture(GL_TEXTURE_2D, id);
 }
 
-void Texture2D::cleanup() { }
+void Texture::cleanup() { }
 
-Texture2D::TextureType Texture2D::getType() const { return type; }
+Texture::TextureType Texture::getType() const { return type; }
 
-GLuint Texture2D::getId() const { return id; }
+GLuint Texture::getId() const { return id; }
 
-GLuint Texture2D::getTextureUnit() const { return textureUnit; }
+GLuint Texture::getTextureUnit() const { return textureUnit; }
 
-GLuint Texture2D::getTextureUnitNum() const
+GLuint Texture::getTextureUnitNum() const
 {
 		return textureUnit-GL_TEXTURE0;
 }
 
-void Texture2D::createTexture(int width, int height, int nrChannels,
+void Texture::createTexture(int width, int height, int nrChannels,
 				const unsigned char* data)
 {
 		GLuint colorChannels = GL_RGBA;

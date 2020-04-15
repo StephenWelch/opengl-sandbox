@@ -3,7 +3,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <graphics/Mesh.h>
-#include <graphics/Texture2D.h>
+#include <graphics/Texture.h>
 
 #include <assimp/Importer.hpp>
 
@@ -26,7 +26,7 @@ private:
 						const std::string& directory);
 		Mesh processMesh(aiMesh* mesh, const aiScene* scene,
 						const std::string& directory);
-		static std::vector<Texture2D> loadMaterialTextures(
-						aiMaterial* mat, aiTextureType type, Texture2D::TextureType engineType, unsigned int texture_unit_offset,
+		static std::vector<Texture> loadMaterialTextures(
+						aiMaterial* mat, aiTextureType type, Texture::TextureType engineType, unsigned int texture_unit_offset,
 						const std::string& directory);
 };

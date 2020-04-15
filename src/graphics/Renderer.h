@@ -8,7 +8,7 @@
 #include <graphics/Mesh.h>
 #include <graphics/Model.h>
 #include <graphics/Shader.h>
-#include <graphics/Texture2D.h>
+#include <graphics/Texture.h>
 #include <util/util.h>
 
 #include <array>
