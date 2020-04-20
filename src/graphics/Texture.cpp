@@ -11,8 +11,7 @@ void Texture::init()
 //		stbi_set_flip_vertically_on_load(true);
 
 		// Allocate texture
-		glGenTextures(1, &id);
-		glBindTexture(GL_TEXTURE_2D, id);
+		glCreateTextures(GL_TEXTURE_2D, 1, &id);
 
 		// Load the texture
 		int width, height, nrChannels;
@@ -23,10 +22,10 @@ void Texture::init()
 		createTexture(width, height, nrChannels, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		stbi_image_free(data);
 
@@ -37,8 +36,7 @@ void Texture::init()
 void Texture::bind()
 {
 //		LOG_DEBUG("Binding {} to {}", filePath, textureUnit);
-		glActiveTexture(textureUnit);
-		glBindTexture(GL_TEXTURE_2D, id);
+		glBindTextureUnit(textureUnit, id);
 }
 
 void Texture::cleanup() { }
@@ -51,7 +49,7 @@ GLuint Texture::getTextureUnit() const { return textureUnit; }
 
 GLuint Texture::getTextureUnitNum() const
 {
-		return textureUnit-GL_TEXTURE0;
+		return textureUnit;
 }
 
 void Texture::createTexture(int width, int height, int nrChannels,
@@ -66,7 +64,7 @@ void Texture::createTexture(int width, int height, int nrChannels,
 				colorChannels = GL_RGBA;
 		}
 
-
-		glTexImage2D(GL_TEXTURE_2D, 0, colorChannels, width, height, 0, colorChannels,
+		glTextureStorage2D(id, 1, GL_RGBA8, width, height);
+		glTextureSubImage2D(id, 0, 0,0 , width, height, colorChannels,
 						GL_UNSIGNED_BYTE, data);
 }

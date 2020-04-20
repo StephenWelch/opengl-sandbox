@@ -18,9 +18,6 @@ public:
 		void init(const GLenum& usage, const GLsizeiptr& size);
 		void cleanup();
 		void bindShaderProgram(const GLuint& bindingIndex);
-		void bind();
-		void unbind();
-		void execute(const std::function<void(Buffer*)>& operations);
 		void setData(const void* data);
 		GLuint getId() const;
 		GLenum getUsage() const;
