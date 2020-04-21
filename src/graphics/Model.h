@@ -19,6 +19,9 @@ public:
 		std::vector<Mesh> getMeshes() const { return meshes; };
 
 private:
+		glm::vec3 position {};
+		glm::vec3 rotation {};
+
 		const unsigned int& usage;
 		std::vector<Mesh> meshes;
 

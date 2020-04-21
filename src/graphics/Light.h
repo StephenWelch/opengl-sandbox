@@ -126,7 +126,7 @@ struct SpotLight {
 template<typename LightStruct, int MaxLights>
 class LightManager {
 protected:
-		UniformBuffer buffer;
+		UniformBuffer buffer{};
 
 private:
 		struct Data {
@@ -139,7 +139,7 @@ private:
 		int lastIndex = 0;
 
 public:
-		bool addLight(const std::shared_ptr<LightStruct>& light)
+		bool addLight(const std::shared_ptr<LightStruct>& light, bool update = false)
 		{
 				if (unfilledIndexes.empty()) {
 						if (lastIndex>MaxLights) {
@@ -154,10 +154,15 @@ public:
 						lights[light] = unfilledIndexes.front();
 						unfilledIndexes.pop();
 				}
+
+				if(update) {
+						this->update(light);
+				}
+
 				return true;
 		}
 
-		void removeLight(const std::shared_ptr<LightStruct>& light)
+		void removeLight(const std::shared_ptr<LightStruct>& light, bool update = false)
 		{
 				int idx = lights[light];
 				lights.erase(light);
@@ -167,6 +172,11 @@ public:
 				else {
 						unfilledIndexes.push(idx);
 				}
+
+				if(update) {
+						this->update(light);
+				}
+
 		}
 
 		void init() { buffer.init(GL_DYNAMIC_DRAW, sizeof(Data)); }
