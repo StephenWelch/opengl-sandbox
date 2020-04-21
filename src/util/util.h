@@ -1,15 +1,17 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include "Log.h"
-#include <stdio.h>  /* defines FILENAME_MAX */
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <engine/Core.h>
+#include <glad/glad.h>
 #include <graphics/Mesh.h>
+#include <stdio.h> /* defines FILENAME_MAX */
+
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+
+#include "Log.h"
 
 #define WINDOWS
 #ifdef WINDOWS
@@ -26,15 +28,10 @@
 
 namespace util {
 
-  template<class T>
-  struct aggregate_adapter : public T {
-    template<class... Args>
-    aggregate_adapter(Args&&... args) : T{ std::forward<Args> args... } {};
-  };
+Mesh generateCube(float sideLength, const GLenum& usage);
+std::string getWorkingDirectory();
+std::string getFileAsString(const std::string& path);
+GLenum glCheckError_(const char* file, int line);
+#define glCheckError() glCheckError_(__FILE__, __LINE__)
 
-  Mesh generateCube(const float& sideLength, const GLenum& usage);
-  std::string getWorkingDirectory();
-  std::string getFileAsString(const std::string& path);
-  GLenum glCheckError_(const char* file, int line);
-  #define glCheckError() glCheckError_(__FILE__, __LINE__)
 }  // namespace util

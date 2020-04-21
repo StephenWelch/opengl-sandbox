@@ -28,7 +28,7 @@ add_definitions(-DGLFW_INCLUDE_NONE
 file(GLOB_RECURSE PROJECT_SOURCES src/*.cpp src/*.frag src/*.vert)
 file(GLOB_RECURSE PROJECT_HEADERS src/*.h)
 
-add_executable(learn_opengl ${PROJECT_HEADERS} ${PROJECT_SOURCES})
+add_executable(${PROJECT_NAME} ${PROJECT_HEADERS} ${PROJECT_SOURCES})
 
 # Define where to look for headers
 include_directories(
@@ -53,16 +53,18 @@ set (resourceSourcePath "${CMAKE_SOURCE_DIR}/res")
 set (resourceDestPath "${CMAKE_BINARY_DIR}/res")
 set (shaderSourcePath "${CMAKE_SOURCE_DIR}/src/shaders")
 set (shaderDestPath "${CMAKE_BINARY_DIR}/shaders")
+
 add_custom_command(
- TARGET ${PROJECT_NAME} POST_BUILD
+ TARGET ${PROJECT_NAME} PRE_BUILD
  COMMAND ${CMAKE_COMMAND} -E create_symlink ${resourceSourcePath} ${resourceDestPath} 
  DEPENDS ${resourceDestPath}
- COMMENT "symbolic link resources folder from ${resourceSourcePath} => ${resourceDestPath}"
+ COMMENT "Symlinking resources folder ${resourceSourcePath} => ${resourceDestPath}"
 )
+
 add_custom_command(
- TARGET ${PROJECT_NAME} POST_BUILD
+ TARGET ${PROJECT_NAME} PRE_BUILD
  COMMAND ${CMAKE_COMMAND} -E create_symlink ${shaderSourcePath} ${shaderDestPath} 
  DEPENDS ${shaderDestPath}
- COMMENT "symbolic link resources folder from ${shaderSourcePath} => ${shaderDestPath}"
+ COMMENT "Symlinking shaders folder from ${shaderSourcePath} => ${shaderDestPath}"
 )
 
