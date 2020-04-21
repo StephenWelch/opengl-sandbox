@@ -43,14 +43,18 @@ void Renderer::render()
 		lightingShader.setVec3("uViewPos", camera->getPosition());
 
 		glm::mat4 modelMatrix = glm::mat4(1.0f);
-
-		// Impl-specific
-		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
-		modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+		for(const auto& model : models) {
+				modelMatrix = glm::translate(modelMatrix, model->getPosition());
+				modelMatrix = glm::rotate(modelMatrix, model->getRotation().x, glm::vec3(1.0f, 0.0f, 0.0f));
+				modelMatrix = glm::rotate(modelMatrix, model->getRotation().y, glm::vec3(0.0f, 1.0f, 0.0f));
+				modelMatrix = glm::rotate(modelMatrix, model->getRotation().z, glm::vec3(0.0f, 0.0f, 1.0f));
+				modelMatrix = glm::scale(modelMatrix, model->getScale());
+		}
 
 		lightingShader.setMat4("uModel", modelMatrix);
 		lightingShader.setMat3("uNormalMatrix",
 						glm::transpose(glm::inverse(modelMatrix)));
+
 		for(auto& model : models) {
 				model->draw();
 		}

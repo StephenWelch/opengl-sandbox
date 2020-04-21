@@ -23,6 +23,8 @@ int Application::start()
 		// Game setup
 		auto nanosuit = std::make_shared<Model>(GL_STATIC_DRAW, "res/nanosuit/nanosuit.obj");
 		nanosuit->init();
+		nanosuit->setPosition({0.0f, -1.75f, 0.0f});
+		nanosuit->setScale(0.2f);
 
 		auto flashlight{
 						std::make_shared<SpotLight>(

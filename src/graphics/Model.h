@@ -16,11 +16,19 @@ public:
 		void init();
 		void draw();
 		void cleanup();
+		void setPosition(const glm::vec3& position) { this->position = position; };
+		void setRotation(const glm::vec3& rotation) { this->rotation = rotation; };
+		void setScale(const glm::vec3& scale) { this->scale = scale; };
+		void setScale(float scale) { this-> scale = glm::vec3(scale); };
 		std::vector<Mesh> getMeshes() const { return meshes; };
+		auto getPosition() const { return this->position; };
+		auto getRotation() const { return this->rotation; };
+		auto getScale() const { return this->scale; };
 
 private:
-		glm::vec3 position {};
-		glm::vec3 rotation {};
+		glm::vec3 position = glm::vec3(0.0f);
+		glm::vec3 rotation = glm::vec3(0.0f);
+		glm::vec3 scale = glm::vec3(1.0f);
 
 		const unsigned int& usage;
 		std::vector<Mesh> meshes;
