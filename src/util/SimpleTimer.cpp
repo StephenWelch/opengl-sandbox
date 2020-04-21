@@ -1,29 +1,21 @@
 #include <util/SimpleTimer.h>
 
-double SimpleTimer::mark() {
-  currentTime = glfwGetTime();
-  if (!started) {
-    started = true;
-    lastTime = currentTime;
-    deltaTime = currentTime - lastTime;
-    return movingAverage.update(deltaTime);
-  }
-  deltaTime = currentTime - lastTime;
-  lastTime = currentTime;
-  return movingAverage.update(deltaTime);
-}
-
-double SimpleTimer::getDelta() {
-  return deltaTime;
-}
-
-double SimpleTimer::getMovingAverage()
+double SimpleTimer::mark()
 {
-  return movingAverage.getAverage();
+		currentTime = glfwGetTime();
+		if (!started) {
+				started = true;
+				lastTime = currentTime;
+				deltaTime = currentTime-lastTime;
+				return movingAverage.update(deltaTime);
+		}
+		deltaTime = currentTime-lastTime;
+		lastTime = currentTime;
+		return movingAverage.update(deltaTime);
 }
 
-double SimpleTimer::getLastMarkTime() const
-{
-  return lastTime;
-}
+double SimpleTimer::getDelta() { return deltaTime; }
 
+double SimpleTimer::getMovingAverage() { return movingAverage.getAverage(); }
+
+double SimpleTimer::getLastMarkTime() const { return lastTime; }

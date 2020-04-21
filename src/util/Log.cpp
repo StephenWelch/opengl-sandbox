@@ -6,8 +6,9 @@
 
 std::shared_ptr<spdlog::logger> Log::logger;
 
-void Log::init() {
-  // Color, timestamp, name of logger, message
-  spdlog::set_pattern("%^[%T] %n: %v%$");
-  logger = spdlog::stdout_color_mt("ENGINE");
+void Log::init()
+{
+		// Color, timestamp, name of logger, message
+		spdlog::set_pattern("%^[%T] %n: %v%$");
+		logger = spdlog::stdout_color_mt("ENGINE");
 }
