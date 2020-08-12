@@ -5,57 +5,12 @@
 
 #include "util/Log.h"
 
-void Texture::init()
-{
-		LOG_DEBUG("Loading texture {}", filePath);
-//		stbi_set_flip_vertically_on_load(true);
+void Texture::TextureData::load() {
 
-		// Allocate texture
-		glCreateTextures(GL_TEXTURE_2D, 1, &id);
+		int nrChannels;
+		data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
 
-		// Load the texture
-		int width, height, nrChannels;
-		unsigned char* data =
-						stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
-
-		ENGINE_ASSERT(data, "Failed to load texture {}", filePath);
-		createTexture(width, height, nrChannels, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		stbi_image_free(data);
-
-		LOG_DEBUG("Loaded texture {} with extension {} into id {} on unit {}.",
-						filePath, fileExtension, id, textureUnit);
-}
-
-void Texture::bind()
-{
-//		LOG_DEBUG("Binding {} to {}", filePath, textureUnit);
-		glBindTextureUnit(textureUnit, id);
-}
-
-void Texture::cleanup() { }
-
-Texture::TextureType Texture::getType() const { return type; }
-
-GLuint Texture::getId() const { return id; }
-
-GLuint Texture::getTextureUnit() const { return textureUnit; }
-
-GLuint Texture::getTextureUnitNum() const
-{
-		return textureUnit;
-}
-
-void Texture::createTexture(int width, int height, int nrChannels,
-				const unsigned char* data)
-{
-		GLuint colorChannels = GL_RGBA;
+		colorChannels = GL_RGBA;
 		if(nrChannels == 1) {
 				colorChannels = GL_RED;
 		} else if(nrChannels == 3) {
@@ -64,7 +19,80 @@ void Texture::createTexture(int width, int height, int nrChannels,
 				colorChannels = GL_RGBA;
 		}
 
-		glTextureStorage2D(id, 1, GL_RGBA8, width, height);
-		glTextureSubImage2D(id, 0, 0,0 , width, height, colorChannels,
-						GL_UNSIGNED_BYTE, data);
+		ENGINE_ASSERT(data, "Failed to load texture {}", filePath)
 }
+void Texture::TextureData::cleanup()
+{
+		stbi_image_free(data);
+}
+
+void Texture::bind()
+{
+//		LOG_DEBUG("Binding {} to {}", filePath, textureUnit);
+		glBindTextureUnit(textureUnit, id);
+}
+
+void Texture2d::init()
+{
+		LOG_DEBUG("Loading texture {}", filePath);
+//		stbi_set_flip_vertically_on_load(true);
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &id);
+
+		TextureData textureData(filePath);
+		textureData.load();
+
+		glTextureStorage2D(id, 1, GL_RGBA8, textureData.getWidth(), textureData.getHeight());
+		glTextureSubImage2D(id, 0, 0,0 , textureData.getWidth(), textureData.getHeight(), textureData.getColorChannels(),
+						GL_UNSIGNED_BYTE, textureData.getData());
+
+		textureData.cleanup();
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		LOG_DEBUG("Loaded texture {}", textureData.getFilePath());
+}
+
+void Texture2d::cleanup() { }
+
+
+void TextureCubeMap::init()
+{
+	LOG_DEBUG("Loading texture cubemap");
+
+	glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &id);
+
+	for(size_t face = 0; face < 6; ++face) {
+			TextureData textureData(filePaths[face]);
+			textureData.load();
+
+			glTextureStorage2D(id, 1, GL_RGBA8, textureData.getWidth(), textureData.getHeight());
+			glTextureSubImage3D(
+							id,
+							0, 0, 0,
+							face,
+							textureData.getWidth(), textureData.getHeight(),
+							1,
+							textureData.getColorChannels(),
+							GL_UNSIGNED_BYTE, textureData.getData()
+							);
+
+			textureData.cleanup();
+
+			glGenerateMipmap(GL_TEXTURE_2D);
+
+			glTextureParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTextureParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTextureParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTextureParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTextureParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	}
+
+}
+
+void TextureCubeMap::cleanup() { }

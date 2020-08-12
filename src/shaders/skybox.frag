@@ -1,15 +1,11 @@
 #version 330 core
-out vec4 FragColor;
+out vec4 oFragColor;
 
-in vec3 iNormal;
-in vec3 iFragPo;
+in vec3 iTexCoord;
 
-uniform vec3 cameraPos;
 uniform samplerCube skybox;
 
 void main()
 {
-    vec3 I = normalize(iFragPos - cameraPos);
-    vec3 R = reflect(I, normalize(iNormal));
-    FragColor = vec4(texture(skybox, R).rgb, 1.0);
+    oFragColor = vec4(skybox, iTexCoord);
 }

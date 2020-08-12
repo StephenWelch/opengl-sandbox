@@ -26,6 +26,16 @@ int Application::start()
 		nanosuit->setPosition({0.0f, -1.75f, 0.0f});
 		nanosuit->setScale(0.2f);
 
+		TextureCubeMap skybox(Texture::TextureType::DIFFUSE, 20,
+						{"res/skybox/right.jpg",
+			 								"res/skybox/left.jpg",
+			 								"res/skybox/top.jpg",
+			 								"res/skybox/bottom.jpg",
+			 								"res/skybox/front.jpg",
+			 								"res/skybox/back.jpg"});
+		Mesh<Vertex, TextureCubeMap> skyboxMesh = util::generateCube<Vertex, TextureCubeMap>(1.0f, GL_STATIC_DRAW, {skybox});
+		auto skyboxModel = std::make_shared<Model>(GL_STATIC_DRAW, std::vector<Mesh<Vertex, TextureCubeMap>>{skyboxMesh});
+
 		auto flashlight{
 						std::make_shared<SpotLight>(
 										glm::vec3(),
@@ -39,6 +49,7 @@ int Application::start()
 		};
 
 		renderer->addModel(nanosuit);
+		renderer->setSkybox(skyboxModel);
 		renderer->getSpotLights()->addLight(flashlight);
 		renderer->getDirectionalLights()->addLight(
 						std::make_shared<DirectionalLight>(
