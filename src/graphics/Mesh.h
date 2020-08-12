@@ -27,7 +27,7 @@ public:
 		void bind();
 		void draw();
 		void cleanup();
-		std::vector<Texture> getTextures() const;
+		auto getTextures() const {return textures; }
 private:
 		const int VERTEX_SIZE = 3;
 		const int NORMAL_SIZE = 3;

@@ -20,7 +20,7 @@ public:
 		void setRotation(const glm::vec3& rotation) { this->rotation = rotation; };
 		void setScale(const glm::vec3& scale) { this->scale = scale; };
 		void setScale(float scale) { this-> scale = glm::vec3(scale); };
-		std::vector<Mesh> getMeshes() const { return meshes; };
+		auto getMeshes() const { return meshes; };
 		auto getPosition() const { return this->position; };
 		auto getRotation() const { return this->rotation; };
 		auto getScale() const { return this->scale; };

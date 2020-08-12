@@ -2,14 +2,6 @@ cmake_minimum_required(VERSION 3.15)
 project(learn_opengl)
 
 set(CMAKE_CXX_STANDARD 17)
-if(MSVC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
-        if(NOT WIN32)
-                set(GLAD_LIBRARIES dl)
-        endif()
-endif()
 
 # Set up libraries with CMake projects
 option(GLFW_BUILD_DOCS OFF)
@@ -48,6 +40,15 @@ add_library(glad include/glad/src/glad.c)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} assimp glad glfw glm ${GLFW_LIBRARIES})
 #target_link_libraries(${CMAKE_PROJECT_NAME} ${OPENGL_gl_LIBRARY})
+
+if(MSVC)
+        target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /W4 /wd4458)
+else()
+        target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -std=c++17)
+        if(NOT WIN32)
+                set(GLAD_LIBRARIES dl)
+        endif()
+endif()
 
 set (resourceSourcePath "${CMAKE_SOURCE_DIR}/res")
 set (resourceDestPath "${CMAKE_BINARY_DIR}/res")

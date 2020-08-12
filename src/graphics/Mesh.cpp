@@ -88,7 +88,3 @@ void Mesh::cleanup()
 				texture.cleanup();
 		}
 }
-
-std::vector<Texture> Mesh::getTextures() const {
-		return textures;
-}

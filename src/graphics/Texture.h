@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 
 #include <string>
+#include <utility>
 
 class Texture {
 public:
@@ -11,7 +12,7 @@ public:
 
 		class TextureData {
 		public:
-				TextureData(const std::string& filePath) : filePath(filePath) {};
+				explicit TextureData(std::string filePath) : filePath(std::move(filePath)) {};
 				void load();
 				void cleanup();
 				auto getFilePath() const { return this->filePath; };
@@ -46,11 +47,11 @@ protected:
 		unsigned int id{};
 };
 
-class Texture2d : public Texture {
+class Texture2d : public virtual Texture {
 public:
-		Texture2d(const TextureType& type, const unsigned int& textureUnit, const std::string& filePath) :
+		Texture2d(TextureType type, unsigned int textureUnit, std::string filePath) :
 		Texture(type, textureUnit),
-		filePath(filePath) {};
+		filePath(std::move(filePath)) {};
 
 		void init() override;
 		void cleanup() override;
@@ -62,9 +63,9 @@ private:
 
 class TextureCubeMap : public Texture {
 public:
-		TextureCubeMap(const TextureType& type, const unsigned int& textureUnit, const std::array<std::string, 6>& filePaths) :
+		TextureCubeMap(const TextureType& type, unsigned int textureUnit, std::array<std::string, 6> filePaths) :
 		Texture(type, textureUnit),
-		filePaths(filePaths) {};
+		filePaths(std::move(filePaths)) {};
 
 		void init() override;
 		void cleanup() override;

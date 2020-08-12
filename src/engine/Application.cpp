@@ -33,8 +33,8 @@ int Application::start()
 			 								"res/skybox/bottom.jpg",
 			 								"res/skybox/front.jpg",
 			 								"res/skybox/back.jpg"});
-		Mesh<Vertex, TextureCubeMap> skyboxMesh = util::generateCube<Vertex, TextureCubeMap>(1.0f, GL_STATIC_DRAW, {skybox});
-		auto skyboxModel = std::make_shared<Model>(GL_STATIC_DRAW, std::vector<Mesh<Vertex, TextureCubeMap>>{skyboxMesh});
+		Mesh skyboxMesh = util::generateCube(1.0f, GL_STATIC_DRAW);
+		auto skyboxModel = std::make_shared<Model>(GL_STATIC_DRAW, std::vector<Mesh>{skyboxMesh});
 
 		auto flashlight{
 						std::make_shared<SpotLight>(
