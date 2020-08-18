@@ -7,8 +7,8 @@
 
 #include <graphics/Model.h>
 class Entity {
-public:
-		std::vector<std::shared_ptr<Model>> models;
+ public:
+	std::vector<std::shared_ptr<Model>> models;
 
 };
 

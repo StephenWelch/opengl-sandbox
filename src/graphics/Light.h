@@ -19,24 +19,23 @@ struct DirectionalLight {
 	glm::vec4 specularIntensity;
 
 	DirectionalLight() = default;
-	DirectionalLight(const glm::vec3& direction,
-					const glm::vec3& ambientIntensity,
-					const glm::vec3& diffuseIntensity,
-					const glm::vec3& specularIntensity)
-					:direction(direction, 0.0f),
-					 ambientIntensity(ambientIntensity, 0.0f),
-					 diffuseIntensity(diffuseIntensity, 0.0f),
-					 specularIntensity(specularIntensity, 0.0f) { };
+	DirectionalLight(const glm::vec3 &direction,
+									 const glm::vec3 &ambientIntensity,
+									 const glm::vec3 &diffuseIntensity,
+									 const glm::vec3 &specularIntensity)
+			: direction(direction, 0.0f),
+				ambientIntensity(ambientIntensity, 0.0f),
+				diffuseIntensity(diffuseIntensity, 0.0f),
+				specularIntensity(specularIntensity, 0.0f) {};
 
-	bool operator<(const DirectionalLight& other) const
-	{
-			return glm::length(direction)<glm::length(other.direction) ||
-							glm::length(ambientIntensity)<
-											glm::length(other.ambientIntensity) ||
-							glm::length(diffuseIntensity)<
-											glm::length(other.diffuseIntensity) ||
-							glm::length(specularIntensity)<
-											glm::length(other.specularIntensity);
+	bool operator<(const DirectionalLight &other) const {
+		return glm::length(direction) < glm::length(other.direction) ||
+				glm::length(ambientIntensity) <
+						glm::length(other.ambientIntensity) ||
+				glm::length(diffuseIntensity) <
+						glm::length(other.diffuseIntensity) ||
+				glm::length(specularIntensity) <
+						glm::length(other.specularIntensity);
 	}
 };
 
@@ -53,27 +52,26 @@ struct PointLight {
 	float padding;
 
 	PointLight() = default;
-	PointLight(const glm::vec3& position, const glm::vec3& ambientIntensity,
-					const glm::vec3& diffuseIntensity,
-					const glm::vec3& specularIntensity, float constant,
-					float linear, float quadratic)
-					:position(position, 0.0f),
-					 ambientIntensity(ambientIntensity, 0.0f),
-					 diffuseIntensity(diffuseIntensity, 0.0f),
-					 specularIntensity(specularIntensity, 0.0f),
-					 constant(constant),
-					 linear(linear),
-					 quadratic(quadratic) { };
+	PointLight(const glm::vec3 &position, const glm::vec3 &ambientIntensity,
+						 const glm::vec3 &diffuseIntensity,
+						 const glm::vec3 &specularIntensity, float constant,
+						 float linear, float quadratic)
+			: position(position, 0.0f),
+				ambientIntensity(ambientIntensity, 0.0f),
+				diffuseIntensity(diffuseIntensity, 0.0f),
+				specularIntensity(specularIntensity, 0.0f),
+				constant(constant),
+				linear(linear),
+				quadratic(quadratic) {};
 
-	bool operator<(const PointLight& other) const
-	{
-			return glm::length(position)<glm::length(other.position) ||
-							glm::length(ambientIntensity)<
-											glm::length(other.ambientIntensity) ||
-							glm::length(diffuseIntensity)<
-											glm::length(other.diffuseIntensity) ||
-							glm::length(specularIntensity)<
-											glm::length(other.specularIntensity);
+	bool operator<(const PointLight &other) const {
+		return glm::length(position) < glm::length(other.position) ||
+				glm::length(ambientIntensity) <
+						glm::length(other.ambientIntensity) ||
+				glm::length(diffuseIntensity) <
+						glm::length(other.diffuseIntensity) ||
+				glm::length(specularIntensity) <
+						glm::length(other.specularIntensity);
 	}
 };
 
@@ -94,116 +92,107 @@ struct SpotLight {
 	float padding, padding2, padding3;
 
 	SpotLight() = default;
-	SpotLight(const glm::vec3& position, const glm::vec3& direction,
-					const glm::vec3& ambientIntensity,
-					const glm::vec3& diffuseIntensity,
-					const glm::vec3& specularIntensity, float constant,
-					float linear, float quadratic, float cutOff,
-					float outerCutOff)
-					:position(position, 0.0f),
-					 direction(direction, 0.0f),
-					 ambientIntensity(ambientIntensity, 0.0f),
-					 diffuseIntensity(diffuseIntensity, 0.0f),
-					 specularIntensity(specularIntensity, 0.0f),
-					 constant(constant),
-					 linear(linear),
-					 quadratic(quadratic),
-					 cutOff(cutOff),
-					 outerCutOff(outerCutOff) { };
+	SpotLight(const glm::vec3 &position, const glm::vec3 &direction,
+						const glm::vec3 &ambientIntensity,
+						const glm::vec3 &diffuseIntensity,
+						const glm::vec3 &specularIntensity, float constant,
+						float linear, float quadratic, float cutOff,
+						float outerCutOff)
+			: position(position, 0.0f),
+				direction(direction, 0.0f),
+				ambientIntensity(ambientIntensity, 0.0f),
+				diffuseIntensity(diffuseIntensity, 0.0f),
+				specularIntensity(specularIntensity, 0.0f),
+				constant(constant),
+				linear(linear),
+				quadratic(quadratic),
+				cutOff(cutOff),
+				outerCutOff(outerCutOff) {};
 
-	bool operator<(const SpotLight& other) const
-	{
-			return glm::length(position)<glm::length(other.position) ||
-							glm::length(ambientIntensity)<
-											glm::length(other.ambientIntensity) ||
-							glm::length(diffuseIntensity)<
-											glm::length(other.diffuseIntensity) ||
-							glm::length(specularIntensity)<
-											glm::length(other.specularIntensity);
+	bool operator<(const SpotLight &other) const {
+		return glm::length(position) < glm::length(other.position) ||
+				glm::length(ambientIntensity) <
+						glm::length(other.ambientIntensity) ||
+				glm::length(diffuseIntensity) <
+						glm::length(other.diffuseIntensity) ||
+				glm::length(specularIntensity) <
+						glm::length(other.specularIntensity);
 	}
 };
 
 template<typename LightStruct, int MaxLights>
 class LightManager {
-protected:
-		UniformBuffer buffer{};
+ protected:
+	UniformBuffer buffer{};
 
-private:
-		struct Data {
-			LightStruct lights[MaxLights];
-			int numLights;
-		} uniformData;
+ private:
+	struct Data {
+		LightStruct lights[MaxLights];
+		int numLights;
+	} uniformData;
 
-		std::map<std::shared_ptr<LightStruct>, int> lights;
-		std::queue<int> unfilledIndexes;
-		int lastIndex = 0;
+	std::map<std::shared_ptr<LightStruct>, int> lights;
+	std::queue<int> unfilledIndexes;
+	int lastIndex = 0;
 
-public:
-		bool addLight(const std::shared_ptr<LightStruct>& light, bool update = false)
-		{
-				if (unfilledIndexes.empty()) {
-						if (lastIndex>MaxLights) {
-								return false;
-						}
-						else {
-								lights[light] = lastIndex;
-								lastIndex++;
-						}
-				}
-				else {
-						lights[light] = unfilledIndexes.front();
-						unfilledIndexes.pop();
-				}
-
-				if(update) {
-						this->update(light);
-				}
-
-				return true;
+ public:
+	bool addLight(const std::shared_ptr<LightStruct> &light, bool update = false) {
+		if (unfilledIndexes.empty()) {
+			if (lastIndex > MaxLights) {
+				return false;
+			} else {
+				lights[light] = lastIndex;
+				lastIndex++;
+			}
+		} else {
+			lights[light] = unfilledIndexes.front();
+			unfilledIndexes.pop();
 		}
 
-		void removeLight(const std::shared_ptr<LightStruct>& light, bool update = false)
-		{
-				int idx = lights[light];
-				lights.erase(light);
-				if (idx==lastIndex-1) {
-						lastIndex--;
-				}
-				else {
-						unfilledIndexes.push(idx);
-				}
-
-				if(update) {
-						this->update(light);
-				}
-
+		if (update) {
+			this->update(light);
 		}
 
-		void init() { buffer.init(GL_DYNAMIC_DRAW, sizeof(Data)); }
+		return true;
+	}
 
-		void update(const std::shared_ptr<LightStruct>& light)
-		{
-				uniformData.lights[lights[light]] = *light;
-				uniformData.numLights = (int)lights.size();
-				buffer.setData(&uniformData);
+	void removeLight(const std::shared_ptr<LightStruct> &light, bool update = false) {
+		int idx = lights[light];
+		lights.erase(light);
+		if (idx==lastIndex - 1) {
+			lastIndex--;
+		} else {
+			unfilledIndexes.push(idx);
 		}
 
-		void updateAll()
-		{
-				for (std::pair<std::shared_ptr<LightStruct>, int> entry : lights) {
-						update(entry.first);
-				}
+		if (update) {
+			this->update(light);
 		}
 
-		void setBindingPoint(int bindingPoint)
-		{
-				buffer.bindShaderProgram(bindingPoint);
-		}
+	}
 
-		auto getLights() const { return lights; }
+	void init() { buffer.init(GL_DYNAMIC_DRAW, sizeof(Data)); }
+
+	void update(const std::shared_ptr<LightStruct> &light) {
+		uniformData.lights[lights[light]] = *light;
+		uniformData.numLights = (int)lights.size();
+		buffer.setData(&uniformData);
+	}
+
+	void updateAll() {
+		for (std::pair<std::shared_ptr<LightStruct>, int> entry : lights) {
+			update(entry.first);
+		}
+	}
+
+	void setBindingPoint(int bindingPoint) {
+		buffer.bindShaderProgram(bindingPoint);
+	}
+
+	auto getLights() const { return lights; }
 };
 
 typedef LightManager<DirectionalLight, MAX_DIRECTIONAL_LIGHTS>
-				DirectionalLightManager;
+		DirectionalLightManager;
 typedef LightManager<PointLight, MAX_POINT_LIGHTS> PointLightManager;
 typedef LightManager<SpotLight, MAX_SPOTLIGHTS> SpotLightManager;

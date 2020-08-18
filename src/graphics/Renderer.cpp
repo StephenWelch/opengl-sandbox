@@ -106,7 +106,7 @@ void Renderer::setSkybox(const std::shared_ptr<Skybox> &skybox) {
 
 	skyboxShader.use();
 	skyboxShader.setInt("uSkybox",
-										 6);
+											6);
 //	for (const auto &mesh : skybox->getMeshes()) {
 //		for (const auto &texture : mesh.getTextures()) {
 //			skyboxShader.setInt("uSkybox",

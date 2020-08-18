@@ -4,12 +4,12 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 
 class Log {
-public:
-		static void init();
-		inline static std::shared_ptr<spdlog::logger>& getLogger() { return logger; }
+ public:
+	static void init();
+	inline static std::shared_ptr<spdlog::logger> &getLogger() { return logger; }
 
-private:
-		static std::shared_ptr<spdlog::logger> logger;
+ private:
+	static std::shared_ptr<spdlog::logger> logger;
 };
 
 #define LOG_TRACE(...) Log::getLogger()->trace(__VA_ARGS__)

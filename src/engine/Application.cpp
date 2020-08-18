@@ -26,11 +26,11 @@ int Application::start() {
 	nanosuit->setScale(0.2f);
 
 	auto skybox = std::make_shared<Skybox>(6, std::array<std::filesystem::path, 6>{"res/skybox/right.jpg",
-																																																 "res/skybox/left.jpg",
-																																																 "res/skybox/top.jpg",
-																																																 "res/skybox/bottom.jpg",
-																																																 "res/skybox/front.jpg",
-																																																 "res/skybox/back.jpg"});
+																																								 "res/skybox/left.jpg",
+																																								 "res/skybox/top.jpg",
+																																								 "res/skybox/bottom.jpg",
+																																								 "res/skybox/front.jpg",
+																																								 "res/skybox/back.jpg"});
 	skybox->init();
 
 	auto flashlight{

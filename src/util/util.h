@@ -28,10 +28,12 @@
 
 namespace util {
 
-std::shared_ptr<Mesh> generateCube(float sideLength, unsigned int usage, const std::vector<std::shared_ptr<Texture>>& textures);
+std::shared_ptr<Mesh> generateCube(float sideLength,
+																	 unsigned int usage,
+																	 const std::vector<std::shared_ptr<Texture>> &textures);
 std::string getWorkingDirectory();
-std::string getFileAsString(const std::string& path);
-GLenum glCheckError_(const char* file, int line);
+std::string getFileAsString(const std::string &path);
+GLenum glCheckError_(const char *file, int line);
 #define glCheckError() glCheckError_(__FILE__, __LINE__)
 
 }  // namespace util
