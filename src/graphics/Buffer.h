@@ -13,7 +13,7 @@ class Buffer {
 	GLsizeiptr size;
 
  public:
-	Buffer(const GLenum &type)
+	explicit Buffer(const GLenum &type)
 			: type(type) {};
 
 	void init(unsigned int usage, const GLsizeiptr &size);

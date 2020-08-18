@@ -68,6 +68,7 @@ bool Window::init()
 		// Set OpenGL viewport dimensions to same size as window
 		glViewport(0, 0, width, height);
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 		// Set the callback for window resizing
 		glfwSetFramebufferSizeCallback(

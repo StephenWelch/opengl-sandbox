@@ -1,11 +1,12 @@
 #version 330 core
+
 out vec4 oFragColor;
 
 in vec3 iTexCoord;
 
-uniform samplerCube skybox;
+uniform samplerCube uSkybox;
 
 void main()
 {
-    oFragColor = vec4(skybox, iTexCoord);
+    oFragColor = texture(uSkybox, iTexCoord);
 }

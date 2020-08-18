@@ -17,6 +17,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
 #include <string>
+#include "Skybox.h"
 
 class Renderer {
 private:
@@ -33,7 +34,7 @@ private:
 		Shader skyboxShader = Shader("shaders/skybox.vert", "shaders/skybox.frag");
 
 		std::vector<std::shared_ptr<Model>> models {};
-		std::shared_ptr<Model> skybox {} ;
+		std::shared_ptr<Skybox> skybox {} ;
 
 public:
 		Renderer(const std::unique_ptr<Camera>& camera, int width,
@@ -45,7 +46,7 @@ public:
 		void setWidth(int width);
 		void setHeight(int height);
 		void addModel(const std::shared_ptr<Model>& model);
-		void setSkybox(const std::shared_ptr<Model>& skybox);
+		void setSkybox(const std::shared_ptr<Skybox>& skybox);
 		auto& getDirectionalLights() {return this->directionalLightManager;};
 		auto& getPointLights() {return this->pointLightManager;};
 		auto& getSpotLights() {return this->spotLightManager;};

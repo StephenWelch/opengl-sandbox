@@ -1,7 +1,7 @@
 #include "Model.h"
 
 void Model::processNode(aiNode* node, const aiScene* scene,
-				const std::string& directory)
+				const std::filesystem::path& directory)
 {
 		for (unsigned int i = 0; i<node->mNumMeshes; i++) {
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
@@ -12,28 +12,28 @@ void Model::processNode(aiNode* node, const aiScene* scene,
 		}
 }
 
-std::vector<Texture> Model::loadMaterialTextures(
+std::vector<std::shared_ptr<Texture>> Model::loadMaterialTextures(
 				aiMaterial* mat, aiTextureType type, Texture::TextureType engineType, unsigned int texture_unit_offset,
-				const std::string& directory)
+				const std::filesystem::path& directory)
 {
-		std::vector<Texture> loadedTextures;
+		std::vector<std::shared_ptr<Texture>> loadedTextures;
 		for (unsigned int i = 0; i<mat->GetTextureCount(type); i++) {
 				aiString str;
 				mat->GetTexture(type, i, &str);
-				Texture2d texture(engineType, texture_unit_offset + i, directory+"/"+std::string(str.C_Str()));
+				auto texture = std::make_shared<Texture2d>(engineType, texture_unit_offset + i, directory.generic_string() + "/"+std::string(str.C_Str()));
 				loadedTextures.push_back(texture);
 		}
 		return loadedTextures;
 }
 
-Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene,
-				const std::string& directory)
+std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene,
+				const std::filesystem::path& directory)
 {
-		std::vector<Mesh::Vertex> vertices;
+		std::vector<TexturedMesh::Vertex> vertices;
 		std::vector<unsigned int> indices;
 
 		for (unsigned int i = 0; i<mesh->mNumVertices; i++) {
-				Mesh::Vertex vertex{};
+				TexturedMesh::Vertex vertex{};
 				vertex.normal = {mesh->mNormals[i].x, mesh->mNormals[i].y,
 												 mesh->mNormals[i].z};
 				vertex.position = {mesh->mVertices[i].x, mesh->mVertices[i].y,
@@ -60,16 +60,16 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene,
 
 //		if (mesh->mMaterialIndex>=0) {
 				aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-				std::vector<Texture> textures;
-				std::vector<Texture> diffuseMaps =
+				std::vector<std::shared_ptr<Texture>> textures;
+				std::vector<std::shared_ptr<Texture>> diffuseMaps =
 								loadMaterialTextures(material, aiTextureType_DIFFUSE,
 												Texture::TextureType::DIFFUSE, textures.size(), directory);
 				textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-				std::vector<Texture> specularMaps =
+				std::vector<std::shared_ptr<Texture>> specularMaps =
 								loadMaterialTextures(material, aiTextureType_SPECULAR,
 												Texture::TextureType::SPECULAR, textures.size(), directory);
 				textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-				std::vector<Texture> emissiveMaps =
+				std::vector<std::shared_ptr<Texture>> emissiveMaps =
 								loadMaterialTextures(material, aiTextureType_EMISSIVE,
 												Texture::TextureType::EMISSIVE, textures.size(), directory);
 				textures.insert(textures.end(), emissiveMaps.begin(), emissiveMaps.end());
@@ -78,41 +78,41 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene,
 
 //		}
 
-		return Mesh(usage, vertices, indices, textures);
+		return std::make_shared<TexturedMesh>(usage, vertices, indices, textures);
 }
 
-Model::Model(const unsigned int& usage, const std::string& path)
+Model::Model(unsigned int usage, const std::filesystem::path& path)
 				:usage(usage)
 {
 		Assimp::Importer importer;
 		const auto* scene =
-						importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+						importer.ReadFile(path.generic_string(), aiProcess_Triangulate | aiProcess_FlipUVs);
 
 		ENGINE_ASSERT(
 						scene && !(scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) && scene->mRootNode,
 						"Error loading model with Assimp: ", importer.GetErrorString())
 
-		processNode(scene->mRootNode, scene, path.substr(0, path.find_last_of('/')));
+		processNode(scene->mRootNode, scene, path.parent_path());
 }
 
 void Model::init()
 {
 		for (auto& mesh : meshes) {
-				mesh.init();
+				mesh->init();
 		}
 }
 
 void Model::draw()
 {
 		for (auto& mesh : meshes) {
-				mesh.bind();
-				mesh.draw();
+				mesh->bind();
+				mesh->draw();
 		}
 }
 
 void Model::cleanup()
 {
 		for (auto& mesh : meshes) {
-				mesh.cleanup();
+				mesh->cleanup();
 		}
 }
