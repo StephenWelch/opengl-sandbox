@@ -184,7 +184,7 @@ public:
 		void update(const std::shared_ptr<LightStruct>& light)
 		{
 				uniformData.lights[lights[light]] = *light;
-				uniformData.numLights = lights.size();
+				uniformData.numLights = (int)lights.size();
 				buffer.setData(&uniformData);
 		}
 

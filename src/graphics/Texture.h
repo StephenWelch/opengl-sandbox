@@ -4,33 +4,71 @@
 #include <glad/glad.h>
 
 #include <string>
+#include <utility>
+#include <filesystem>
 
 class Texture {
-public:
-		enum class TextureType { SPECULAR, DIFFUSE, EMISSIVE, HEIGHT, AMBIENT };
+ public:
+	enum class TextureType { SPECULAR, DIFFUSE, EMISSIVE, HEIGHT, AMBIENT };
 
-		Texture(const TextureType& type, const std::string& filePath,
-						const unsigned int& textureUnit)
-						:type(type),
-						 filePath(filePath),
-						 fileExtension(filePath.substr(filePath.find('.')+1)),
-						 textureUnit(textureUnit) { };
+	class TextureData {
+	 public:
+		explicit TextureData(std::filesystem::path filePath) : filePath(std::move(filePath)) {};
+		~TextureData();
+		void load();
+		auto getFilePath() const { return this->filePath; };
+		auto getWidth() const { return this->width; };
+		auto getHeight() const { return this->height; };
+		auto getColorChannels() const { return this->colorChannels; };
+		unsigned char *getData() const { return this->data; };
+	 private:
+		std::filesystem::path filePath;
+		int width{}, height{};
+		GLenum colorChannels{};
+		unsigned char *data{};
+	};
 
-		void init();
-		void bind();
-		void cleanup();
-		TextureType getType() const;
-		unsigned int getId() const;
-		unsigned int getTextureUnit() const;
-		unsigned int getTextureUnitNum() const;
+	Texture(TextureType type,
+					unsigned int textureUnit)
+			: type(type),
+				textureUnit(textureUnit) {};
+	~Texture();
 
-private:
-		TextureType type;
-		std::string filePath;
-		std::string fileExtension;
-		unsigned int textureUnit;
-		unsigned int id{};
+	virtual void init() = 0;
+	virtual void bind();
 
-		void createTexture(int width, int height, int nrChannels,
-						const unsigned char* data);
+	auto getType() const { return this->type; };
+	auto getId() const { return this->id; };
+	auto getTextureUnit() const { return this->textureUnit; };
+
+ protected:
+	// OpenGL information
+	TextureType type;
+	unsigned int textureUnit;
+	unsigned int id{};
+};
+
+class Texture2d : public virtual Texture {
+ public:
+	Texture2d(TextureType type, unsigned int textureUnit, std::string filePath) :
+			Texture(type, textureUnit),
+			filePath(std::move(filePath)) {};
+
+	void init() override;
+
+ private:
+	// File information
+	std::string filePath;
+};
+
+class TextureCubemap : public virtual Texture {
+ public:
+	TextureCubemap(TextureType type, unsigned int textureUnit, std::array<std::filesystem::path, 6> filePaths) :
+			Texture(type, textureUnit),
+			filePaths(std::move(filePaths)) {};
+
+	void init() override;
+
+ private:
+	std::array<std::filesystem::path, 6> filePaths;
 };

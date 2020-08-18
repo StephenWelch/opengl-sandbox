@@ -5,66 +5,91 @@
 
 #include "util/Log.h"
 
-void Texture::init()
-{
-		LOG_DEBUG("Loading texture {}", filePath);
+void Texture::TextureData::load() {
+
+  int nrChannels;
+  data = stbi_load(filePath.generic_string().c_str(), &width, &height, &nrChannels, 0);
+
+  colorChannels = GL_RGBA;
+  if (nrChannels==1) {
+	colorChannels = GL_RED;
+  } else if (nrChannels==3) {
+	colorChannels = GL_RGB;
+  } else if (nrChannels==4) {
+	colorChannels = GL_RGBA;
+  }
+
+  ENGINE_ASSERT(data, "Failed to load texture {}", filePath.generic_string())
+}
+
+Texture::TextureData::~TextureData() {
+	stbi_image_free(data);
+}
+
+
+Texture::~Texture() {
+	glDeleteTextures(1, &id);
+}
+
+void Texture::bind() {
+	glBindTextureUnit(textureUnit, id);
+}
+
+void Texture2d::init() {
+  LOG_DEBUG("Loading texture {}", filePath);
 //		stbi_set_flip_vertically_on_load(true);
 
-		// Allocate texture
-		glCreateTextures(GL_TEXTURE_2D, 1, &id);
+  glCreateTextures(GL_TEXTURE_2D, 1, &id);
 
-		// Load the texture
-		int width, height, nrChannels;
-		unsigned char* data =
-						stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
+  TextureData textureData(filePath);
+  textureData.load();
 
-		ENGINE_ASSERT(data, "Failed to load texture {}", filePath);
-		createTexture(width, height, nrChannels, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
+  glTextureStorage2D(id, 1, GL_RGBA8, textureData.getWidth(), textureData.getHeight());
+  glTextureSubImage2D(id, 0, 0, 0, textureData.getWidth(), textureData.getHeight(), textureData.getColorChannels(),
+					  GL_UNSIGNED_BYTE, textureData.getData());
+  
+  glGenerateMipmap(GL_TEXTURE_2D);
 
-		glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		stbi_image_free(data);
-
-		LOG_DEBUG("Loaded texture {} with extension {} into id {} on unit {}.",
-						filePath, fileExtension, id, textureUnit);
+  LOG_DEBUG("Loaded texture {}", textureData.getFilePath().generic_string());
 }
 
-void Texture::bind()
-{
-//		LOG_DEBUG("Binding {} to {}", filePath, textureUnit);
-		glBindTextureUnit(textureUnit, id);
-}
+void TextureCubemap::init() {
+	LOG_DEBUG("Loading texture cubemap");
 
-void Texture::cleanup() { }
+	glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &id);
 
-Texture::TextureType Texture::getType() const { return type; }
+	// Use the first texture to allocate storage for the rest
+	for (size_t face = 0; face < 6; ++face)
+	{
+		LOG_DEBUG("Loading face {} from {}", face, filePaths[face].generic_string());
+		auto texture = TextureData(filePaths[face]);
+		texture.load();
 
-GLuint Texture::getId() const { return id; }
-
-GLuint Texture::getTextureUnit() const { return textureUnit; }
-
-GLuint Texture::getTextureUnitNum() const
-{
-		return textureUnit;
-}
-
-void Texture::createTexture(int width, int height, int nrChannels,
-				const unsigned char* data)
-{
-		GLuint colorChannels = GL_RGBA;
-		if(nrChannels == 1) {
-				colorChannels = GL_RED;
-		} else if(nrChannels == 3) {
-				colorChannels = GL_RGB;
-		} else if(nrChannels == 4) {
-				colorChannels = GL_RGBA;
+		// Allocate storage on first run
+		if(face == 0) {
+			glTextureStorage2D(id, 1, GL_RGB8, texture.getWidth(), texture.getHeight());
 		}
 
-		glTextureStorage2D(id, 1, GL_RGBA8, width, height);
-		glTextureSubImage2D(id, 0, 0,0 , width, height, colorChannels,
-						GL_UNSIGNED_BYTE, data);
+		glTextureSubImage3D(
+				id,
+				0,
+				0, 0, face,
+				texture.getWidth(), texture.getHeight(),
+				1,
+				GL_RGB,
+				GL_UNSIGNED_BYTE,
+				texture.getData()
+		);
+
+	}
+	glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTextureParameteri(id, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
