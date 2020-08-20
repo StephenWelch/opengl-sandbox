@@ -1,79 +1,72 @@
 #pragma once
 
-#include <util/util.h>
-
-#include <functional>
 #include <string>
-#include <ostream>
+#include "util/util.h"
+
+// Events in Hazel are currently blocking, meaning when an event occurs it
+// immediately gets dispatched and must be dealt with right then an there.
+// For the future, a better strategy might be to buffer events in an event
+// bus and process them during the "event" part of the update stage.
 
 enum class EventType {
 	None = 0,
-	WindowClose,
-	WindowResize,
-	WindowFocus,
-	WindowLostFocus,
-	WindowMoved,
-	AppTick,
-	AppUpdate,
-	AppRender,
-	KeyPressed,
-	KeyReleased,
-	KeyTyped,
-	MouseButtonPressed,
-	MouseButtonReleased,
-	MouseMoved,
-	MouseScrolled
+	WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
+	AppTick, AppUpdate, AppRender,
+	KeyPressed, KeyReleased, KeyTyped,
+	MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 };
 
 enum EventCategory {
 	None = 0,
-	Application = BIT_AT(1),
-	Input = BIT_AT(2),
-	Keyboard = BIT_AT(3),
-	Mouse = BIT_AT(4),
-	MouseButton = BIT_AT(5)
+	EventCategoryApplication = BIT_AT(0),
+	EventCategoryInput = BIT_AT(1),
+	EventCategoryKeyboard = BIT_AT(2),
+	EventCategoryMouse = BIT_AT(3),
+	EventCategoryMouseButton = BIT_AT(4)
 };
 
-#define EVENT_CLASS_TYPE(type)                                  \
-  static EventType getStaticType() { return EventType::type; }; \
-  virtual EventType getEventType() const override {             \
-    return getStaticType();                                     \
-  };                                                            \
-  virtual std::string getName() const override { return #type; };
-#define EVENT_CLASS_CATEGORY(category) \
-  virtual int getCategoryFlags() const override { return category; };
+#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
+                virtual EventType GetEventType() const override { return GetStaticType(); }\
+                virtual const char* GetName() const override { return #type; }
+
+#define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
 class Event {
  public:
-	bool handled = false;
+	virtual ~Event() = default;
 
-	virtual EventType getEventType() const = 0;
-	virtual std::string getName() const = 0;
-	virtual int getCategoryFlags() const = 0;
-	virtual std::string toString() const { return getName(); }
+	bool Handled = false;
 
-	inline bool isInCategory(const EventCategory &category) {
-		return category & getCategoryFlags();
+	virtual EventType GetEventType() const = 0;
+	virtual const char *GetName() const = 0;
+	virtual int GetCategoryFlags() const = 0;
+	virtual std::string ToString() const { return GetName(); }
+
+	bool IsInCategory(EventCategory category) {
+		return GetCategoryFlags() & category;
 	}
 };
 
 class EventDispatcher {
- private:
-	Event &event;
-
  public:
-	EventDispatcher(Event &event) : event(event) {};
+	EventDispatcher(Event &event)
+			: m_Event(event) {
+	}
 
+	// F will be deduced by the compiler
 	template<typename T, typename F>
-	bool dispatch(const F &func) {
-		if (event.getEventType()==T::getStaticType()) {
-			event.handled = func(static_cast<T &>(event));
+	bool Dispatch(const F &func) {
+		if (m_Event.GetEventType()==T::GetStaticType()) {
+			m_Event.Handled = func(static_cast<T &>(m_Event));
 			return true;
 		}
 		return false;
 	}
-
-	inline std::ostream &operator<<(std::ostream &os, const Event &e) {
-		return os << e.toString();
-	}
+ private:
+	Event &m_Event;
 };
+
+inline std::ostream &operator<<(std::ostream &os, const Event &e) {
+	return os << e.ToString();
+}
+

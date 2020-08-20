@@ -7,53 +7,69 @@ void Input::init() {}
 void Input::update() {
 	float currentTime = glfwGetTime();
 	dt = currentTime - lastTime;
-	mousePos = {window->getMouseX(), window->getMouseY()};
+	lastTime = currentTime;
+
+	auto displacement = cameraVelocity*dt;
+	camera->setPosition(camera->getPosition() + displacement);
+}
+
+bool Input::onKeyPressOrRelease(KeyEvent &event) {
+	glm::vec3 cameraXAxis = camera->getViewXAxis();
+	glm::vec3 cameraYAxis = camera->getViewYAxis();
+
+	auto velocity = glm::vec3(0.0f);
+	float speed = 2.5;
+
+	if (window->isKeyPressed(KeyCode::W)) {
+		velocity += speed*camera->getTarget();
+	}
+	if (window->isKeyPressed(KeyCode::S)) {
+		velocity -= speed*camera->getTarget();
+	}
+	if (window->isKeyPressed(KeyCode::A)) {
+		velocity -= speed*cameraXAxis;
+	}
+	if (window->isKeyPressed(KeyCode::D)) {
+		velocity += speed*cameraXAxis;
+	}
+	if (window->isKeyPressed(KeyCode::E)) {
+		velocity += speed*cameraYAxis;
+	}
+	if (window->isKeyPressed(KeyCode::Q)) {
+		velocity -= speed*cameraYAxis;
+	}
+	if (window->isKeyPressed(KeyCode::Space)) {
+		velocity += speed*camera->WORLD_UP;
+	}
+	if (window->isKeyPressed(KeyCode::LeftShift)) {
+		velocity -= speed*camera->WORLD_UP;
+	}
+
+	cameraVelocity = velocity;
+
+	if (event.GetKeyCode()==KeyCode::Escape) {
+		window->requestClose();
+	}
+	if (window->isKeyPressed(KeyCode::F)) {
+		window->setWireframe(true);
+	}
+	if(window->isKeyReleased(KeyCode::F)) {
+		window->setWireframe(false);
+	}
+
+	return true;
+}
+
+bool Input::onMouseMove(MouseMovedEvent &event) {
+	mousePos = {event.GetX(), event.GetY()};
 
 	if (!clickedIn) {
-		lastMousePos = mousePos;
 		clickedIn = true;
+		lastMousePos = mousePos;
 	}
 
 	mouseDelta = mousePos - lastMousePos;
-
-	updateCameraControls();
-	updateWindowControls();
-
-	lastTime = currentTime;
 	lastMousePos = mousePos;
-}
-
-void Input::updateCameraControls() {
-	glm::vec3 translation = glm::vec3(0.0f);
-	glm::vec3 cameraXAxis = camera->getViewXAxis();
-	glm::vec3 cameraYAxis = camera->getViewYAxis();
-	float speed = 2.5;
-	float displacement = speed*dt;
-
-	if (window->isKeyPressed(GLFW_KEY_W)) {
-		translation += displacement*camera->getTarget();
-	}
-	if (window->isKeyPressed(GLFW_KEY_S)) {
-		translation -= displacement*camera->getTarget();
-	}
-	if (window->isKeyPressed(GLFW_KEY_A)) {
-		translation -= displacement*cameraXAxis;
-	}
-	if (window->isKeyPressed(GLFW_KEY_D)) {
-		translation += displacement*cameraXAxis;
-	}
-	if (window->isKeyPressed(GLFW_KEY_E)) {
-		translation += displacement*cameraYAxis;
-	}
-	if (window->isKeyPressed(GLFW_KEY_Q)) {
-		translation -= displacement*cameraYAxis;
-	}
-	if (window->isKeyPressed(GLFW_KEY_SPACE)) {
-		translation += displacement*camera->WORLD_UP;
-	}
-	if (window->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
-		translation -= displacement*camera->WORLD_UP;
-	}
 
 	float sensitivity = 0.05f;
 	yaw += mouseDelta.x*sensitivity;
@@ -66,17 +82,6 @@ void Input::updateCameraControls() {
 	cameraTarget.y = sin(glm::radians(pitch));
 	cameraTarget.z = sin(glm::radians(yaw))*cos(glm::radians(pitch));
 	camera->setTarget(glm::normalize(cameraTarget));
-	camera->setPosition(camera->getPosition() + translation);
-}
 
-void Input::updateWindowControls() {
-	if (window->isKeyPressed(GLFW_KEY_ESCAPE)) {
-		window->requestClose();
-	}
-	if (window->isKeyPressed(GLFW_KEY_F)) {
-		window->setWireframe(true);
-	}
-	if (window->isKeyReleased(GLFW_KEY_F)) {
-		window->setWireframe(false);
-	}
+	return true;
 }

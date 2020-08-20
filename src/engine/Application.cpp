@@ -11,15 +11,56 @@ int Application::start() {
 	Log::init();
 	Log::getLogger()->set_level(LOG_LEVEL);
 
-	auto camera = std::make_unique<Camera>(45.0f, 1600, 1000);
-	auto renderer = std::make_unique<Renderer>(camera, 1600, 1000);
-	auto window = std::make_unique<Window>("Game", 1600, 1000);
-	auto input = std::make_unique<Input>(window, camera);
+	camera = std::make_unique<Camera>(45.0f, 1600, 1000);
+	renderer = std::make_unique<Renderer>(camera, 1600, 1000);
+	window = std::make_unique<Window>("Game", 1600, 1000);
+	input = std::make_unique<Input>(window, camera);
+
+	window->setEventCallback(BIND_EVENT_FN(onEvent));
 
 	window->init();
 	renderer->init();
 
 	// Game setup
+	gameSetupTemp();
+
+	renderer->getDirectionalLights()->updateAll();
+	renderer->getPointLights()->updateAll();
+	renderer->getSpotLights()->updateAll();
+
+	// Perform any config after resources are initialized
+	window->setCulling(true);
+	window->setVsync(false);
+
+	while (running) {
+		input->update();
+
+		// Game logic
+		flashlight->position = glm::vec4(camera->getPosition(), 0.0f);
+		flashlight->direction = glm::vec4(camera->getTarget(), 0.0f);
+		renderer->getSpotLights()->update(flashlight);
+
+		// Clear screen, write rendering data to GPU, swap framebuffers
+		window->clear(0.25f, 0.25f, 0.25f, 1.0f);
+		renderer->render();
+		window->update();
+	}
+	renderer->cleanup();
+	window->cleanup();
+
+	return 0;
+}
+
+void Application::onEvent(Event &event) {
+	EventDispatcher dispatcher(event);
+
+	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::onWindowClose));
+	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
+	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
+	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(input->onMouseMove));
+}
+
+void Application::gameSetupTemp() {
 	auto nanosuit = std::make_shared<Model>(GL_STATIC_DRAW, "res/nanosuit/nanosuit.obj");
 	nanosuit->init();
 	nanosuit->setPosition({0.0f, -1.75f, 0.0f});
@@ -33,7 +74,7 @@ int Application::start() {
 																																								 "res/skybox/back.jpg"});
 	skybox->init();
 
-	auto flashlight{
+	flashlight =
 			std::make_shared<SpotLight>(
 					glm::vec3(),
 					glm::vec3(),
@@ -42,8 +83,7 @@ int Application::start() {
 					glm::vec3(1.0f, 1.0f, 1.0f),
 					1.0f, 0.09, 0.032,
 					glm::cos(glm::radians(12.5f)),
-					glm::cos(glm::radians(15.0f)))
-	};
+					glm::cos(glm::radians(15.0f)));
 
 	renderer->addModel(nanosuit);
 	renderer->setSkybox(skybox);
@@ -92,30 +132,10 @@ int Application::start() {
 					1.0f, 0.09, 0.032),
 			true
 	);
+}
 
-	renderer->getDirectionalLights()->updateAll();
-	renderer->getPointLights()->updateAll();
-	renderer->getSpotLights()->updateAll();
-
-	// Perform any config after resources are initialized
-	window->setCulling(true);
-	window->setVsync(false);
-
-	while (!window->closeRequested()) {
-		input->update();
-
-		// Game logic
-		flashlight->position = glm::vec4(camera->getPosition(), 0.0f);
-		flashlight->direction = glm::vec4(camera->getTarget(), 0.0f);
-		renderer->getSpotLights()->update(flashlight);
-
-		// Clear screen, write rendering data to GPU, swap framebuffers
-		window->clear(0.25f, 0.25f, 0.25f, 1.0f);
-		renderer->render();
-		window->update();
-	}
-	renderer->cleanup();
-	window->cleanup();
-
-	return 0;
+bool Application::onWindowClose(WindowCloseEvent &event) {
+	LOG_DEBUG("Close requested");
+	running = false;
+	return true;
 }
