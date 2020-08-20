@@ -1,11 +1,11 @@
 #pragma once
 
 #include <graphics/Light.h>
-#include <engine/events/Event.h>
+#include <engine/event/Event.h>
 #include <graphics/Renderer.h>
 #include <graphics/Window.h>
 #include <engine/input/Input.h>
-#include <engine/events/ApplicationEvent.h>
+#include <engine/event/ApplicationEvent.h>
 
 class Application {
  public:

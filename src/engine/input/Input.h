@@ -1,7 +1,7 @@
 #pragma once
 
-#include <engine/events/KeyEvent.h>
-#include <engine/events/MouseEvent.h>
+#include <engine/event/KeyEvent.h>
+#include <engine/event/MouseEvent.h>
 #include <graphics/Camera.h>
 #include <graphics/Window.h>
 

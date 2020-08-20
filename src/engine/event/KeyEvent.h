@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/events/Event.h"
+#include "engine/event/Event.h"
 #include "engine/input/KeyCodes.h"
 
 class KeyEvent : public Event {

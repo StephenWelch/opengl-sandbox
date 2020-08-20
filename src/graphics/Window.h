@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include <engine/events/Event.h>
+#include <engine/event/Event.h>
 #include <util/SimpleTimer.h>
 
 #include <string>
