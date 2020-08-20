@@ -47,7 +47,7 @@ bool Input::onKeyPressOrRelease(KeyEvent &event) {
 
 	cameraVelocity = velocity;
 
-	if (event.GetKeyCode()==KeyCode::Escape) {
+	if (event.getKeyCode()==KeyCode::Escape) {
 		window->requestClose();
 	}
 	if (window->isKeyPressed(KeyCode::F)) {
@@ -61,7 +61,7 @@ bool Input::onKeyPressOrRelease(KeyEvent &event) {
 }
 
 bool Input::onMouseMove(MouseMovedEvent &event) {
-	mousePos = {event.GetX(), event.GetY()};
+	mousePos = {event.getX(), event.getY()};
 
 	if (!clickedIn) {
 		clickedIn = true;

@@ -25,11 +25,11 @@ enum EventCategory {
 	EventCategoryMouseButton = BIT_AT(4)
 };
 
-#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
-                virtual EventType GetEventType() const override { return GetStaticType(); }\
-                virtual const char* GetName() const override { return #type; }
+#define EVENT_CLASS_TYPE(type) static EventType getStaticType() { return EventType::type; }\
+                virtual EventType getEventType() const override { return getStaticType(); }\
+                virtual const char* getName() const override { return #type; }
 
-#define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
+#define EVENT_CLASS_CATEGORY(category) virtual int getCategoryFlags() const override { return category; }
 
 class Event {
  public:
@@ -37,13 +37,13 @@ class Event {
 
 	bool Handled = false;
 
-	virtual EventType GetEventType() const = 0;
-	virtual const char *GetName() const = 0;
-	virtual int GetCategoryFlags() const = 0;
-	virtual std::string ToString() const { return GetName(); }
+	virtual EventType getEventType() const = 0;
+	virtual const char *getName() const = 0;
+	virtual int getCategoryFlags() const = 0;
+	virtual std::string toString() const { return getName(); }
 
-	bool IsInCategory(EventCategory category) {
-		return GetCategoryFlags() & category;
+	bool isInCategory(EventCategory category) {
+		return getCategoryFlags() & category;
 	}
 };
 
@@ -55,8 +55,8 @@ class EventDispatcher {
 
 	// F will be deduced by the compiler
 	template<typename T, typename F>
-	bool Dispatch(const F &func) {
-		if (m_Event.GetEventType()==T::GetStaticType()) {
+	bool dispatch(const F &func) {
+		if (m_Event.getEventType()==T::getStaticType()) {
 			m_Event.Handled = func(static_cast<T &>(m_Event));
 			return true;
 		}
@@ -67,6 +67,6 @@ class EventDispatcher {
 };
 
 inline std::ostream &operator<<(std::ostream &os, const Event &e) {
-	return os << e.ToString();
+	return os << e.toString();
 }
 

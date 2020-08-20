@@ -8,10 +8,10 @@ class MouseMovedEvent : public Event {
 	MouseMovedEvent(float x, float y)
 			: m_MouseX(x), m_MouseY(y) {};
 
-	float GetX() const { return m_MouseX; }
-	float GetY() const { return m_MouseY; }
+	float getX() const { return m_MouseX; }
+	float getY() const { return m_MouseY; }
 
-	std::string ToString() const override {
+	std::string toString() const override {
 		std::stringstream ss;
 		ss << "MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
 		return ss.str();
@@ -28,12 +28,12 @@ class MouseScrolledEvent : public Event {
 	MouseScrolledEvent(float xOffset, float yOffset)
 			: m_XOffset(xOffset), m_YOffset(yOffset) {};
 
-	float GetXOffset() const { return m_XOffset; }
-	float GetYOffset() const { return m_YOffset; }
+	float getXOffset() const { return m_XOffset; }
+	float getYOffset() const { return m_YOffset; }
 
-	std::string ToString() const override {
+	std::string toString() const override {
 		std::stringstream ss;
-		ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
+		ss << "MouseScrolledEvent: " << getXOffset() << ", " << getYOffset();
 		return ss.str();
 	}
 
@@ -45,7 +45,7 @@ class MouseScrolledEvent : public Event {
 
 class MouseButtonEvent : public Event {
  public:
-	inline MouseCode GetMouseButton() const { return m_Button; }
+	inline MouseCode getMouseButton() const { return m_Button; }
 
 	EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
  protected:
@@ -60,7 +60,7 @@ class MouseButtonPressedEvent : public MouseButtonEvent {
 	MouseButtonPressedEvent(MouseCode button)
 			: MouseButtonEvent(button) {};
 
-	std::string ToString() const override {
+	std::string toString() const override {
 		std::stringstream ss;
 		ss << "MouseButtonPressedEvent: " << m_Button;
 		return ss.str();
@@ -74,7 +74,7 @@ class MouseButtonReleasedEvent : public MouseButtonEvent {
 	MouseButtonReleasedEvent(MouseCode button)
 			: MouseButtonEvent(button) {};
 
-	std::string ToString() const override {
+	std::string toString() const override {
 		std::stringstream ss;
 		ss << "MouseButtonReleasedEvent: " << m_Button;
 		return ss.str();

@@ -54,10 +54,10 @@ int Application::start() {
 void Application::onEvent(Event &event) {
 	EventDispatcher dispatcher(event);
 
-	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::onWindowClose));
-	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
-	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
-	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(input->onMouseMove));
+	dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::onWindowClose));
+	dispatcher.dispatch<KeyPressedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
+	dispatcher.dispatch<KeyReleasedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
+	dispatcher.dispatch<MouseMovedEvent>(BIND_EVENT_FN(input->onMouseMove));
 }
 
 void Application::gameSetupTemp() {
