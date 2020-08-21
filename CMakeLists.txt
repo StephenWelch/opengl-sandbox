@@ -20,7 +20,19 @@ add_definitions(-DGLFW_INCLUDE_NONE
 file(GLOB_RECURSE PROJECT_SOURCES src/*.cpp src/*.frag src/*.vert)
 file(GLOB_RECURSE PROJECT_HEADERS src/*.h)
 
-add_executable(${PROJECT_NAME} ${PROJECT_HEADERS} ${PROJECT_SOURCES})
+add_executable(
+        ${PROJECT_NAME} ${PROJECT_HEADERS} ${PROJECT_SOURCES}
+        include/imgui/imconfig.h
+        include/imgui/imgui_demo.cpp
+        include/imgui/imgui_draw.cpp
+        include/imgui/imgui_internal.h
+        include/imgui/imgui_widgets.cpp
+        include/imgui/imgui.cpp
+        include/imgui/imgui.h
+        include/imgui/imstb_rectpack.h
+        include/imgui/imstb_textedit.h
+        include/imgui/imstb_truetype.h
+)
 
 # Define where to look for headers
 include_directories(

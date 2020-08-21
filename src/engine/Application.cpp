@@ -1,121 +1,82 @@
-#include <engine/Application.h>
-#include <engine/Core.h>
-#include <engine/input/Input.h>
-#include <graphics/Renderer.h>
-#include <graphics/Window.h>
+#include "Application.h"
 
 #include <iostream>
 #include <memory>
 
-int Application::start() {
+Application *Application::instance = nullptr;
+
+Application::Application() {
+	ENGINE_ASSERT(!instance, "Application already exists!");
+	instance = this;
+
+	window = std::make_unique<Window>("Game", 1600, 1000);
+	imguiLayer = new ImGuiLayer();
+
 	Log::init();
 	Log::getLogger()->set_level(LOG_LEVEL);
+}
 
-	auto camera = std::make_unique<Camera>(45.0f, 1600, 1000);
-	auto renderer = std::make_unique<Renderer>(camera, 1600, 1000);
-	auto window = std::make_unique<Window>("Game", 1600, 1000);
-	auto input = std::make_unique<Input>(window, camera);
+void Application::init() {
+	window->setEventCallback(BIND_EVENT_FN(onEvent));
 
 	window->init();
-	renderer->init();
 
-	// Game setup
-	auto nanosuit = std::make_shared<Model>(GL_STATIC_DRAW, "res/nanosuit/nanosuit.obj");
-	nanosuit->init();
-	nanosuit->setPosition({0.0f, -1.75f, 0.0f});
-	nanosuit->setScale(0.2f);
-
-	auto skybox = std::make_shared<Skybox>(6, std::array<std::filesystem::path, 6>{"res/skybox/right.jpg",
-																																								 "res/skybox/left.jpg",
-																																								 "res/skybox/top.jpg",
-																																								 "res/skybox/bottom.jpg",
-																																								 "res/skybox/front.jpg",
-																																								 "res/skybox/back.jpg"});
-	skybox->init();
-
-	auto flashlight{
-			std::make_shared<SpotLight>(
-					glm::vec3(),
-					glm::vec3(),
-					glm::vec3(0.0f, 0.0f, 0.0f),
-					glm::vec3(1.0f, 1.0f, 1.0f),
-					glm::vec3(1.0f, 1.0f, 1.0f),
-					1.0f, 0.09, 0.032,
-					glm::cos(glm::radians(12.5f)),
-					glm::cos(glm::radians(15.0f)))
-	};
-
-	renderer->addModel(nanosuit);
-	renderer->setSkybox(skybox);
-	renderer->getSpotLights()->addLight(flashlight);
-	renderer->getDirectionalLights()->addLight(
-			std::make_shared<DirectionalLight>(
-					glm::vec3(-0.2f, -1.0f, -0.3f),
-					glm::vec3(0.05f, 0.05f, 0.05f),
-					glm::vec3(0.4f, 0.4f, 0.4f),
-					glm::vec3(0.5f, 0.5f, 0.5f)),
-			true
-	);
-	renderer->getPointLights()->addLight(
-			std::make_shared<PointLight>(
-					glm::vec3(0.7f, 0.2f, 2.0f),
-					glm::vec3(0.5f, 0.5f, 0.5f),
-					glm::vec3(0.8f, 0.8f, 0.8f),
-					glm::vec3(1.0f, 1.0f, 1.0f),
-					1.0f, 0.09, 0.032),
-			true
-	);
-	renderer->getPointLights()->addLight(
-			std::make_shared<PointLight>(
-					glm::vec3(2.3f, -3.3f, -4.0f),
-					glm::vec3(0.05f, 0.05f, 0.05f),
-					glm::vec3(0.8f, 0.8f, 0.8f),
-					glm::vec3(1.0f, 1.0f, 1.0f),
-					1.0f, 0.09, 0.032),
-			true
-	);
-	renderer->getPointLights()->addLight(
-			std::make_shared<PointLight>(
-					glm::vec3(-4.0f, 2.0f, -12.0f),
-					glm::vec3(0.05f, 0.05f, 0.05f),
-					glm::vec3(0.8f, 0.8f, 0.8f),
-					glm::vec3(1.0f, 1.0f, 1.0f),
-					1.0f, 0.09, 0.032),
-			true
-	);
-	renderer->getPointLights()->addLight(
-			std::make_shared<PointLight>(
-					glm::vec3(0.0f, 0.0f, -3.0f),
-					glm::vec3(0.05f, 0.05f, 0.05f),
-					glm::vec3(0.8f, 0.8f, 0.8f),
-					glm::vec3(1.0f, 1.0f, 1.0f),
-					1.0f, 0.09, 0.032),
-			true
-	);
-
-	renderer->getDirectionalLights()->updateAll();
-	renderer->getPointLights()->updateAll();
-	renderer->getSpotLights()->updateAll();
+	imguiLayer->blockEvents(false);
+	pushOverlay(imguiLayer);
 
 	// Perform any config after resources are initialized
 	window->setCulling(true);
 	window->setVsync(false);
+}
 
-	while (!window->closeRequested()) {
-		input->update();
+int Application::start() {
+	while (running) {
+		window->clear(0.25f, 0.25f, 0.25f, 1.0f);
 
-		// Game logic
-		flashlight->position = glm::vec4(camera->getPosition(), 0.0f);
-		flashlight->direction = glm::vec4(camera->getTarget(), 0.0f);
-		renderer->getSpotLights()->update(flashlight);
+		for(auto *layer : layerStack) {
+			layer->onUpdate(updateTimer.getDelta());
+		}
+
+		imguiLayer->begin();
+		for(auto *layer : layerStack) {
+			layer->onImGuiRender();
+		}
+		imguiLayer->end();
 
 		// Clear screen, write rendering data to GPU, swap framebuffers
-		window->clear(0.25f, 0.25f, 0.25f, 1.0f);
-		renderer->render();
 		window->update();
+
+		updateTimer.mark();
 	}
-	renderer->cleanup();
 	window->cleanup();
 
 	return 0;
+}
+
+void Application::onEvent(Event &event) {
+	EventDispatcher dispatcher(event);
+
+	dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::onWindowClose));
+
+	for(auto it = layerStack.rbegin(); it != layerStack.rend(); ++it) {
+		if(event.Handled) {
+			break;
+		}
+		(*it)->onEvent(event);
+	}
+}
+
+bool Application::onWindowClose(WindowCloseEvent &event) {
+	LOG_DEBUG("Close requested");
+	running = false;
+	return true;
+}
+
+void Application::pushLayer(Layer *layer) {
+	layerStack.pushLayer(layer);
+	layer->onAttach();
+}
+void Application::pushOverlay(Layer *layer) {
+	layerStack.pushOverlay(layer);
+	layer->onAttach();
 }

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-#include <ostream>
 typedef enum class MouseCode : uint16_t {
 	// From glfw3.h
 	Button0 = 0,

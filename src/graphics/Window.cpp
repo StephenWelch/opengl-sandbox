@@ -5,6 +5,10 @@
 #include <engine/Core.h>
 #include <graphics/Window.h>
 #include <util/Log.h>
+#include <engine/event/ApplicationEvent.h>
+#include <engine/event/KeyEvent.h>
+#include <engine/event/MouseEvent.h>
+#include <engine/input/MouseCodes.h>
 
 #include <iostream>
 
@@ -13,8 +17,6 @@ bool Window::init() {
 
 	// Initialize GLFW
 	glfwInit();
-	// Clear errors
-	// glGetError();
 
 	glfwDefaultWindowHints();
 	// Set OpenGL version to 3.3
@@ -62,34 +64,96 @@ bool Window::init() {
 		}
 	}
 
+	glfwSetErrorCallback(glfwErrorCallback);
 	glfwSetWindowUserPointer(window, this);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	if (glfwRawMouseMotionSupported()) {
+		glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+	}
 	// Set OpenGL viewport dimensions to same size as window
 	glViewport(0, 0, width, height);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-	// Set the callback for window resizing
-	glfwSetFramebufferSizeCallback(
-			window, [](GLFWwindow *window, int width, int height) {
-				Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
-				userWindow.setSize(width, height);
-			});
-	/*glfwSetCursorPosCallback(window,
-		[](GLFWwindow* window, double xPos, double yPos) {
-			Window& userWindow = *(Window*)glfwGetWindowUserPointer(window);
+	glfwSetWindowSizeCallback(window, [](GLFWwindow *window, int width, int height) {
+		Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
+		userWindow.setSize(width, height);
 
-		}
-	);
-	glfwSetMouseButtonCallback(window,
-		[](GLFWwindow* window, int button, int action, int mods) {
+		WindowResizeEvent event(width, height);
+		userWindow.getEventCallback()(event);
+	});
 
+	glfwSetWindowCloseCallback(window, [](GLFWwindow *window) {
+		Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
+
+		WindowCloseEvent event;
+		userWindow.getEventCallback()(event);
+	});
+
+	glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
+		Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
+
+		switch (action) {
+			case GLFW_PRESS: {
+				KeyPressedEvent event(static_cast<KeyCode>(key), 0);
+				userWindow.getEventCallback()(event);
+				break;
+			}
+			case GLFW_RELEASE: {
+				KeyReleasedEvent event(static_cast<KeyCode>(key));
+				userWindow.getEventCallback()(event);
+				break;
+			}
+			case GLFW_REPEAT: {
+				KeyPressedEvent event(static_cast<KeyCode>(key), 1);
+				userWindow.getEventCallback()(event);
+				break;
+			}
 		}
-	);
-	glfwSetKeyCallback(window,
-		[](GLFWwindow* window, int key, int scancode, int action, int mods) {
+	});
+
+	glfwSetCharCallback(window, [](GLFWwindow *window, unsigned int keycode) {
+		Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
+
+		KeyTypedEvent event(static_cast<KeyCode>(keycode));
+		userWindow.getEventCallback()(event);
+	});
+
+	glfwSetMouseButtonCallback(window, [](GLFWwindow *window, int button, int action, int mods) {
+		Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
+
+		switch (action) {
+			case GLFW_PRESS: {
+				MouseButtonPressedEvent event(static_cast<MouseCode>(button));
+				userWindow.getEventCallback()(event);
+				break;
+			}
+			case GLFW_RELEASE: {
+				MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
+				userWindow.getEventCallback()(event);
+				break;
+			}
 		}
-	);*/
+	});
+
+	glfwSetScrollCallback(window, [](GLFWwindow *window, double xOffset, double yOffset) {
+		Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
+
+		MouseScrolledEvent event((float)xOffset, (float)yOffset);
+		userWindow.getEventCallback()(event);
+	});
+
+	glfwSetCursorPosCallback(window, [](GLFWwindow *window, double xPos, double yPos) {
+		Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
+
+		MouseMovedEvent event((float)xPos, (float)yPos);
+		userWindow.getEventCallback()(event);
+	});
+
+	glfwSetWindowFocusCallback(window, [](GLFWwindow *window, int focused) {
+		Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
+		userWindow.setMouseLocked(focused == GLFW_TRUE);
+	});
 
 	frameStatUpdateTimer.mark();
 
@@ -99,6 +163,7 @@ bool Window::init() {
 }
 
 void Window::update() {
+	glfwPollEvents();
 	glfwSwapBuffers(window);
 	if (ENABLE_PERF_TRACE) {
 		frameTimer.mark();
@@ -112,16 +177,50 @@ void Window::update() {
 			frameStatUpdateTimer.mark();
 		}
 	}
-	glfwPollEvents();
 }
 
-void Window::cleanup() { glfwTerminate(); }
+void Window::cleanup() {
+	glfwDestroyWindow(window);
+	glfwTerminate();
+}
 
 void Window::setSize(int newWidth, int newHeight) {
 	this->width = newWidth;
 	this->height = newHeight;
 	LOG_DEBUG("Set window size to {}x{}", width, height);
 	glViewport(0, 0, width, height);
+}
+
+void Window::setTitle(std::string p_title) {
+	this->title = p_title;
+	glfwSetWindowTitle(window, p_title.c_str());
+}
+
+void Window::setEventCallback(const std::function<void(Event &)> &callback) {
+	this->eventCallback = callback;
+}
+
+void Window::clear(float r, float g, float b,
+									 float a) {
+	// Set a color to clear the screen to
+	glClearColor(r, g, b, a);
+	// Clears the color buffer with the color set by glClearColor
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Window::requestClose() {
+	glfwSetWindowShouldClose(window, true);
+
+	WindowCloseEvent event;
+	getEventCallback()(event);
+}
+
+void Window::setMouseLocked(bool locked) {
+	glfwSetInputMode(window, GLFW_CURSOR, locked ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+}
+
+bool Window::isCloseRequested() const {
+	return glfwWindowShouldClose(window)==GL_TRUE;
 }
 
 void Window::setVsync(const bool &on) {
@@ -148,48 +247,37 @@ void Window::setCulling(const bool &on) {
 	}
 }
 
-bool Window::isKeyPressed(int key) {
-	return glfwGetKey(window, key)==GLFW_PRESS;
+bool Window::isKeyPressed(KeyCode key) {
+	auto state = glfwGetKey(window, static_cast<int32_t>(key));
+	return state==GLFW_PRESS || state==GLFW_REPEAT;
 }
 
-bool Window::isKeyReleased(int key) {
-	return glfwGetKey(window, key)==GLFW_RELEASE;
+bool Window::isKeyReleased(KeyCode key) {
+	auto state = glfwGetKey(window, static_cast<int32_t>(key));
+
+	return state==GLFW_RELEASE;
 }
 
-double Window::getMouseX() {
-	double x, y;
-	glfwGetCursorPos(window, &x, &y);
+bool Window::isMouseButtonPressed(MouseCode button) {
+	auto state = glfwGetMouseButton(window, static_cast<int32_t>(button));
+	return state==GLFW_PRESS;
+}
+
+std::pair<float, float> Window::getMousePosition() {
+	double xpos, ypos;
+	glfwGetCursorPos(window, &xpos, &ypos);
+
+	return {(float)xpos, (float)ypos};
+}
+
+float Window::getMouseX() {
+	auto[x, y] = getMousePosition();
 	return x;
 }
-
-double Window::getMouseY() {
-	double x, y;
-	glfwGetCursorPos(window, &x, &y);
+float Window::getMouseY() {
+	auto[x, y] = getMousePosition();
 	return y;
 }
-
-void Window::setTitle(std::string p_title) {
-	this->title = p_title;
-	glfwSetWindowTitle(window, p_title.c_str());
-}
-
-void Window::clear(float r, float g, float b,
-									 float a) {
-	// Set a color to clear the screen to
-	glClearColor(r, g, b, a);
-	// Clears the color buffer with the color set by glClearColor
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void Window::requestClose() { glfwSetWindowShouldClose(window, true); }
-
-bool Window::closeRequested() {
-	return glfwWindowShouldClose(window)==GL_TRUE;
-}
-
-int Window::getWidth() const { return width; }
-
-int Window::getHeight() const { return height; }
 
 void APIENTRY Window::glDebugOutput(unsigned int source, unsigned int type, unsigned int id, unsigned int severity,
 																		int length, const char *message, const void *userParam) {
@@ -247,4 +335,8 @@ void APIENTRY Window::glDebugOutput(unsigned int source, unsigned int type, unsi
 
 	LOG_ERROR("\nDebug message ({}): \n{}\n{}\n{}\n{}", id, message,
 						sourceMessage, typeMessage, severityMessage);
+}
+
+void Window::glfwErrorCallback(int error, const char *description) {
+	LOG_ERROR("GLFW Error ({0}): {1}", error, description);
 }
