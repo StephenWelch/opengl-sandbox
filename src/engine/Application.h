@@ -1,14 +1,14 @@
 #pragma once
 
-#include <graphics/Light.h>
-#include <engine/event/Event.h>
-#include <graphics/Renderer.h>
-#include <graphics/Window.h>
-#include <engine/input/Input.h>
-#include <engine/event/ApplicationEvent.h>
+#include "graphics/Light.h"
+#include "engine/event/Event.h"
+#include "graphics/Renderer.h"
+#include "graphics/Window.h"
+#include "engine/input/Input.h"
+#include "engine/event/ApplicationEvent.h"
 #include "engine/layer/LayerStack.h"
-#include <engine/imgui/ImGuiLayer.h>
-#include <util/SimpleTimer.h>
+#include "engine/imgui/ImGuiLayer.h"
+#include "util/SimpleTimer.h"
 
 class Application {
  public:

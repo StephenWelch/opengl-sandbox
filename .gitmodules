@@ -10,3 +10,6 @@
 [submodule "include/assimp"]
 	path = include/assimp
 	url = https://github.com/assimp/assimp.git
+[submodule "include/imgui"]
+	path = include/imgui
+	url = https://github.com/TheCherno/imgui

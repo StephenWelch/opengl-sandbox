@@ -1,27 +1,31 @@
-#include <engine/Application.h>
+#include "Application.h"
 
 #include <iostream>
 #include <memory>
 
+Application *Application::instance = nullptr;
+
 Application::Application() {
+	ENGINE_ASSERT(!instance, "Application already exists!");
 	instance = this;
+
+	camera = std::make_unique<Camera>(45.0f, 1600, 1000);
+	renderer = std::make_unique<Renderer>(camera, 1600, 1000);
+	window = std::make_unique<Window>("Game", 1600, 1000);
+	input = std::make_unique<Input>(window, camera);
+	imguiLayer = new ImGuiLayer();
+
 }
 
 int Application::start() {
 	Log::init();
 	Log::getLogger()->set_level(LOG_LEVEL);
 
-	camera = std::make_unique<Camera>(45.0f, 1600, 1000);
-	renderer = std::make_unique<Renderer>(camera, 1600, 1000);
-	window = std::make_unique<Window>("Game", 1600, 1000);
-	input = std::make_unique<Input>(window, camera);
-
 	window->setEventCallback(BIND_EVENT_FN(onEvent));
 
 	window->init();
 	renderer->init();
 
-	imguiLayer = new ImGuiLayer();
 	pushOverlay(imguiLayer);
 
 	//
@@ -32,7 +36,6 @@ int Application::start() {
 	renderer->getDirectionalLights()->updateAll();
 	renderer->getPointLights()->updateAll();
 	renderer->getSpotLights()->updateAll();
-
 
 	// Perform any config after resources are initialized
 	window->setCulling(true);
