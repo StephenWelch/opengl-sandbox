@@ -40,7 +40,7 @@ void ImGuiLayer::onAttach() {
 	}
 
 	Application &app = Application::get();
-	GLFWwindow *window = app.getWindow().getNativeWindow();
+	GLFWwindow *window = app.getWindow()->getNativeWindow();
 
 	// Setup Platform/Renderer bindings
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -70,7 +70,7 @@ void ImGuiLayer::begin() {
 void ImGuiLayer::end() {
 	ImGuiIO &io = ImGui::GetIO();
 	Application &app = Application::get();
-	io.DisplaySize = ImVec2((float)app.getWindow().getWidth(), (float)app.getWindow().getHeight());
+	io.DisplaySize = ImVec2((float)app.getWindow()->getWidth(), (float)app.getWindow()->getHeight());
 
 	// Rendering
 	ImGui::Render();

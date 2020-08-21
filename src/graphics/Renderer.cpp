@@ -69,17 +69,8 @@ void Renderer::render() {
 											6);
 	skyboxShader.setMat4("uView", glm::mat4(glm::mat3(viewMatrix)));
 	skyboxShader.setMat4("uProjection", camera->getProjectionMatrix());
-
-//		modelMatrix = glm::translate(modelMatrix, skybox->getPosition());
-//		modelMatrix = glm::rotate(modelMatrix, skybox->getRotation().x, glm::vec3(1.0f, 0.0f, 0.0f));
-//		modelMatrix = glm::rotate(modelMatrix, skybox->getRotation().y, glm::vec3(0.0f, 1.0f, 0.0f));
-//		modelMatrix = glm::rotate(modelMatrix, skybox->getRotation().z, glm::vec3(0.0f, 0.0f, 1.0f));
-//		modelMatrix = glm::scale(modelMatrix, skybox->getScale());
-//
-//		skyboxShader.setMat4("uModel", modelMatrix);
-//  		skyboxShader.setMat3("uNormalMatrix",
-//						 glm::transpose(glm::inverse(modelMatrix)));
 	skybox->draw();
+
 	glBindVertexArray(0);
 	glDepthFunc(GL_LESS);
 

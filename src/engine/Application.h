@@ -15,11 +15,12 @@ class Application {
 	Application();
 
 	// Starts the main game loop when called
+	void init();
 	int start();
 	void pushLayer(Layer *layer);
 	void pushOverlay(Layer *layer);
 
-	auto &getWindow() const { return *window; }
+	auto &getWindow() const { return window; }
 	auto *getImguiLayer() const { return imguiLayer; }
 
 	static auto &get() { return *instance; }
@@ -32,17 +33,8 @@ class Application {
 	SimpleTimer updateTimer;
 	LayerStack layerStack;
 	ImGuiLayer *imguiLayer;
+	std::unique_ptr<Window> window;
 
 	void onEvent(Event &event);
 	bool onWindowClose(WindowCloseEvent &event);
-
-	// Temp game stuff
-	std::shared_ptr<SpotLight> flashlight;
-	std::unique_ptr<Camera> camera;
-	std::unique_ptr<Renderer> renderer;
-	std::unique_ptr<Window> window;
-	std::unique_ptr<Input> input;
-
-	void gameSetupTemp();
-	void gameUpdateTemp();
 };

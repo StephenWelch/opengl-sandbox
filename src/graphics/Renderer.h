@@ -21,9 +21,9 @@
 
 class Renderer {
  private:
-	std::shared_ptr<DirectionalLightManager> directionalLightManager = std::make_shared<DirectionalLightManager>();
-	std::shared_ptr<PointLightManager> pointLightManager = std::make_shared<PointLightManager>();
-	std::shared_ptr<SpotLightManager> spotLightManager = std::make_shared<SpotLightManager>();
+	std::unique_ptr<DirectionalLightManager> directionalLightManager = std::make_unique<DirectionalLightManager>();
+	std::unique_ptr<PointLightManager> pointLightManager = std::make_unique<PointLightManager>();
+	std::unique_ptr<SpotLightManager> spotLightManager = std::make_unique<SpotLightManager>();
 
 	const std::unique_ptr<Camera> &camera;
 
