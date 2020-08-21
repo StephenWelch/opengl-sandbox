@@ -17,8 +17,6 @@ bool Window::init() {
 
 	// Initialize GLFW
 	glfwInit();
-	// Clear errors
-	// glGetError();
 
 	glfwDefaultWindowHints();
 	// Set OpenGL version to 3.3
@@ -69,6 +67,9 @@ bool Window::init() {
 	glfwSetErrorCallback(glfwErrorCallback);
 	glfwSetWindowUserPointer(window, this);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	if (glfwRawMouseMotionSupported()) {
+		glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+	}
 	// Set OpenGL viewport dimensions to same size as window
 	glViewport(0, 0, width, height);
 	glEnable(GL_DEPTH_TEST);
@@ -149,6 +150,11 @@ bool Window::init() {
 		userWindow.getEventCallback()(event);
 	});
 
+	glfwSetWindowFocusCallback(window, [](GLFWwindow *window, int focused) {
+		Window &userWindow = *(Window *)glfwGetWindowUserPointer(window);
+		userWindow.setMouseLocked(focused == GLFW_TRUE);
+	});
+
 	frameStatUpdateTimer.mark();
 
 	LOG_INFO("Window initialization finished");
@@ -207,6 +213,10 @@ void Window::requestClose() {
 
 	WindowCloseEvent event;
 	getEventCallback()(event);
+}
+
+void Window::setMouseLocked(bool locked) {
+	glfwSetInputMode(window, GLFW_CURSOR, locked ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
 }
 
 bool Window::isCloseRequested() const {

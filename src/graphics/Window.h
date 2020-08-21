@@ -44,6 +44,7 @@ class Window {
 	void setEventCallback(const std::function<void(Event &)> &callback);
 	void clear(float r, float g, float b, float a);
 	void requestClose();
+	void setMouseLocked(bool locked);
 
 	// OpenGL rendering options
 	void setVsync(const bool &on);
@@ -55,6 +56,7 @@ class Window {
 	auto getHeight() const { return height; }
 	auto getEventCallback() const { return eventCallback; }
 	auto getNativeWindow() const { return window; }
+	auto getFrameTimer() const { return frameTimer; }
 	bool isCloseRequested() const;
 
 	bool isKeyPressed(KeyCode key);

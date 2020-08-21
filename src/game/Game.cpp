@@ -3,6 +3,7 @@
 //
 
 #include <engine/Application.h>
+#include <imgui.h>
 #include "Game.h"
 
 Game::Game() : Layer("Game") {
@@ -110,5 +111,7 @@ void Game::onEvent(Event &event) {
 }
 
 void Game::onImGuiRender() {
-
+	ImGui::Begin("Stats");
+	ImGui::Text("FPS: ", Application::get().getWindow()->getFrameTimer().getDelta());
+	ImGui::End();
 }
