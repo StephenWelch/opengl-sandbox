@@ -1,11 +1,11 @@
 #include <engine/Application.h>
-#include <engine/Core.h>
-#include <engine/input/Input.h>
-#include <graphics/Renderer.h>
-#include <graphics/Window.h>
 
 #include <iostream>
 #include <memory>
+
+Application::Application() {
+	instance = this;
+}
 
 int Application::start() {
 	Log::init();
@@ -21,12 +21,18 @@ int Application::start() {
 	window->init();
 	renderer->init();
 
+	imguiLayer = new ImGuiLayer();
+	pushOverlay(imguiLayer);
+
+	//
 	// Game setup
+	//
 	gameSetupTemp();
 
 	renderer->getDirectionalLights()->updateAll();
 	renderer->getPointLights()->updateAll();
 	renderer->getSpotLights()->updateAll();
+
 
 	// Perform any config after resources are initialized
 	window->setCulling(true);
@@ -35,15 +41,24 @@ int Application::start() {
 	while (running) {
 		input->update();
 
-		// Game logic
-		flashlight->position = glm::vec4(camera->getPosition(), 0.0f);
-		flashlight->direction = glm::vec4(camera->getTarget(), 0.0f);
-		renderer->getSpotLights()->update(flashlight);
+		gameUpdateTemp();
+
+		for(auto *layer : layerStack) {
+			layer->onUpdate(updateTimer.getDelta());
+		}
+
+		imguiLayer->begin();
+		for(auto *layer : layerStack) {
+			layer->onImGuiRender();
+		}
+		imguiLayer->end();
 
 		// Clear screen, write rendering data to GPU, swap framebuffers
 		window->clear(0.25f, 0.25f, 0.25f, 1.0f);
 		renderer->render();
 		window->update();
+
+		updateTimer.mark();
 	}
 	renderer->cleanup();
 	window->cleanup();
@@ -58,6 +73,13 @@ void Application::onEvent(Event &event) {
 	dispatcher.dispatch<KeyPressedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
 	dispatcher.dispatch<KeyReleasedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
 	dispatcher.dispatch<MouseMovedEvent>(BIND_EVENT_FN(input->onMouseMove));
+
+	for(auto it = layerStack.rbegin(); it != layerStack.rend(); ++it) {
+		if(!event.Handled) {
+			break;
+		}
+		(*it)->onEvent(event);
+	}
 }
 
 void Application::gameSetupTemp() {
@@ -134,8 +156,23 @@ void Application::gameSetupTemp() {
 	);
 }
 
+void Application::gameUpdateTemp() {
+	flashlight->position = glm::vec4(camera->getPosition(), 0.0f);
+	flashlight->direction = glm::vec4(camera->getTarget(), 0.0f);
+	renderer->getSpotLights()->update(flashlight);
+}
+
 bool Application::onWindowClose(WindowCloseEvent &event) {
 	LOG_DEBUG("Close requested");
 	running = false;
 	return true;
+}
+
+void Application::pushLayer(Layer *layer) {
+	layerStack.pushLayer(layer);
+	layer->onAttach();
+}
+void Application::pushOverlay(Layer *layer) {
+	layerStack.pushOverlay(layer);
+	layer->onAttach();
 }

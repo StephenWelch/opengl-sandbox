@@ -18,8 +18,8 @@ class Window {
 	int width;
 	int height;
 	std::function<void(Event &)> eventCallback;
-	SimpleTimer frameTimer;
-	SimpleTimer frameStatUpdateTimer;
+	SimpleTimer frameTimer = SimpleTimer(100);
+	SimpleTimer frameStatUpdateTimer = SimpleTimer(100);
 
 	static void APIENTRY glDebugOutput(unsigned int source,
 																		 unsigned int type,
@@ -54,6 +54,7 @@ class Window {
 	auto getWidth() const { return width; }
 	auto getHeight() const { return height; }
 	auto getEventCallback() const { return eventCallback; }
+	auto getNativeWindow() const { return window; }
 	bool isCloseRequested() const;
 
 	bool isKeyPressed(KeyCode key);

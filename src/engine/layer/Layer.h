@@ -4,23 +4,18 @@
 #include "engine/Core.h"
 #include "engine/event/Event.h"
 
-namespace Hazel {
+class Layer {
+ public:
+	Layer(const std::string &name = "Layer");
+	virtual ~Layer() = default;
 
-	class Layer
-	{
-	public:
-		Layer(const std::string& name = "Layer");
-		virtual ~Layer() = default;
+	virtual void onAttach() {}
+	virtual void onDetach() {}
+	virtual void onUpdate(double ts) {}
+	virtual void onImGuiRender() {}
+	virtual void onEvent(Event &event) {}
 
-		virtual void onAttach() {}
-		virtual void onDetach() {}
-		virtual void onUpdate(std::chrono::milliseconds ts) {}
-		virtual void onImGuiRender() {}
-		virtual void onEvent(Event& event) {}
-
-		const std::string& getName() const { return m_DebugName; }
-	protected:
-		std::string m_DebugName;
-	};
-
-}
+	const std::string &getName() const { return m_DebugName; }
+ protected:
+	std::string m_DebugName;
+};
