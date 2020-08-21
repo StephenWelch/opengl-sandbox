@@ -65,8 +65,6 @@ void Renderer::render() {
 
 	glDepthFunc(GL_LEQUAL);
 	skyboxShader.use();
-	skyboxShader.setInt("uSkybox",
-											6);
 	skyboxShader.setMat4("uView", glm::mat4(glm::mat3(viewMatrix)));
 	skyboxShader.setMat4("uProjection", camera->getProjectionMatrix());
 	skybox->draw();
@@ -96,14 +94,7 @@ void Renderer::setSkybox(const std::shared_ptr<Skybox> &skybox) {
 	this->skybox = skybox;
 
 	skyboxShader.use();
-	skyboxShader.setInt("uSkybox",
-											6);
-//	for (const auto &mesh : skybox->getMeshes()) {
-//		for (const auto &texture : mesh.getTextures()) {
-//			skyboxShader.setInt("uSkybox",
-//													texture->getTextureUnit());
-//		}
-//	}
+	skyboxShader.setInt("uSkybox", skybox->getCubemap()->getTextureUnit());
 }
 
 void Renderer::addModel(const std::shared_ptr<Model> &model) {

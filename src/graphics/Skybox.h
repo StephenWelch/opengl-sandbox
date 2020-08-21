@@ -14,52 +14,8 @@ class Skybox : public Model {
  public:
 	Skybox(unsigned int textureUnit, std::array<std::filesystem::path, 6> filePaths);
 
+	auto getCubemap() const { return cubemap; }
  private:
-//	std::vector<glm::vec3> vertices{
-//			// Back face
-//			{-1.0, -1.0, -1.0},  // Bottom-left
-//			{1.0, 1.0, -1.0},    // top-right
-//			{1.0, -1.0, -1.0},   // bottom-right
-//			{1.0, 1.0, -1.0},    // top-right
-//			{-1.0, -1.0, -1.0},  // bottom-left
-//			{-1.0, 1.0, -1.0},   // top-left
-//			// Front face
-//			{-1.0, -1.0, 1.0},  // bottom-left
-//			{1.0, -1.0, 1.0},   // bottom-right
-//			{1.0, 1.0, 1.0},    // top-right
-//			{1.0, 1.0, 1.0},    // top-right
-//			{-1.0, 1.0, 1.0},   // top-left
-//			{-1.0, -1.0, 1.0},  // bottom-left
-//			// Left face
-//			{-1.0, 1.0, 1.0},    // top-right
-//			{-1.0, 1.0, -1.0},   // top-left
-//			{-1.0, -1.0, -1.0},  // bottom-left
-//			{-1.0, -1.0, -1.0},  // bottom-left
-//			{-1.0, -1.0, 1.0},   // bottom-right
-//			{-1.0, 1.0, 1.0},    // top-right
-//			// Right face
-//			{1.0, 1.0, 1.0},    // top-left
-//			{1.0, -1.0, -1.0},  // bottom-right
-//			{1.0, 1.0, -1.0},   // top-right
-//			{1.0, -1.0, -1.0},  // bottom-right
-//			{1.0, 1.0, 1.0},    // top-left
-//			{1.0, -1.0, 1.0},   // bottom-left
-//			// Bottom face
-//			{-1.0, -1.0, -1.0},  // top-right
-//			{1.0, -1.0, -1.0},   // top-left
-//			{1.0, -1.0, 1.0},    // bottom-left
-//			{1.0, -1.0, 1.0},    // bottom-left
-//			{-1.0, -1.0, 1.0},   // bottom-right
-//			{-1.0, -1.0, -1.0},  // top-right
-//			// Top face
-//			{-1.0, 1.0, -1.0},  // top-left
-//			{1.0, 1.0, 1.0},    // bottom-right
-//			{1.0, 1.0, -1.0},   // top-right
-//			{1.0, 1.0, 1.0},    // bottom-right
-//			{-1.0, 1.0, -1.0},  // top-left
-//			{-1.0, 1.0, 1.0}    // bottom-left
-//	};
-
 	std::vector<glm::vec3> vertices{
 			// Back face
 			{-1.0, 1.0, -1.0},   // top-left
@@ -122,9 +78,6 @@ class Skybox : public Model {
 															30, 31, 32, 33, 34, 35};
 
 	std::shared_ptr<TextureCubemap> cubemap;
-
-	std::shared_ptr<Mesh> createSkyboxMesh(unsigned int textureUnit,
-																				 std::array<std::filesystem::path, 6> filePaths);
 };
 
 #endif //SKYBOX_H
