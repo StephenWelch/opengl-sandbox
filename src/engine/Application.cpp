@@ -37,11 +37,13 @@ int Application::start() {
 			layer->onUpdate(updateTimer.getDelta());
 		}
 
-		imguiLayer->begin();
-		for(auto *layer : layerStack) {
-			layer->onImGuiRender();
+		if(imguiVisible) {
+			imguiLayer->begin();
+			for(auto *layer : layerStack) {
+				layer->onImGuiRender();
+			}
+			imguiLayer->end();
 		}
-		imguiLayer->end();
 
 		// Clear screen, write rendering data to GPU, swap framebuffers
 		window->update();
@@ -79,4 +81,8 @@ void Application::pushLayer(Layer *layer) {
 void Application::pushOverlay(Layer *layer) {
 	layerStack.pushOverlay(layer);
 	layer->onAttach();
+}
+
+void Application::setImguiVisible(bool visible) {
+	this->imguiVisible = visible;
 }

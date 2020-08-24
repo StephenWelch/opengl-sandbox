@@ -108,10 +108,13 @@ void Game::onEvent(Event &event) {
 	dispatcher.dispatch<KeyPressedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
 	dispatcher.dispatch<KeyReleasedEvent>(BIND_EVENT_FN(input->onKeyPressOrRelease));
 	dispatcher.dispatch<MouseMovedEvent>(BIND_EVENT_FN(input->onMouseMove));
+	dispatcher.dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(input->onMouseButton));
 }
 
 void Game::onImGuiRender() {
+	auto &window = Application::get().getWindow();
+
 	ImGui::Begin("Stats");
-	ImGui::Text("FPS: ", Application::get().getWindow()->getFrameTimer().getDelta());
+	ImGui::Text("FPS: %.0f", 1.0 / window->getFrameTimer().getMovingAverage());
 	ImGui::End();
 }

@@ -20,6 +20,7 @@ class Input {
 	glm::vec3 cameraVelocity = glm::vec3(0.0f);
 	float pitch = 0.0f;
 	float yaw = -90.0f;
+	bool lastClickedIn = false;
 	bool clickedIn = false;
 
  public:
@@ -29,4 +30,5 @@ class Input {
 	void update();
 	bool onKeyPressOrRelease(KeyEvent &event);
 	bool onMouseMove(MouseMovedEvent &event);
+	bool onMouseButton(MouseButtonPressedEvent &event);
 };

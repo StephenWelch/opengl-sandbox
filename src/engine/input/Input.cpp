@@ -1,6 +1,7 @@
 #include <engine/input/Input.h>
 
 #include <cmath>
+#include <engine/Application.h>
 
 void Input::init() {}
 
@@ -20,28 +21,28 @@ bool Input::onKeyPressOrRelease(KeyEvent &event) {
 	auto velocity = glm::vec3(0.0f);
 	float speed = 2.5;
 
-	if (window->isKeyPressed(KeyCode::W)) {
+	if (event.getKeyCode() == KeyCode::W && window->isKeyPressed(KeyCode::W)) {
 		velocity += speed*camera->getTarget();
 	}
-	if (window->isKeyPressed(KeyCode::S)) {
+	if (event.getKeyCode() == KeyCode::S && window->isKeyPressed(KeyCode::S)) {
 		velocity -= speed*camera->getTarget();
 	}
-	if (window->isKeyPressed(KeyCode::A)) {
+	if (event.getKeyCode() == KeyCode::A && window->isKeyPressed(KeyCode::A)) {
 		velocity -= speed*cameraXAxis;
 	}
-	if (window->isKeyPressed(KeyCode::D)) {
+	if (event.getKeyCode() == KeyCode::D && window->isKeyPressed(KeyCode::D)) {
 		velocity += speed*cameraXAxis;
 	}
-	if (window->isKeyPressed(KeyCode::E)) {
+	if (event.getKeyCode() == KeyCode::E && window->isKeyPressed(KeyCode::E)) {
 		velocity += speed*cameraYAxis;
 	}
-	if (window->isKeyPressed(KeyCode::Q)) {
+	if (event.getKeyCode() == KeyCode::Q && window->isKeyPressed(KeyCode::Q)) {
 		velocity -= speed*cameraYAxis;
 	}
-	if (window->isKeyPressed(KeyCode::Space)) {
+	if (event.getKeyCode() == KeyCode::Space && window->isKeyPressed(KeyCode::Space)) {
 		velocity += speed*camera->WORLD_UP;
 	}
-	if (window->isKeyPressed(KeyCode::LeftShift)) {
+	if (event.getKeyCode() == KeyCode::LeftShift && window->isKeyPressed(KeyCode::LeftShift)) {
 		velocity -= speed*camera->WORLD_UP;
 	}
 
@@ -50,23 +51,47 @@ bool Input::onKeyPressOrRelease(KeyEvent &event) {
 	if (event.getKeyCode()==KeyCode::Escape) {
 		window->requestClose();
 	}
-	if (window->isKeyPressed(KeyCode::F)) {
+	if (event.getKeyCode() == KeyCode::F && window->isKeyPressed(KeyCode::F)) {
 		window->setWireframe(true);
 	}
-	if(window->isKeyReleased(KeyCode::F)) {
+	if(event.getKeyCode() == KeyCode::F && window->isKeyReleased(KeyCode::F)) {
 		window->setWireframe(false);
+	}
+
+	auto &app = Application::get();
+
+	if(event.getKeyCode() == KeyCode::GraveAccent && window->isKeyReleased(KeyCode::GraveAccent)) {
+		app.setImguiVisible(!app.isImguiVisible());
+
+		if(app.isImguiVisible()) {
+			window->setMouseLocked(false);
+			app.setImguiVisible(true);
+			clickedIn = false;
+		} else {
+			window->setMouseLocked(true);
+			app.setImguiVisible(false);
+			clickedIn = true;
+		}
 	}
 
 	return true;
 }
 
 bool Input::onMouseMove(MouseMovedEvent &event) {
+	if(Application::get().isImguiVisible() && !clickedIn) {
+		lastClickedIn = false;
+		return false;
+	}
+
 	mousePos = {event.getX(), event.getY()};
 
-	if (!clickedIn) {
+	if(!clickedIn) {
 		clickedIn = true;
+	}
+	if(clickedIn && !lastClickedIn) {
 		lastMousePos = mousePos;
 	}
+	lastClickedIn = clickedIn;
 
 	mouseDelta = mousePos - lastMousePos;
 	lastMousePos = mousePos;
@@ -82,6 +107,15 @@ bool Input::onMouseMove(MouseMovedEvent &event) {
 	cameraTarget.y = sin(glm::radians(pitch));
 	cameraTarget.z = sin(glm::radians(yaw))*cos(glm::radians(pitch));
 	camera->setTarget(glm::normalize(cameraTarget));
+
+	return true;
+}
+
+bool Input::onMouseButton(MouseButtonPressedEvent &event) {
+	if(!clickedIn && event.getMouseButton() == MouseCode::ButtonLeft) {
+		Application::get().getWindow()->setMouseLocked(true);
+	clickedIn = true;
+	}
 
 	return true;
 }

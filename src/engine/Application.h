@@ -19,9 +19,11 @@ class Application {
 	int start();
 	void pushLayer(Layer *layer);
 	void pushOverlay(Layer *layer);
+	void setImguiVisible(bool visible);
 
 	auto &getWindow() const { return window; }
 	auto *getImguiLayer() const { return imguiLayer; }
+	auto isImguiVisible() const { return imguiVisible; }
 
 	static auto &get() { return *instance; }
 
@@ -30,6 +32,7 @@ class Application {
 	static Application *instance;
 
 	bool running = true;
+	bool imguiVisible = false;
 	SimpleTimer updateTimer;
 	LayerStack layerStack;
 	ImGuiLayer *imguiLayer;
