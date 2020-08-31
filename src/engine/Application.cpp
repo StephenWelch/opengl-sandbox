@@ -1,14 +1,8 @@
 #include "Application.h"
 
-#include <iostream>
 #include <memory>
 
-Application *Application::instance = nullptr;
-
 Application::Application() {
-	ENGINE_ASSERT(!instance, "Application already exists!");
-	instance = this;
-
 	window = std::make_unique<Window>("Game", 1600, 1000);
 	imguiLayer = new ImGuiLayer();
 

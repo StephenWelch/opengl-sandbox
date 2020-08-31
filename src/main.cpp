@@ -4,7 +4,7 @@
 #include <game/Game.h>
 
 int main() {
-	auto app = Application();
+	auto &app = Application::get();
 	auto game = new Game();
 
 	app.init();

@@ -12,8 +12,6 @@
 
 class Application {
  public:
-	Application();
-
 	// Starts the main game loop when called
 	void init();
 	int start();
@@ -25,11 +23,18 @@ class Application {
 	auto *getImguiLayer() const { return imguiLayer; }
 	auto isImguiVisible() const { return imguiVisible; }
 
-	static auto &get() { return *instance; }
+	Application(const Application &) = delete;
+	Application &operator=(const Application &) = delete;
+	Application(Application &&) = delete;
+	Application &operator=(Application &&) = delete;
+
+	static auto &get() {
+		static Application application;
+		return application;
+	}
 
  private:
-
-	static Application *instance;
+	Application();
 
 	bool running = true;
 	bool imguiVisible = false;
