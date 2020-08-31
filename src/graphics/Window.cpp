@@ -335,6 +335,12 @@ void APIENTRY Window::glDebugOutput(unsigned int source, unsigned int type, unsi
 
 	LOG_ERROR("\nDebug message ({}): \n{}\n{}\n{}\n{}", id, message,
 						sourceMessage, typeMessage, severityMessage);
+
+
+	if(type == GL_DEBUG_TYPE_ERROR) {
+		__debugbreak();
+	}
+
 }
 
 void Window::glfwErrorCallback(int error, const char *description) {
