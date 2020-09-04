@@ -4,6 +4,7 @@
 
 #include <engine/Application.h>
 #include <imgui.h>
+#include <engine/resource/ResourceManager.h>
 #include "Game.h"
 
 Game::Game() : Layer("Game") {
@@ -90,6 +91,8 @@ void Game::onAttach() {
 	renderer->getDirectionalLights()->updateAll();
 	renderer->getPointLights()->updateAll();
 	renderer->getSpotLights()->updateAll();
+
+	ResourceManager::get().start();
 }
 void Game::onDetach() {
 	renderer->cleanup();

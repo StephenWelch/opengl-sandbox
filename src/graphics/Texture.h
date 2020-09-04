@@ -6,8 +6,9 @@
 #include <string>
 #include <utility>
 #include <filesystem>
+#include <engine/resource/Loadable.h>
 
-class Texture {
+class Texture : public Loadable {
  public:
 	enum class TextureType { SPECULAR, DIFFUSE, EMISSIVE, HEIGHT, AMBIENT };
 
@@ -50,7 +51,7 @@ class Texture {
 
 class Texture2d : public virtual Texture {
  public:
-	Texture2d(TextureType type, unsigned int textureUnit, std::string filePath) :
+	Texture2d(TextureType type, unsigned int textureUnit, std::filesystem::path filePath) :
 			Texture(type, textureUnit),
 			filePath(std::move(filePath)) {};
 
