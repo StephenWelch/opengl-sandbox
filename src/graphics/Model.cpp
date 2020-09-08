@@ -22,7 +22,6 @@ std::vector<std::shared_ptr<Texture>> Model::loadMaterialTextures(
 		auto texture = ResourceManager::get().loadTexture2d(engineType,
 																												texture_unit_offset + i,
 																												directory.generic_string() + "/" + std::string(str.C_Str()));
-		texture->addDependent(this);
 		loadedTextures.push_back(texture);
 	}
 	return loadedTextures;

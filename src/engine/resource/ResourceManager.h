@@ -15,6 +15,7 @@
 #include <type_traits>
 #include <chrono>
 #include <utility>
+#include <queue>
 
 using namespace std::chrono_literals;
 
@@ -44,17 +45,17 @@ class ResourceManager {
 			return resourcePtr;
 		} else {
 			auto texture = std::make_shared<Texture2d>(type, unit);
-//			texture->init();
+			texture->init();
 			resourceHandle->attachResource(texture);
+			resourceHandle->setLoadFunction([texture, resourceHandle, path]() -> std::shared_ptr<ResourceHandle> {
 
-			resourcesToLoad.push({texture, [resourceHandle, path](const std::shared_ptr<Loadable> &resourcePtr) -> std::shared_ptr<ResourceHandle> {
-				auto texture = std::dynamic_pointer_cast<Texture2d>(resourcePtr);
-				auto data = std::make_shared<Texture2d::TextureData>(path);
-				texture->setData(data);
-				texture->init();
+				texture->setData(std::make_shared<Texture::TextureData>(path));
 
 				return resourceHandle;
-			}});
+			});
+
+			resourcesToLoad.push(resourceHandle);
+
 
 			return texture;
 		}
@@ -64,15 +65,16 @@ class ResourceManager {
 		loadThread = std::thread([&]() {
 			while(true) {
 				if (!resourcesToLoad.empty()) {
-					auto nextToLoad = resourcesToLoad.top();
-					std::shared_ptr<ResourceHandle> resourceHandle = nextToLoad.second(nextToLoad.first);
-
+					std::shared_ptr<ResourceHandle> resourceHandle = resourcesToLoad.top()->load();
 					resourcesToLoad.pop();
-
-					std::hash<ResourceHandle> hash;
-					size_t resHash = hash(*resourceHandle);
-					LOG_DEBUG("Loaded {}", resHash);
-					loadedResources.insert(resourceHandle);
+					resourcesToInit.push(resourceHandle);
+				} else {
+					for(auto &resource : loadedResources) {
+						if(resource->hasBeenModified()) {
+							LOG_DEBUG("Detected resource to hot-reload");
+							resourcesToLoad.push(resource);
+						}
+					}
 				}
 
 				std::this_thread::sleep_for(50ms);
@@ -80,11 +82,21 @@ class ResourceManager {
 		});
 	}
 
+	void initializeLoaded() {
+		while(!resourcesToInit.empty()) {
+			auto resourceHandle = resourcesToInit.front();
+			resourceHandle->getResource()->init();
+			loadedResources.insert(resourceHandle);
+			resourcesToInit.pop();
+		}
+	}
+
 	void stop() {
 		loadThread.join();
 	}
 
 	auto isDoneLoading() const { return resourcesToLoad.empty(); }
+	auto isDoneInitializing() const { return resourcesToInit.empty(); }
 
  private:
 	ResourceManager() = default;
@@ -104,6 +116,7 @@ class ResourceManager {
 	}
 
 	std::thread loadThread;
-	std::stack<std::pair<std::shared_ptr<Loadable>, std::function<std::shared_ptr<ResourceHandle>(const std::shared_ptr<Loadable>&)>>> resourcesToLoad;
+	std::stack<std::shared_ptr<ResourceHandle>> resourcesToLoad;
+	std::queue<std::shared_ptr<ResourceHandle>> resourcesToInit;
 	std::unordered_set<std::shared_ptr<ResourceHandle>> loadedResources;
 };

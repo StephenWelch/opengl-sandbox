@@ -14,20 +14,22 @@ class ResourceHandle {
  public:
 
 	ResourceHandle(const std::filesystem::path &path) {
-		pathRegistry[getLastWriteTime(path)] = path;
+		pathRegistry.emplace_back(path, getLastWriteTime(path));
 	}
 
 	ResourceHandle(const std::vector<std::filesystem::path> &paths) {
 		for(const auto &path : paths) {
-			pathRegistry[getLastWriteTime(path)] = path;
+			pathRegistry.emplace_back(path, getLastWriteTime(path));
 		}
 	}
 
 	bool hasBeenModified() {
 		bool modified = false;
-		for (const auto &path : pathRegistry) {
-			if (getLastWriteTime(path.second) > path.first) {
+		for (auto &path : pathRegistry) {
+			auto lastWriteTime = getLastWriteTime(path.first);
+			if (lastWriteTime > path.second) {
 				modified = true;
+				path.second = lastWriteTime;
 			}
 		}
 		return modified;
@@ -37,12 +39,21 @@ class ResourceHandle {
 		this->resource = resource;
 	}
 
+	void setLoadFunction(const std::function<std::shared_ptr<ResourceHandle>()> &loadFunction) {
+		this->loadFunction = loadFunction;
+	}
+
 	auto getFilePathRegistry() const { return pathRegistry; }
 
 	auto getResource() const { return resource; }
 
+	auto load() const {
+		return loadFunction();
+	}
+
  private:
-	std::unordered_map<time_t, std::filesystem::path> pathRegistry;
+	std::vector<std::pair<std::filesystem::path, time_t>> pathRegistry;
+	std::function<std::shared_ptr<ResourceHandle>()> loadFunction;
 	std::shared_ptr<Loadable> resource;
 
 	static time_t getLastWriteTime(const std::filesystem::path &path) {
@@ -56,7 +67,7 @@ struct std::hash<ResourceHandle> {
 	std::size_t operator()(ResourceHandle const &resource) {
 		size_t hash = 0;
 		for (const auto &path : resource.getFilePathRegistry()) {
-			util::hash_combine(hash, path.second.generic_string());
+			util::hash_combine(hash, path.first.generic_string());
 		}
 		return hash;
 	}

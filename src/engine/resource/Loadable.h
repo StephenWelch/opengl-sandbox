@@ -9,15 +9,7 @@
 class Loadable {
  public:
 	virtual ~Loadable() = default;
-	void initializeAll() {
-		init();
-		for(auto &dependent : dependents) {
-			dependent->initializeAll();
-		}
+	virtual void init() {
+		LOG_WARN("WARNING: Loadable initializer is unimplemented");
 	};
-	virtual void init() {};
-	auto getDependent() const { return dependents; }
-	auto addDependent(Loadable *dependent) { dependents.push_back(dependent); }
- private:
-	std::vector<Loadable*> dependents;
 };

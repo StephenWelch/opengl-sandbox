@@ -36,12 +36,8 @@ void Texture::bind() {
 }
 
 void Texture2d::init() {
-
-	if(id == 0) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &id);
-		glTextureStorage2D(id, 1, GL_RGBA8, data->getWidth(), data->getHeight());
-	}
-
+	glCreateTextures(GL_TEXTURE_2D, 1, &id);
+	glTextureStorage2D(id, 1, GL_RGBA8, data->getWidth(), data->getHeight());
 	glTextureSubImage2D(id, 0, 0, 0, data->getWidth(), data->getHeight(), data->getColorChannels(),
 											GL_UNSIGNED_BYTE, data->getData());
 
@@ -54,8 +50,6 @@ void Texture2d::init() {
 }
 
 void TextureCubemap::init() {
-	LOG_DEBUG("Loading texture cubemap");
-
 	glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &id);
 
 	// Use the first texture to allocate storage for the rest

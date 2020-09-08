@@ -86,10 +86,10 @@ void Game::onAttach() {
 	renderer->getPointLights()->updateAll();
 	renderer->getSpotLights()->updateAll();
 
-//	auto texture = ResourceManager::get().loadTexture2d(Texture::TextureType::DIFFUSE, 30, "res/awesomeface.png");
-
+	LOG_DEBUG("Loading resources");
 	ResourceManager::get().start();
 	while(!ResourceManager::get().isDoneLoading());
+	ResourceManager::get().initializeLoaded();
 	nanosuit->init();
 	skybox->init();
 
@@ -98,9 +98,14 @@ void Game::onAttach() {
 
 }
 void Game::onDetach() {
+	ResourceManager::get().stop();
 	renderer->cleanup();
 }
 void Game::onUpdate(double ts) {
+	if(!ResourceManager::get().isDoneInitializing()) {
+		ResourceManager::get().initializeLoaded();
+	}
+
 	input->update();
 
 	flashlight->position = glm::vec4(camera->getPosition(), 0.0f);

@@ -44,6 +44,9 @@ int Application::start() {
 
 		updateTimer.mark();
 	}
+	for(auto *layer : layerStack) {
+		layer->onDetach();
+	}
 	window->cleanup();
 
 	return 0;
