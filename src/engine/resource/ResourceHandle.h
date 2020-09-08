@@ -42,7 +42,6 @@ class ResourceHandle {
 	auto getResource() const { return resource; }
 
  private:
-	size_t hash;
 	std::unordered_map<time_t, std::filesystem::path> pathRegistry;
 	std::shared_ptr<Loadable> resource;
 

@@ -9,13 +9,13 @@
 #include <utility>
 #include <filesystem>
 
-class Model {
+class Model : public Loadable {
  public:
 	Model(unsigned int usage, std::vector<std::shared_ptr<Mesh>> meshes)
 			: usage(usage), meshes(std::move(meshes)) {};
 	Model(unsigned int usage, const std::filesystem::path &path);
 
-	void init();
+	void init() override;
 	void draw();
 	void cleanup();
 	void setPosition(const glm::vec3 &position) { this->position = position; };
@@ -39,7 +39,7 @@ class Model {
 									 const std::filesystem::path &directory);
 	std::shared_ptr<Mesh> processMesh(aiMesh *mesh, const aiScene *scene,
 																		const std::filesystem::path &directory);
-	static std::vector<std::shared_ptr<Texture>> loadMaterialTextures(
+	std::vector<std::shared_ptr<Texture>> loadMaterialTextures(
 			aiMaterial *mat, aiTextureType type, Texture::TextureType engineType, unsigned int texture_unit_offset,
 			const std::filesystem::path &directory);
 };

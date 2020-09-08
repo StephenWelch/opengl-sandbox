@@ -17,7 +17,6 @@ void Game::onAttach() {
 	renderer->init();
 
 	auto nanosuit = std::make_shared<Model>(GL_STATIC_DRAW, "res/nanosuit/nanosuit.obj");
-	nanosuit->init();
 	nanosuit->setPosition({0.0f, -1.75f, 0.0f});
 	nanosuit->setScale(0.2f);
 
@@ -27,8 +26,6 @@ void Game::onAttach() {
 																																								 "res/skybox/bottom.jpg",
 																																								 "res/skybox/front.jpg",
 																																								 "res/skybox/back.jpg"});
-	skybox->init();
-
 	flashlight =
 			std::make_shared<SpotLight>(
 					glm::vec3(),
@@ -39,9 +36,6 @@ void Game::onAttach() {
 					1.0f, 0.09, 0.032,
 					glm::cos(glm::radians(12.5f)),
 					glm::cos(glm::radians(15.0f)));
-
-	renderer->addModel(nanosuit);
-	renderer->setSkybox(skybox);
 	renderer->getSpotLights()->addLight(flashlight);
 	renderer->getDirectionalLights()->addLight(
 			std::make_shared<DirectionalLight>(
@@ -92,7 +86,16 @@ void Game::onAttach() {
 	renderer->getPointLights()->updateAll();
 	renderer->getSpotLights()->updateAll();
 
+//	auto texture = ResourceManager::get().loadTexture2d(Texture::TextureType::DIFFUSE, 30, "res/awesomeface.png");
+
 	ResourceManager::get().start();
+	while(!ResourceManager::get().isDoneLoading());
+	nanosuit->init();
+	skybox->init();
+
+	renderer->addModel(nanosuit);
+	renderer->setSkybox(skybox);
+
 }
 void Game::onDetach() {
 	renderer->cleanup();

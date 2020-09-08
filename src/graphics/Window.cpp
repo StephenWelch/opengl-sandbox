@@ -337,7 +337,7 @@ void APIENTRY Window::glDebugOutput(unsigned int source, unsigned int type, unsi
 						sourceMessage, typeMessage, severityMessage);
 
 
-	if(type == GL_DEBUG_TYPE_ERROR) {
+	if(type == GL_DEBUG_TYPE_ERROR && ENABLE_BREAK_ON_DEBUG_ERROR) {
 		__debugbreak();
 	}
 
