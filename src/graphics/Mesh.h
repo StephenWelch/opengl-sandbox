@@ -6,9 +6,8 @@
 #include <vector>
 #include "Texture.h"
 
-class Mesh {
+class Mesh : public Loadable {
  public:
-	virtual void init() = 0;
 	virtual void bind() = 0;
 	virtual void draw() = 0;
 	virtual void cleanup() = 0;

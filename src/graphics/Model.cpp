@@ -1,3 +1,4 @@
+#include <engine/resource/ResourceManager.h>
 #include "Model.h"
 
 void Model::processNode(aiNode *node, const aiScene *scene,
@@ -18,9 +19,9 @@ std::vector<std::shared_ptr<Texture>> Model::loadMaterialTextures(
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
 		aiString str;
 		mat->GetTexture(type, i, &str);
-		auto texture = std::make_shared<Texture2d>(engineType,
-																							 texture_unit_offset + i,
-																							 directory.generic_string() + "/" + std::string(str.C_Str()));
+		auto texture = ResourceManager::get().loadTexture2d(engineType,
+																												texture_unit_offset + i,
+																												directory.generic_string() + "/" + std::string(str.C_Str()));
 		loadedTextures.push_back(texture);
 	}
 	return loadedTextures;

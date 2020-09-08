@@ -4,6 +4,7 @@
 
 #include <engine/Application.h>
 #include <imgui.h>
+#include <engine/resource/ResourceManager.h>
 #include "Game.h"
 
 Game::Game() : Layer("Game") {
@@ -16,7 +17,6 @@ void Game::onAttach() {
 	renderer->init();
 
 	auto nanosuit = std::make_shared<Model>(GL_STATIC_DRAW, "res/nanosuit/nanosuit.obj");
-	nanosuit->init();
 	nanosuit->setPosition({0.0f, -1.75f, 0.0f});
 	nanosuit->setScale(0.2f);
 
@@ -26,8 +26,6 @@ void Game::onAttach() {
 																																								 "res/skybox/bottom.jpg",
 																																								 "res/skybox/front.jpg",
 																																								 "res/skybox/back.jpg"});
-	skybox->init();
-
 	flashlight =
 			std::make_shared<SpotLight>(
 					glm::vec3(),
@@ -38,9 +36,6 @@ void Game::onAttach() {
 					1.0f, 0.09, 0.032,
 					glm::cos(glm::radians(12.5f)),
 					glm::cos(glm::radians(15.0f)));
-
-	renderer->addModel(nanosuit);
-	renderer->setSkybox(skybox);
 	renderer->getSpotLights()->addLight(flashlight);
 	renderer->getDirectionalLights()->addLight(
 			std::make_shared<DirectionalLight>(
@@ -90,11 +85,27 @@ void Game::onAttach() {
 	renderer->getDirectionalLights()->updateAll();
 	renderer->getPointLights()->updateAll();
 	renderer->getSpotLights()->updateAll();
+
+	LOG_DEBUG("Loading resources");
+	ResourceManager::get().start();
+	while(!ResourceManager::get().isDoneLoading());
+	ResourceManager::get().initializeLoaded();
+	nanosuit->init();
+	skybox->init();
+
+	renderer->addModel(nanosuit);
+	renderer->setSkybox(skybox);
+
 }
 void Game::onDetach() {
+	ResourceManager::get().stop();
 	renderer->cleanup();
 }
 void Game::onUpdate(double ts) {
+	if(!ResourceManager::get().isDoneInitializing()) {
+		ResourceManager::get().initializeLoaded();
+	}
+
 	input->update();
 
 	flashlight->position = glm::vec4(camera->getPosition(), 0.0f);

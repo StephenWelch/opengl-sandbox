@@ -6,25 +6,25 @@
 #include <string>
 #include <utility>
 #include <filesystem>
+#include <engine/resource/Loadable.h>
 
-class Texture {
+class Texture : public Loadable {
  public:
 	enum class TextureType { SPECULAR, DIFFUSE, EMISSIVE, HEIGHT, AMBIENT };
 
 	class TextureData {
 	 public:
-		explicit TextureData(std::filesystem::path filePath) : filePath(std::move(filePath)) {};
+		TextureData(int width, int height, unsigned int colorChannels, unsigned char *data) : width(width), height(height), colorChannels(colorChannels), data(data) {};
+		explicit TextureData(const std::filesystem::path &path);
+		TextureData() : TextureData("res/empty.png") {};
 		~TextureData();
-		void load();
-		auto getFilePath() const { return this->filePath; };
 		auto getWidth() const { return this->width; };
 		auto getHeight() const { return this->height; };
 		auto getColorChannels() const { return this->colorChannels; };
-		unsigned char *getData() const { return this->data; };
+		auto getData() const { return this->data; };
 	 private:
-		std::filesystem::path filePath;
 		int width{}, height{};
-		GLenum colorChannels{};
+		unsigned int colorChannels{};
 		unsigned char *data{};
 	};
 
@@ -50,15 +50,16 @@ class Texture {
 
 class Texture2d : public virtual Texture {
  public:
-	Texture2d(TextureType type, unsigned int textureUnit, std::string filePath) :
+	Texture2d(TextureType type, unsigned int textureUnit, std::shared_ptr<TextureData> data) :
 			Texture(type, textureUnit),
-			filePath(std::move(filePath)) {};
+			data(std::move(data)) {};
+	Texture2d(TextureType type, unsigned int textureUnit) : Texture2d(type, textureUnit, std::make_shared<TextureData>()) {};
 
 	void init() override;
-
+	auto getData() const { return data; }
+	void setData(const std::shared_ptr<TextureData>& data) { this->data = data; }
  private:
-	// File information
-	std::string filePath;
+	std::shared_ptr<TextureData> data;
 };
 
 class TextureCubemap : public virtual Texture {

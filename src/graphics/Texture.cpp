@@ -5,10 +5,10 @@
 
 #include "util/Log.h"
 
-void Texture::TextureData::load() {
+ Texture::TextureData::TextureData(const std::filesystem::path &path) {
 
 	int nrChannels;
-	data = stbi_load(filePath.generic_string().c_str(), &width, &height, &nrChannels, 0);
+	data = stbi_load(path.generic_string().c_str(), &width, &height, &nrChannels, 0);
 
 	colorChannels = GL_RGBA;
 	if (nrChannels==1) {
@@ -19,7 +19,8 @@ void Texture::TextureData::load() {
 		colorChannels = GL_RGBA;
 	}
 
-	ENGINE_ASSERT(data, "Failed to load texture {}", filePath.generic_string())
+	ENGINE_ASSERT(data, "Failed to load texture {}", path.generic_string())
+	LOG_DEBUG("Successfully loaded {}", path.generic_string());
 }
 
 Texture::TextureData::~TextureData() {
@@ -35,17 +36,10 @@ void Texture::bind() {
 }
 
 void Texture2d::init() {
-	LOG_DEBUG("Loading texture {}", filePath);
-//		stbi_set_flip_vertically_on_load(true);
-
 	glCreateTextures(GL_TEXTURE_2D, 1, &id);
-
-	TextureData textureData(filePath);
-	textureData.load();
-
-	glTextureStorage2D(id, 1, GL_RGBA8, textureData.getWidth(), textureData.getHeight());
-	glTextureSubImage2D(id, 0, 0, 0, textureData.getWidth(), textureData.getHeight(), textureData.getColorChannels(),
-											GL_UNSIGNED_BYTE, textureData.getData());
+	glTextureStorage2D(id, 1, GL_RGBA8, data->getWidth(), data->getHeight());
+	glTextureSubImage2D(id, 0, 0, 0, data->getWidth(), data->getHeight(), data->getColorChannels(),
+											GL_UNSIGNED_BYTE, data->getData());
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -53,20 +47,15 @@ void Texture2d::init() {
 	glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	LOG_DEBUG("Loaded texture {}", textureData.getFilePath().generic_string());
 }
 
 void TextureCubemap::init() {
-	LOG_DEBUG("Loading texture cubemap");
-
 	glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &id);
 
 	// Use the first texture to allocate storage for the rest
 	for (size_t face = 0; face < 6; ++face) {
 		LOG_DEBUG("Loading face {} from {}", face, filePaths[face].generic_string());
 		auto texture = TextureData(filePaths[face]);
-		texture.load();
 
 		// Allocate storage on first run
 		if (face==0) {

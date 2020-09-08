@@ -27,7 +27,7 @@ TexturedMesh::TexturedMesh(unsigned int usage, const std::vector<Vertex> &vertic
 }
 
 void TexturedMesh::init() {
-	LOG_DEBUG("Initializing mesh");
+//	LOG_DEBUG("Initializing mesh");
 
 	vbo.init(usage, vertexData.size()*sizeof(Vertex));
 	ebo.init(usage, indexData.size()*sizeof(int));
@@ -51,12 +51,12 @@ void TexturedMesh::init() {
 	glVertexArrayAttribBinding(vao, 1, 0);
 	glVertexArrayAttribBinding(vao, 2, 0);
 
-	for (auto &texture : textures) {
-		texture->init();
-	}
+//	for (auto &texture : textures) {
+//		texture->init();
+//	}
 
-	LOG_DEBUG("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo.getId(),
-						ebo.getId());
+//	LOG_DEBUG("Initialized mesh with VAO: {}\tVBO: {}\tEBO: {}", vao, vbo.getId(),
+//						ebo.getId());
 }
 
 void TexturedMesh::bind() {
